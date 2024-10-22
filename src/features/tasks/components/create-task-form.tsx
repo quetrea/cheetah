@@ -50,7 +50,6 @@ export const CreateTaskForm = ({
   onStatusUpdate,
 }: CreateTaskFormProps) => {
   const workspaceId = useWorkspaceId();
-  const router = useRouter();
   const { mutate, isPending } = useCreateTask();
 
   const form = useForm<z.infer<typeof createTaskSchema>>({
@@ -66,6 +65,7 @@ export const CreateTaskForm = ({
       {
         onSuccess: ({ data }) => {
           form.reset();
+          window.location.href = `/workspaces/${workspaceId}/tasks/${data.$id}`;
           onCancel?.();
         },
       }

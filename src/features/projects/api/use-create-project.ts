@@ -26,6 +26,8 @@ export const useCreateProject = () => {
     },
     onSuccess: () => {
       toast.success("Project created");
+      queryClient.invalidateQueries({ queryKey: ["workspace-analytics"] });
+      queryClient.invalidateQueries({ queryKey: ["project-analytics"] });
       queryClient.invalidateQueries({ queryKey: ["projects"] });
     },
     onError: () => {
