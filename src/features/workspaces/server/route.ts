@@ -7,14 +7,19 @@ import {
   DATABASE_ID,
   IMAGES_BUCKET_ID,
   MEMBERS_ID,
+  PROJECTS_ID,
+  TASKS_ID,
   WORKSPACES_ID,
 } from "@/config";
 import { ID, Query } from "node-appwrite";
-import { MemberRole } from "@/features/members/types";
+import { Member, MemberRole } from "@/features/members/types";
 import { generateInviteCode } from "@/lib/utils";
 
 import { Workspace } from "../types";
 import { getMember } from "@/features/members/utils";
+import { endOfMonth, startOfMonth, subMonths } from "date-fns";
+import { Task, TaskStatus } from "@/features/tasks/types";
+import { Project } from "@/features/projects/types";
 
 const app = new Hono()
   .get("/", sessionMiddleware, async (c) => {
@@ -37,6 +42,47 @@ const app = new Hono()
     );
 
     return c.json({ data: workspaces });
+  })
+  .get("/:workspaceId", sessionMiddleware, async (c) => {
+    const user = c.get("user");
+    const databases = c.get("databases");
+    const { workspaceId } = c.req.param();
+
+    const member = await getMember({
+      databases,
+      workspaceId,
+      userId: user.$id,
+    });
+
+    if (!member) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    const workspace = await databases.getDocument<Workspace>(
+      DATABASE_ID,
+      WORKSPACES_ID,
+      workspaceId
+    );
+
+    return c.json({ data: workspace });
+  })
+  .get("/:workspaceId/info", sessionMiddleware, async (c) => {
+    const databases = c.get("databases");
+    const { workspaceId } = c.req.param();
+
+    const workspace = await databases.getDocument<Workspace>(
+      DATABASE_ID,
+      WORKSPACES_ID,
+      workspaceId
+    );
+
+    return c.json({
+      data: {
+        $id: workspace.$id,
+        name: workspace.name,
+        imageUrl: workspace.imageUrl,
+      },
+    });
   })
   .post(
     "/",
@@ -149,6 +195,7 @@ const app = new Hono()
   .delete("/:workspaceId", sessionMiddleware, async (c) => {
     const databases = c.get("databases");
     const user = c.get("user");
+    const users = c.get("users");
 
     const { workspaceId } = c.req.param();
 
@@ -162,7 +209,55 @@ const app = new Hono()
       return c.json({ error: "Unauthorized" }, 401);
     }
 
-    // TODO: Delete members, projects, and tasks
+    const members = await databases.listDocuments<Member>(
+      DATABASE_ID,
+      MEMBERS_ID,
+      [Query.equal("workspaceId", workspaceId)]
+    );
+    const projects = await databases.listDocuments<Project>(
+      DATABASE_ID,
+      PROJECTS_ID,
+      [Query.equal("workspaceId", workspaceId)]
+    );
+    const tasks = await databases.listDocuments<Task>(DATABASE_ID, TASKS_ID, [
+      Query.equal("workspaceId", workspaceId),
+    ]);
+
+    const MembersIds = await Promise.all(
+      members.documents.map(async (member) => {
+        return {
+          id: member.$id,
+        };
+      })
+    );
+    const ProjectsIds = await Promise.all(
+      projects.documents.map(async (project) => {
+        return {
+          id: project.$id,
+        };
+      })
+    );
+    const TasksIds = await Promise.all(
+      tasks.documents.map(async (task) => {
+        return {
+          id: task.$id,
+        };
+      })
+    );
+
+    if (MembersIds.length === 0) {
+      return c.json({ error: "There is no members." }, 401);
+    }
+    for (const member of MembersIds) {
+      await databases.deleteDocument(DATABASE_ID, MEMBERS_ID, member.id);
+    }
+
+    for (const project of ProjectsIds) {
+      await databases.deleteDocument(DATABASE_ID, PROJECTS_ID, project.id);
+    }
+    for (const task of TasksIds) {
+      await databases.deleteDocument(DATABASE_ID, TASKS_ID, task.id);
+    }
 
     await databases.deleteDocument(DATABASE_ID, WORKSPACES_ID, workspaceId);
 
@@ -234,5 +329,168 @@ const app = new Hono()
 
       return c.json({ data: workspace });
     }
-  );
+  )
+  .get("/:workspaceId/analytics", sessionMiddleware, async (c) => {
+    const user = c.get("user");
+    const databases = c.get("databases");
+    const { workspaceId } = c.req.param();
+
+    const member = await getMember({
+      databases,
+      workspaceId: workspaceId,
+      userId: user.$id,
+    });
+
+    if (!member) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    const now = new Date();
+    const thisMonthStart = startOfMonth(now);
+    const thisMonthEnd = endOfMonth(now);
+    const lastMonthStart = startOfMonth(subMonths(now, 1));
+    const lastMonthEnd = endOfMonth(subMonths(now, 1));
+
+    const thisMonthTasks = await databases.listDocuments(
+      DATABASE_ID,
+      TASKS_ID,
+      [
+        Query.equal("workspaceId", workspaceId),
+        Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
+        Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()),
+      ]
+    );
+    const lastMonthTasks = await databases.listDocuments(
+      DATABASE_ID,
+      TASKS_ID,
+      [
+        Query.equal("workspaceId", workspaceId),
+        Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
+        Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()),
+      ]
+    );
+
+    const TaskCount = thisMonthTasks.total;
+    const TaskDifferent = TaskCount - lastMonthTasks.total;
+
+    const thisMonthAssignedTasks = await databases.listDocuments(
+      DATABASE_ID,
+      TASKS_ID,
+      [
+        Query.equal("workspaceId", workspaceId),
+        Query.equal("assigneeId", member.$id),
+        Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
+        Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()),
+      ]
+    );
+    const lastMonthAssignedTasks = await databases.listDocuments(
+      DATABASE_ID,
+      TASKS_ID,
+      [
+        Query.equal("workspaceId", workspaceId),
+        Query.equal("assigneeId", member.$id),
+        Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
+        Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()),
+      ]
+    );
+
+    const AssignedTaskCount = thisMonthAssignedTasks.total;
+    const AssignedTaskDifference =
+      AssignedTaskCount - lastMonthAssignedTasks.total;
+
+    const thisMonthInCompleteTasks = await databases.listDocuments(
+      DATABASE_ID,
+      TASKS_ID,
+      [
+        Query.equal("workspaceId", workspaceId),
+        Query.notEqual("status", TaskStatus.DONE),
+        Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
+        Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()),
+      ]
+    );
+
+    const lastMonthInCompleteTasks = await databases.listDocuments(
+      DATABASE_ID,
+      TASKS_ID,
+      [
+        Query.equal("workspaceId", workspaceId),
+        Query.notEqual("status", TaskStatus.DONE),
+        Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
+        Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()),
+      ]
+    );
+
+    const InCompleteTaskCount = thisMonthInCompleteTasks.total;
+    const InCompleteTaskDifference =
+      InCompleteTaskCount - lastMonthInCompleteTasks.total;
+
+    const thisMonthCompletedTasks = await databases.listDocuments(
+      DATABASE_ID,
+      TASKS_ID,
+      [
+        Query.equal("workspaceId", workspaceId),
+        Query.equal("status", TaskStatus.DONE),
+        Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
+        Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()),
+      ]
+    );
+
+    const lastMonthCompletedTasks = await databases.listDocuments(
+      DATABASE_ID,
+      TASKS_ID,
+      [
+        Query.equal("workspaceId", workspaceId),
+        Query.equal("status", TaskStatus.DONE),
+        Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
+        Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()),
+      ]
+    );
+
+    const CompletedTaskCount = thisMonthCompletedTasks.total;
+    const CompletedTaskDifference =
+      CompletedTaskCount - lastMonthCompletedTasks.total;
+
+    const thisMonthOverdueTasks = await databases.listDocuments(
+      DATABASE_ID,
+      TASKS_ID,
+      [
+        Query.equal("workspaceId", workspaceId),
+        Query.notEqual("status", TaskStatus.DONE),
+        Query.lessThan("dueDate", now.toISOString()),
+        Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
+        Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()),
+      ]
+    );
+
+    const lastMonthOverdueTasks = await databases.listDocuments(
+      DATABASE_ID,
+      TASKS_ID,
+      [
+        Query.equal("workspaceId", workspaceId),
+        Query.notEqual("status", TaskStatus.DONE),
+        Query.lessThan("dueDate", now.toISOString()),
+        Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
+        Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()),
+      ]
+    );
+
+    const OverdueTaskCount = thisMonthOverdueTasks.total;
+    const OverdueTaskDifference =
+      CompletedTaskCount - lastMonthOverdueTasks.total;
+
+    return c.json({
+      data: {
+        TaskCount,
+        TaskDifferent,
+        AssignedTaskCount,
+        AssignedTaskDifference,
+        CompletedTaskCount,
+        CompletedTaskDifference,
+        InCompleteTaskCount,
+        InCompleteTaskDifference,
+        OverdueTaskCount,
+        OverdueTaskDifference,
+      },
+    });
+  });
 export default app;
