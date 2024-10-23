@@ -195,7 +195,6 @@ const app = new Hono()
   .delete("/:workspaceId", sessionMiddleware, async (c) => {
     const databases = c.get("databases");
     const user = c.get("user");
-    const users = c.get("users");
 
     const { workspaceId } = c.req.param();
 

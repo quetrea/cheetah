@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader, LogOut } from "lucide-react";
+import { LifeBuoyIcon, Loader, LogOut, UserCog2 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -13,6 +13,8 @@ import { DottedSeparator } from "@/components/dotted-separator";
 
 import { useLogout } from "../api/use-logout";
 import { useCurrent } from "../api/use-current";
+import Link from "next/link";
+import { LightningBoltIcon } from "@radix-ui/react-icons";
 
 export const UserButton = () => {
   const { data: user, isLoading } = useCurrent();
@@ -61,6 +63,26 @@ export const UserButton = () => {
             </p>
             <p className="text-xs text-neutral-500">{email}</p>
           </div>
+        </div>
+        <DottedSeparator className="mb-1" />
+        <div className="flex flex-col w-full  ">
+          <DropdownMenuItem
+            asChild
+            className="w-full p-2.5 flex items-center hover:bg-neutral-200 text-neutral-900 font-medium cursor-pointer"
+          >
+            <Link href={`/account`}>
+              <UserCog2 className="size-5 mr-2" />
+              Account Settings
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem className="w-full p-2.5 hover:bg-neutral-200  text-neutral-900 font-medium cursor-pointer">
+            <LightningBoltIcon className="size-5 mr-2" />
+            Upgrade to Plus
+          </DropdownMenuItem>
+          <DropdownMenuItem className="w-full p-2.5 hover:bg-neutral-200  text-neutral-900 font-medium cursor-pointer">
+            <LifeBuoyIcon className="size-5 mr-2" />
+            Help Center
+          </DropdownMenuItem>
         </div>
         <DottedSeparator className="mb-1" />
         <DropdownMenuItem
