@@ -33,12 +33,14 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
         </nav>
         <div className="flex flex-col items-center justify-center pt-4 md:pt-14">
           {children}
-          <AdBanner
-            dataAdFormat="auto"
-            dataAdSlot="2383750713"
-            dataFullWidthResponsive={true}
-            pId="5888317157317698"
-          />
+          <div className="w-full p-4 h-[56px]">
+            <AdBanner
+              dataAdFormat="auto"
+              dataAdSlot="2383750713"
+              dataFullWidthResponsive={true}
+              pId="5888317157317698"
+            />
+          </div>
         </div>
       </div>
     </main>
