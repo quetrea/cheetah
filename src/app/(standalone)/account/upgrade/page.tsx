@@ -3,6 +3,12 @@ import { redirect } from "next/navigation";
 import { AccountPlanUpgradeClient } from "./client";
 import { getPlan } from "@/features/plans/utils";
 import { PlanType } from "@/features/plans/types";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Upgrade Plan",
+  description: "Upgrade your plan",
+};
 
 const AccountPlanUpgradePage = async () => {
   const user = await getCurrent();
