@@ -53,7 +53,7 @@ export const UserButton = () => {
       >
         <div className="flex flex-col items-center justify-center gap-2 px-2.5 py-4">
           <Avatar className="size-[52px] border border-neutral-300">
-            <AvatarFallback className="bg-neutral-200 text-xl font-medium text-neutral-500 flex items-center justify-center">
+            <AvatarFallback className="bg-neutral-200 dark:bg-neural-900 text-xl font-medium text-neutral-500 dark:text-neutral-300 flex items-center justify-center">
               {avatarFallback}
             </AvatarFallback>
           </Avatar>
