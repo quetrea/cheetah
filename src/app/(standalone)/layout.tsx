@@ -7,11 +7,16 @@ interface StandaloneLayoutProps {
 
 const StandaloneLayout = ({ children }: StandaloneLayoutProps) => {
   return (
-    <main className="bg-neutral-100 min-h-screen dark:bg-neutral-950">
+    <main className="bg-neutral-100 min-h-screen dark:bg-neutral-900">
       <div className="mx-auto max-w-screen-2xl p-4">
         <nav className="flex justify-between items-center h-[73px]">
           <Link href={"/"}>
-            <Image src="/logo.svg" width={152} height={56} alt="logo" />
+            <div className="hidden dark:block">
+              <Image src="/DarkLogo.svg" height={56} width={152} alt="Logo" />
+            </div>
+            <div className="hidden dark:hidden">
+              <Image src="/LightLogo.svg" height={56} width={152} alt="Logo" />
+            </div>
           </Link>
         </nav>
         <div className="flex flex-col items-center justify-center py-4">
