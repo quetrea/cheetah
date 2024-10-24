@@ -17,7 +17,7 @@ export const AccountUserClient = () => {
   }
 
   return (
-    <div>
+    <div className="dark:bg-neutral-900">
       <EditAccountSettings
         initialValues={{
           name: data.user.name,

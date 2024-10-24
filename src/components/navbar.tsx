@@ -2,6 +2,7 @@
 import { UserButton } from "@/features/auth/components/user-button";
 import { MobileSidebar } from "./mobile-sidebar";
 import { usePathname } from "next/navigation";
+import { ThemeToggle } from "./toggle/theme-toggle";
 
 const pathnameMap = {
   tasks: {
@@ -32,7 +33,10 @@ export const Navbar = () => {
         <p className="text-muted-foreground">{description}</p>
       </div>
       <MobileSidebar />
-      <UserButton />
+      <div className="flex items-center gap-x-4">
+        <ThemeToggle />
+        <UserButton />
+      </div>
     </nav>
   );
 };

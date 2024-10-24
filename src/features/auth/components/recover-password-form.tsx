@@ -65,7 +65,7 @@ export const EditRecoveryPassword = ({
 
   return (
     <>
-      <div className="flex flex-col gap-y-4 select-none">
+      <div className="flex flex-col gap-y-4 select-none dark:bg-neutral-950">
         <Card className="w-full h-full shadow-none border select-none border-sky-500">
           <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
             <Button

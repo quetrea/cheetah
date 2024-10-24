@@ -58,17 +58,19 @@ export const UserButton = () => {
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col items-center justify-center">
-            <p className="text-sm font-medium text-neutral-900">
+            <p className="text-sm font-medium text-neutral-900 dark:text-white">
               {data.user.name || "User"}
             </p>
-            <p className="text-xs text-neutral-500">{data.user.email}</p>
+            <p className="text-xs text-neutral-500 dark:text-neutral-500">
+              {data.user.email}
+            </p>
           </div>
         </div>
         <DottedSeparator className="mb-1" />
         <div className="flex flex-col w-full  ">
           <DropdownMenuItem
             asChild
-            className="w-full p-2.5 flex items-center hover:bg-neutral-200 text-neutral-900 font-medium cursor-pointer"
+            className="w-full p-2.5 flex items-center dark:hover:bg-white/10 dark:text-neutral-300 hover:bg-neutral-200 text-neutral-900 font-medium cursor-pointer"
           >
             <Link href={`/account`}>
               <UserCog2 className="size-5 mr-2" />
@@ -78,7 +80,7 @@ export const UserButton = () => {
           {data.plan.planType === PlanType.FREE && (
             <DropdownMenuItem
               asChild
-              className="w-full p-2.5 hover:bg-neutral-200  text-neutral-900 font-medium cursor-pointer"
+              className="w-full p-2.5 hover:bg-neutral-200 dark:hover:bg-white/10 dark:text-neutral-300  text-neutral-900 font-medium cursor-pointer"
             >
               <Link href={`/account/upgrade`}>
                 <LightningBoltIcon className="size-5 mr-2" />
@@ -87,7 +89,7 @@ export const UserButton = () => {
             </DropdownMenuItem>
           )}
 
-          <DropdownMenuItem className="w-full p-2.5 hover:bg-neutral-200  text-neutral-900 font-medium cursor-pointer">
+          <DropdownMenuItem className="w-full p-2.5 hover:bg-neutral-200 dark:hover:bg-white/10 dark:text-neutral-300  text-neutral-900 font-medium cursor-pointer">
             <LifeBuoyIcon className="size-5 mr-2" />
             Help Center
           </DropdownMenuItem>
@@ -95,7 +97,7 @@ export const UserButton = () => {
         <DottedSeparator className="mb-1" />
         <DropdownMenuItem
           onClick={() => logout()}
-          className="h-10 flex items-center justify-center text-amber-700 font-medium cursor-pointer"
+          className="h-10 flex items-center justify-center text-amber-700 dark:hover:bg-white/10 font-medium cursor-pointer"
         >
           <LogOut className="size-4 mr-2" />
           Log out

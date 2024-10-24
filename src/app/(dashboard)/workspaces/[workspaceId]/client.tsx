@@ -85,12 +85,17 @@ export const TaskList = ({ data, total }: TaskListProps) => {
   const workspaceId = useWorkspaceId();
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
-      <div className="bg-muted rounded-lg p-4">
+      <div className="bg-muted rounded-lg p-4 dark:bg-neutral-900">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Tasks ({total})</p>
 
-          <Button variant={"muted"} size={"icon"} onClick={createTask}>
-            <PlusIcon className="size-4 text-neutral-400" />
+          <Button
+            className="dark:bg-neutral-950 border dark:border-neutral-950"
+            variant={"muted"}
+            size={"icon"}
+            onClick={createTask}
+          >
+            <PlusIcon className="size-4 text-neutral-400 " />
           </Button>
         </div>
         <DottedSeparator className="my-4" />
@@ -124,7 +129,11 @@ export const TaskList = ({ data, total }: TaskListProps) => {
             No tasks found
           </li>
         </ul>
-        <Button asChild variant="muted" className="mt-4 w-full">
+        <Button
+          asChild
+          variant="muted"
+          className="mt-4 w-full dark:bg-neutral-950 border dark:border-neutral-950"
+        >
           <Link href={`/workspaces/${workspaceId}/tasks`}> Show all</Link>
         </Button>
       </div>
@@ -141,12 +150,17 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
   const { open: createProject } = useCreateProjectModal();
   const workspaceId = useWorkspaceId();
   return (
-    <div className="flex flex-col gap-y-4 col-span-1">
-      <div className="bg-white border rounded-lg p-4">
+    <div className="flex flex-col gap-y-4 col-span-1 ">
+      <div className="bg-white dark:bg-neutral-950 border rounded-lg p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Projects ({total})</p>
 
-          <Button variant={"secondary"} size={"icon"} onClick={createProject}>
+          <Button
+            className="dark:bg-neutral-950 border border-neutral-600"
+            variant={"secondary"}
+            size={"icon"}
+            onClick={createProject}
+          >
             <PlusIcon className="size-4 text-neutral-400" />
           </Button>
         </div>
@@ -193,10 +207,15 @@ export const MembersList = ({ data, total }: MembersListProps) => {
   const workspaceId = useWorkspaceId();
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
-      <div className="bg-white border rounded-lg p-4">
+      <div className="bg-white dark:bg-neutral-950  border rounded-lg p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Members ({total})</p>
-          <Button asChild variant={"secondary"} size="icon">
+          <Button
+            className="dark:bg-neutral-950 border border-neutral-600"
+            asChild
+            variant={"secondary"}
+            size="icon"
+          >
             <Link href={`/workspaces/${workspaceId}/members`}>
               <SettingsIcon className="size-4 text-neutral-400" />
             </Link>
@@ -210,13 +229,13 @@ export const MembersList = ({ data, total }: MembersListProps) => {
               <li key={member.$id}>
                 <Link href={`/workspaces/${workspaceId}/members/${member.$id}`}>
                   <Card className="shadow-none rounded-lg overflow-hidden">
-                    <CardContent className="p-3 flex flex-col items-center gap-x-2">
+                    <CardContent className="p-4 flex flex-col items-center gap-y-2">
                       <MemberAvatar className="size-12" name={member.name} />
                       <div className="flex flex-col items-center overflow-hidden">
-                        <p className="text-lg font-medium line-clamp-1">
+                        <p className="text-sm font-medium line-clamp-1">
                           {member.name}
                         </p>
-                        <p className="text-sm text-muted-foreground line-clamp-1">
+                        <p className="text-xs text-muted-foreground line-clamp-1">
                           {member.email}
                         </p>
                       </div>

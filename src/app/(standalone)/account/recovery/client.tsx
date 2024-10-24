@@ -20,7 +20,7 @@ export const AccountRecoveryClient = () => {
 
 
   return (
-    <div className="">
+    <div className="dark:bg-neutral-900">
       {secretId && (
         <EditRecoveryPassword
           secret={secretId}

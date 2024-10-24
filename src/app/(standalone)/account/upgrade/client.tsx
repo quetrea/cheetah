@@ -10,7 +10,7 @@ export const AccountPlanUpgradeClient = ({
   userId,
 }: AccountPageUpgradeClientProps) => {
   return (
-    <div>
+    <div className="dark:bg-neutral-900">
       <UpgradePlanForm userId={userId} />
     </div>
   );

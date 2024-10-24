@@ -70,9 +70,14 @@ export const MemberList = () => {
     <>
       <ConfirmDialog />
 
-      <Card className="w-full h-full border-none shadow-none">
+      <Card className="w-full h-full border-none shadow-none dark:bg-neutral-900">
         <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
-          <Button asChild variant={"secondary"} size={"sm"}>
+          <Button
+            className="dark:bg-neutral-950 dark:text-neutral-400 dark:border-neutral-600 dark:hover:border-neutral-400"
+            asChild
+            variant={"secondary"}
+            size={"sm"}
+          >
             <Link href={`/workspaces/${workspaceId}`}>
               <ArrowLeftIcon className="size-4 mr-2" />
               Back
@@ -103,7 +108,7 @@ export const MemberList = () => {
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button
-                        className="ml-auto"
+                        className="ml-auto dark:bg-neutral-950 border border-neutral-700"
                         variant={"secondary"}
                         size={"icon"}
                       >
