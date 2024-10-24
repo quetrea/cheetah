@@ -12,7 +12,7 @@ const titleSite = "Cheetah";
 
 export const metadata: Metadata = {
   title: {
-    default: `${titleSite} Clone`,
+    default: `${titleSite}`,
     template: `%s | ${titleSite}`,
   },
   description: "Create workspaces for your team and create beautiful works",
