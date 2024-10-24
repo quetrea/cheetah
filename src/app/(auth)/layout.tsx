@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import AdBanner from "@/components/adsense/AdBanner";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -32,6 +33,12 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
         </nav>
         <div className="flex flex-col items-center justify-center pt-4 md:pt-14">
           {children}
+          <AdBanner
+            dataAdFormat="auto"
+            dataAdSlot="2383750713"
+            dataFullWidthResponsive={true}
+            pId="5888317157317698"
+          />
         </div>
       </div>
     </main>
