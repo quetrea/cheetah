@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <AdSense pId="pub-5888317157317698" />
+        <AdSense pId="5888317157317698" />
       </head>
       <body className={cn(inter.className, "antialiased min-h-screen")}>
         <QueryProvider>
