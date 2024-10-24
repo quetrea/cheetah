@@ -6,19 +6,25 @@ import { useCurrent } from "@/features/auth/api/use-current";
 import { EditAccountSettings } from "@/features/auth/components/edit-account-user-form";
 
 export const AccountUserClient = () => {
-  const { data: user, isLoading } = useCurrent();
+  const { data: data, isLoading } = useCurrent();
 
   if (isLoading) {
     return <PageLoader />;
   }
 
-  if (!user) {
+  if (!data) {
     return <PageError message="Account not found" />;
   }
-  const { name, email, $id } = user;
+
   return (
     <div>
-      <EditAccountSettings initialValues={{ name, email, id: $id }} />
+      <EditAccountSettings
+        initialValues={{
+          name: data.user.name,
+          email: data.user.email,
+          id: data.user.$id,
+        }}
+      />
     </div>
   );
 };

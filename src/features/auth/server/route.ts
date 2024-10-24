@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 import { zValidator } from "@hono/zod-validator";
 import { deleteCookie, setCookie } from "hono/cookie";
 import { createAdminClient } from "@/lib/appwrite";
@@ -14,12 +14,33 @@ import {
 } from "../schemas";
 import { AUTH_COOKIE } from "@/features/auth/constants";
 import { sessionMiddleware } from "@/lib/session-Middleware";
+import { getPlan } from "@/features/plans/utils";
+import { DATABASE_ID, PLANS_ID } from "@/config";
+import { Plan, PlanType } from "@/features/plans/types";
 
 const app = new Hono()
-  .get("/current", sessionMiddleware, (c) => {
+  .get("/current", sessionMiddleware, async (c) => {
     const user = c.get("user");
+    const databases = c.get("databases");
+    const plan = await databases.listDocuments<Plan>(DATABASE_ID, PLANS_ID, [
+      Query.equal("userId", user.$id),
+    ]);
 
-    return c.json({ data: user });
+    if (!plan.documents[0]) {
+      await databases.createDocument<Plan>(DATABASE_ID, PLANS_ID, ID.unique(), {
+        userId: user.$id,
+        planType: PlanType.FREE,
+        startDate: new Date(),
+      });
+    }
+
+    const currentPlan = await databases.getDocument<Plan>(
+      DATABASE_ID,
+      PLANS_ID,
+      plan.documents[0].$id
+    );
+
+    return c.json({ data: { user: user, plan: currentPlan } });
   })
   .post("/login", zValidator("json", loginSchema), async (c) => {
     const { email, password } = c.req.valid("json");

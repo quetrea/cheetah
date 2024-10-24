@@ -18,11 +18,14 @@ export const AccountRecoveryClient = () => {
     return <PageError message="User not found" />;
   }
 
-  const { $id } = user;
+
   return (
     <div className="">
       {secretId && (
-        <EditRecoveryPassword secret={secretId} initialValues={{ id: $id }} />
+        <EditRecoveryPassword
+          secret={secretId}
+          initialValues={{ id: user.user.$id }}
+        />
       )}
     </div>
   );

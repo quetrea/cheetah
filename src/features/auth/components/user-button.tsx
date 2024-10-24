@@ -15,11 +15,16 @@ import { useLogout } from "../api/use-logout";
 import { useCurrent } from "../api/use-current";
 import Link from "next/link";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
+import { useGetPlan } from "@/features/plans/api/use-get-user-plan";
+import { PlanType } from "@/features/plans/types";
 
 export const UserButton = () => {
-  const { data: user, isLoading } = useCurrent();
+  const { data: data, isLoading } = useCurrent();
   const { mutate: logout } = useLogout();
 
+  if (!data) {
+    return null;
+  }
   if (isLoading) {
     return (
       <div className="size-10 rounded-full flex items-center justify-center bg-neutral-200 border border-neutral-300">
@@ -28,14 +33,9 @@ export const UserButton = () => {
     );
   }
 
-  if (!user) {
-    return null;
-  }
-
-  const { name, email } = user;
-  const avatarFallback = name
-    ? name.charAt(0).toUpperCase()
-    : email.charAt(0) ?? "U";
+  const avatarFallback = data.user.name
+    ? data.user.name.charAt(0).toUpperCase()
+    : data.user.email.charAt(0) ?? "U";
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger>
@@ -59,9 +59,9 @@ export const UserButton = () => {
           </Avatar>
           <div className="flex flex-col items-center justify-center">
             <p className="text-sm font-medium text-neutral-900">
-              {name || "User"}
+              {data.user.name || "User"}
             </p>
-            <p className="text-xs text-neutral-500">{email}</p>
+            <p className="text-xs text-neutral-500">{data.user.email}</p>
           </div>
         </div>
         <DottedSeparator className="mb-1" />
@@ -75,10 +75,18 @@ export const UserButton = () => {
               Account Settings
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className="w-full p-2.5 hover:bg-neutral-200  text-neutral-900 font-medium cursor-pointer">
-            <LightningBoltIcon className="size-5 mr-2" />
-            Upgrade to Plus
-          </DropdownMenuItem>
+          {data.plan.planType === PlanType.FREE && (
+            <DropdownMenuItem
+              asChild
+              className="w-full p-2.5 hover:bg-neutral-200  text-neutral-900 font-medium cursor-pointer"
+            >
+              <Link href={`/account/upgrade`}>
+                <LightningBoltIcon className="size-5 mr-2" />
+                Upgrade to Plus
+              </Link>
+            </DropdownMenuItem>
+          )}
+
           <DropdownMenuItem className="w-full p-2.5 hover:bg-neutral-200  text-neutral-900 font-medium cursor-pointer">
             <LifeBuoyIcon className="size-5 mr-2" />
             Help Center
