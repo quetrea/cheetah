@@ -1,1 +1,1 @@
-export const AUTH_COOKIE = "quisent-jira-clone-session";
+export const AUTH_COOKIE = "cheetah-auth-session";
