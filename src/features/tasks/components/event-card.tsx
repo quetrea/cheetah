@@ -39,11 +39,11 @@ export const EventCard = ({
     router.push(`/workspaces/${workspaceId}/tasks/${id}`);
   };
   return (
-    <div className="px-2">
+    <div className="px-2   ">
       <div
         onClick={onClick}
         className={cn(
-          "p-1.5 text-xs text-primary border rounded-md border-l-4 flex flex-col gap-y-1.5 cursor-pointer hover:opacity-75 transition",
+          "p-1.5 text-xs text-primary w-full border rounded-md border-l-4 flex flex-col gap-y-1.5 cursor-pointer hover:opacity-75 transition",
           statusColorMap[status]
         )}
       >
