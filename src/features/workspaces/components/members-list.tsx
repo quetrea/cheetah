@@ -104,53 +104,54 @@ export const MemberList = () => {
                   </p>
                 </div>
 
-                {data.currentMember.role === MemberRole.ADMIN && (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        className="ml-auto dark:bg-neutral-950 border border-neutral-700"
-                        variant={"secondary"}
-                        size={"icon"}
-                      >
-                        <MoreVerticalIcon className="size-4 text-muted-foreground" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent side="bottom" align="end">
-                      {member.role !== MemberRole.ADMIN && (
-                        <DropdownMenuItem
-                          className="font-medium"
-                          onClick={() =>
-                            handleUpdateMember(member.$id, MemberRole.ADMIN)
-                          }
-                          disabled={updatingMember}
+                {data.currentMember.role === MemberRole.ADMIN &&
+                  data.totalMembers > 1 && (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          className="ml-auto dark:bg-neutral-950 border border-neutral-700"
+                          variant={"secondary"}
+                          size={"icon"}
                         >
-                          Set as Administrator
-                        </DropdownMenuItem>
-                      )}
-                      {member.role !== MemberRole.MEMBER && (
-                        <DropdownMenuItem
-                          className="font-medium"
-                          onClick={() =>
-                            handleUpdateMember(member.$id, MemberRole.MEMBER)
-                          }
-                          disabled={updatingMember}
-                        >
-                          Set as Member
-                        </DropdownMenuItem>
-                      )}
+                          <MoreVerticalIcon className="size-4 text-muted-foreground" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent side="bottom" align="end">
+                        {member.role !== MemberRole.ADMIN && (
+                          <DropdownMenuItem
+                            className="font-medium"
+                            onClick={() =>
+                              handleUpdateMember(member.$id, MemberRole.ADMIN)
+                            }
+                            disabled={updatingMember}
+                          >
+                            Set as Administrator
+                          </DropdownMenuItem>
+                        )}
+                        {member.role !== MemberRole.MEMBER && (
+                          <DropdownMenuItem
+                            className="font-medium"
+                            onClick={() =>
+                              handleUpdateMember(member.$id, MemberRole.MEMBER)
+                            }
+                            disabled={updatingMember}
+                          >
+                            Set as Member
+                          </DropdownMenuItem>
+                        )}
 
-                      {data?.totalMembers !== 1 && (
-                        <DropdownMenuItem
-                          className="font-medium text-amber-700"
-                          onClick={() => handleDeleteMember(member.$id)}
-                          disabled={deletingMember}
-                        >
-                          Kick from workspace
-                        </DropdownMenuItem>
-                      )}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                )}
+                        {data?.totalMembers !== 1 && (
+                          <DropdownMenuItem
+                            className="font-medium text-amber-700"
+                            onClick={() => handleDeleteMember(member.$id)}
+                            disabled={deletingMember}
+                          >
+                            Kick from workspace
+                          </DropdownMenuItem>
+                        )}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  )}
               </div>
               {index < data.documents.length - 1 && (
                 <Separator className="my-2.5 " />

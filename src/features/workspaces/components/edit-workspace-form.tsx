@@ -1,17 +1,24 @@
 "use client";
-import { z } from "zod";
-import { useRef } from "react";
-import Image from "next/image";
-import { useForm } from "react-hook-form";
-import { updateWorkspaceSchema } from "../schemas";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
 
+import { z } from "zod"; // Zod kütüphanesi
+import { useRef } from "react"; // React hookları
+import Image from "next/image"; // Next.js Image bileşeni
+import { useForm } from "react-hook-form"; // React Hook Form
+import { zodResolver } from "@hookform/resolvers/zod"; // Zod ile form doğrulama
+import { cn } from "@/lib/utils"; // Yardımcı fonksiyonlar
+
+import { useRouter } from "next/navigation";
+
+import { updateWorkspaceSchema } from "../schemas";
+
+// UI bileşenleri
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DottedSeparator } from "@/components/dotted-separator";
+
+// Form bileşenleri
 import {
   Form,
   FormControl,
@@ -20,17 +27,22 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
+// Tipler
 import { Workspace } from "../types";
+import { MemberRole } from "@/features/members/types";
+
+// İkonlar
 import { ArrowLeftIcon, CopyIcon, ImageIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
+
+// API çağrıları
 import { useUpdateWorkspace } from "../api/use-update-workspace";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useDeleteWorkspace } from "../api/use-delete-workspace";
-import { toast } from "sonner";
 import { useResetInviteCode } from "../api/use-reset-invite-code";
 import { useGetMembers } from "@/features/members/api/use-get-members";
 import { useWorkspaceId } from "../hooks/use-workspace-id";
-import { MemberRole } from "@/features/members/types";
+import { toast } from "sonner"; // Toast bildirimleri
 
 interface EditWorkspaceFormProps {
   onCancel?: () => void;
@@ -271,7 +283,7 @@ export const EditWorkspaceForm = ({
               <h3 className="font-bold">Invite Members</h3>
               <p className="text-sm text-muted-foreground">
                 Share the invite link to add members to
-                <span className="text-black font-bold ml-1">
+                <span className="text-black dark:text-white font-bold ml-1">
                   {initialValues.name}
                 </span>
               </p>

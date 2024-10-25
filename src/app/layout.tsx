@@ -18,6 +18,10 @@ export const metadata: Metadata = {
     template: `%s | ${titleSite}`,
   },
   description: "Create workspaces for your team and create beautiful works",
+  keywords: "workspace, team, collaboration", // Anahtar kelimeler eklendi
+  authors: {
+    name: "Illusion",
+  },
 };
 
 export default function RootLayout({

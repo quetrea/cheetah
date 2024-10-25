@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { UserButton } from "@/features/auth/components/user-button";
 
 interface StandaloneLayoutProps {
   children: React.ReactNode;
@@ -14,10 +15,11 @@ const StandaloneLayout = ({ children }: StandaloneLayoutProps) => {
             <div className="hidden dark:block">
               <Image src="/DarkLogo.svg" height={56} width={152} alt="Logo" />
             </div>
-            <div className="hidden dark:hidden">
+            <div className="block dark:hidden">
               <Image src="/LightLogo.svg" height={56} width={152} alt="Logo" />
             </div>
           </Link>
+          <UserButton />
         </nav>
         <div className="flex flex-col items-center justify-center py-4">
           {children}

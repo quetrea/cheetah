@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const AccountUserPage = async () => {
   const user = await getCurrent();
-  if (!user) redirect("/sign-in");
+  if (!user) redirect("/home");
   return <AccountUserClient />;
 };
 

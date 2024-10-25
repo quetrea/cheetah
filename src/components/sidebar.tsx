@@ -12,8 +12,8 @@ export const Sidebar = () => {
         <div className="hidden dark:block">
           <Image src="/DarkLogo.svg" height={48} width={164} alt="Logo" />
         </div>
-        <div className="hidden dark:hidden">
-          <Image src="/LightLogo.svg" height={48} width={164} alt="Logo" />
+        <div className="block dark:hidden">
+          <Image src="/LightLogo.svg" height={56} width={152} alt="Logo" />
         </div>
       </Link>
       <DottedSeparator className="my-4" />
