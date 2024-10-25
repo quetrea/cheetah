@@ -23,7 +23,7 @@ export const Content = () => {
           </CardHeader>
           <CardContent className="w-full  relative">
             <div className="border h-full rounded-md flex">
-              <div className="flex-3 border-r flex flex-col gap-y-4 p-4">
+              <div className="flex-3 md:flex border-r hidden flex-col gap-y-4 p-4">
                 <div className="flex flex-col items-center gap-y-2">
                   <div className="text-sm">Workspace</div>
                   <DottedSeparator />
