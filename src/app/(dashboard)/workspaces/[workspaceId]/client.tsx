@@ -106,13 +106,13 @@ export const TaskList = ({ data, total }: TaskListProps) => {
                 <Link href={`/workspaces/${workspaceId}/tasks/${task.$id}`}>
                   <Card className="shadow-none rounded-lg hover:opacity-75 transition">
                     <CardContent className="p-4">
-                      <p className="text-lg truncate font-medium">
+                      <p className="text-sm truncate font-medium">
                         {task.name}
                       </p>
                       <div className="flex items-center gap-x-2">
-                        <p>{task.project?.name}</p>
+                        <p className="text-sm">{task.project?.name}</p>
                         <div className="size-1 rounded-full bg-neutral-300" />
-                        <div className="text-sm text-muted-foreground flex items-center">
+                        <div className="text-xs text-muted-foreground flex items-center">
                           <CalendarIcon className="size-3 mr-1" />
                           <span className="truncate">
                             {formatDistanceToNow(new Date(task.dueDate))}
@@ -180,9 +180,7 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
                         name={project.name}
                         image={project.imageUrl}
                       />
-                      <p className="text-lg font-medium truncate">
-                        {project.name}
-                      </p>
+                      <p className=" font-medium truncate">{project.name}</p>
                     </CardContent>
                   </Card>
                 </Link>
