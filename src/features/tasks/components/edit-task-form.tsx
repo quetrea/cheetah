@@ -32,7 +32,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { MemberAvatar } from "@/features/members/components/member-avatar";
-import { Task, TaskStatus } from "../types";
+import { Priority, Task, TaskStatus } from "../types";
 import { Circle } from "lucide-react";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { useUpdateTask } from "../api/use-update-task";
@@ -61,6 +61,7 @@ export const EditTaskForm = ({
       dueDate: initialValues.dueDate
         ? new Date(initialValues.dueDate)
         : undefined,
+      priority: initialValues.priority as Priority,
     },
   });
 
@@ -77,8 +78,8 @@ export const EditTaskForm = ({
   };
 
   return (
-    <Card className="w-full h-full border-none shadow-none">
-      <CardHeader className="flex p-7">
+    <Card className="w-full h-full border-none shadow-none rounded-none">
+      <CardHeader className="flex p-7 pb-4 ">
         <CardTitle className="text-xl font-bold">Edit task</CardTitle>
       </CardHeader>
       <div className="px-7">
@@ -97,6 +98,7 @@ export const EditTaskForm = ({
 
                     <FormControl>
                       <Input
+                        className="rounded-sm border-none shadow-none hover:bg-accent focus-visible:ring-neutral-400 cursor-default focus:cursor-text active:border-neutral-100 transition-all focus-visible:ring-2 ring-neutral-100 py-0 focus-visible:rounded-sm"
                         {...field}
                         disabled={isPending}
                         placeholder="Enter task name"
@@ -200,6 +202,48 @@ export const EditTaskForm = ({
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-emerald-400 p-2" />
                             Done
+                          </div>
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="priority"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Priority</FormLabel>
+
+                    <Select
+                      defaultValue={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select priority" />
+                        </SelectTrigger>
+                      </FormControl>
+
+                      <SelectContent>
+                        <SelectItem value={Priority.HIGH}>
+                          <div className="flex w-full items-center gap-x-4">
+                            <Circle className="size-4 rounded-full bg-red-600 p-2" />
+                            High
+                          </div>
+                        </SelectItem>
+                        <SelectItem value={Priority.MEDIUM}>
+                          <div className="flex w-full items-center gap-x-4">
+                            <Circle className="size-4 rounded-full bg-green-600 p-2" />
+                            Medium
+                          </div>
+                        </SelectItem>
+                        <SelectItem value={Priority.LOW}>
+                          <div className="flex w-full items-center gap-x-4">
+                            <Circle className="size-4 rounded-full bg-yellow-700 p-2" />
+                            Low
                           </div>
                         </SelectItem>
                       </SelectContent>

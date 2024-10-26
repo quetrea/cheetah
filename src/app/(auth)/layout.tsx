@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import AdBanner from "@/components/adsense/AdBanner";
 import { PageList } from "./page-list";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/toggle/theme-toggle";

@@ -53,6 +53,7 @@ const app = new Hono()
         status: z.nativeEnum(TaskStatus).nullish(),
         search: z.string().nullish(),
         dueDate: z.string().nullish(),
+        priority: z.string().nullish(),
       })
     ),
     async (c) => {
@@ -60,8 +61,15 @@ const app = new Hono()
       const databases = c.get("databases");
       const user = c.get("user");
 
-      const { workspaceId, projectId, status, search, assigneeId, dueDate } =
-        c.req.valid("query");
+      const {
+        workspaceId,
+        projectId,
+        status,
+        search,
+        assigneeId,
+        dueDate,
+        priority,
+      } = c.req.valid("query");
 
       const member = await getMember({
         databases,
@@ -106,6 +114,12 @@ const app = new Hono()
         console.log("search: " + search);
 
         query.push(Query.equal("name", search));
+      }
+
+      if (priority) {
+        console.log("priority:", priority);
+
+        query.push(Query.equal("priority", priority));
       }
 
       const tasks = await databases.listDocuments<Task>(
@@ -172,8 +186,15 @@ const app = new Hono()
     async (c) => {
       const user = c.get("user");
       const databases = c.get("databases");
-      const { name, status, workspaceId, projectId, dueDate, assigneeId } =
-        c.req.valid("json");
+      const {
+        name,
+        status,
+        workspaceId,
+        projectId,
+        dueDate,
+        assigneeId,
+        priority,
+      } = c.req.valid("json");
 
       const member = await getMember({
         databases,
@@ -212,6 +233,7 @@ const app = new Hono()
           dueDate,
           assigneeId,
           position: newPosition,
+          priority,
         }
       );
 
@@ -225,8 +247,15 @@ const app = new Hono()
     async (c) => {
       const user = c.get("user");
       const databases = c.get("databases");
-      const { name, status, projectId, dueDate, assigneeId, description } =
-        c.req.valid("json");
+      const {
+        name,
+        status,
+        projectId,
+        dueDate,
+        assigneeId,
+        description,
+        priority,
+      } = c.req.valid("json");
 
       const { taskId } = c.req.param();
 
@@ -257,6 +286,7 @@ const app = new Hono()
           dueDate,
           assigneeId,
           description,
+          priority,
         }
       );
 

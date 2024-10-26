@@ -32,7 +32,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { MemberAvatar } from "@/features/members/components/member-avatar";
-import { TaskStatus } from "../types";
+import { Priority, TaskStatus } from "../types";
 import { Circle } from "lucide-react";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 
@@ -93,6 +93,7 @@ export const CreateTaskForm = ({
 
                     <FormControl>
                       <Input
+                        className="rounded-sm border-none shadow-none hover:bg-accent focus-visible:ring-neutral-400 cursor-default focus:cursor-text active:border-neutral-100 transition-all focus-visible:ring-2 ring-neutral-100 py-0 focus-visible:rounded-sm"
                         {...field}
                         disabled={isPending}
                         placeholder="Enter task name"
@@ -200,6 +201,48 @@ export const CreateTaskForm = ({
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-emerald-400 p-2" />
                             Done
+                          </div>
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="priority"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Priority</FormLabel>
+
+                    <Select
+                      defaultValue={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select priority" />
+                        </SelectTrigger>
+                      </FormControl>
+
+                      <SelectContent>
+                        <SelectItem value={Priority.HIGH}>
+                          <div className="flex w-full items-center gap-x-4">
+                            <Circle className="size-4 rounded-full bg-red-600 p-2" />
+                            High
+                          </div>
+                        </SelectItem>
+                        <SelectItem value={Priority.MEDIUM}>
+                          <div className="flex w-full items-center gap-x-4">
+                            <Circle className="size-4 rounded-full bg-green-600 p-2" />
+                            Medium
+                          </div>
+                        </SelectItem>
+                        <SelectItem value={Priority.LOW}>
+                          <div className="flex w-full items-center gap-x-4">
+                            <Circle className="size-4 rounded-full bg-yellow-700 p-2" />
+                            Low
                           </div>
                         </SelectItem>
                       </SelectContent>

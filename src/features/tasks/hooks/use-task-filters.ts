@@ -1,6 +1,6 @@
 import { parseAsString, parseAsStringEnum, useQueryStates } from "nuqs";
 
-import { TaskStatus } from "../types";
+import { Priority, TaskStatus } from "../types";
 
 export const useTasksFilters = () => {
   return useQueryStates({
@@ -9,5 +9,6 @@ export const useTasksFilters = () => {
     assigneeId: parseAsString,
     search: parseAsString,
     dueDate: parseAsString,
+    priority: parseAsStringEnum(Object.values(Priority)),
   });
 };

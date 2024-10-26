@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { TaskStatus } from "./types";
+import { Priority, TaskStatus } from "./types";
 
 export const createTaskSchema = z.object({
   name: z.string().min(1, "Required"),
@@ -9,4 +9,5 @@ export const createTaskSchema = z.object({
   dueDate: z.coerce.date(),
   assigneeId: z.string().trim().min(1, "Required"),
   description: z.string().optional(),
+  priority: z.nativeEnum(Priority, { required_error: "Required" }),
 });

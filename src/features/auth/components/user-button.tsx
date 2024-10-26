@@ -66,8 +66,8 @@ export const UserButton = () => {
             </p>
           </div>
         </div>
-        <DottedSeparator className="mb-1" />
-        <div className="flex flex-col w-full  ">
+        <DottedSeparator className="py-1" />
+        <div className="flex flex-col w-full">
           <DropdownMenuItem
             asChild
             className="w-full p-2.5 flex items-center dark:hover:bg-white/10 dark:text-neutral-300 hover:bg-neutral-200 text-neutral-900 font-medium cursor-pointer"
@@ -94,7 +94,7 @@ export const UserButton = () => {
             Help Center
           </DropdownMenuItem>
         </div>
-        <DottedSeparator className="mb-1" />
+        <DottedSeparator className="py-1" />
         <DropdownMenuItem
           onClick={() => logout()}
           className="h-10 flex items-center justify-center text-amber-700 dark:hover:bg-white/10 font-medium cursor-pointer"

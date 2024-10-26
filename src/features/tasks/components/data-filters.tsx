@@ -10,8 +10,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Circle, FolderIcon, ListCheckIcon, UserIcon } from "lucide-react";
-import { TaskStatus } from "../types";
+import {
+  Circle,
+  Clock,
+  FolderIcon,
+  ListCheckIcon,
+  UserIcon,
+} from "lucide-react";
+import { Priority, TaskStatus } from "../types";
 import { useTasksFilters } from "../hooks/use-task-filters";
 import { MemberAvatar } from "@/features/members/components/member-avatar";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
@@ -44,7 +50,7 @@ export const DataFilter = ({ hideProjectFilter }: DataFilterProps) => {
     label: member.name,
   }));
 
-  const [{ status, assigneeId, projectId, dueDate }, setFilters] =
+  const [{ status, assigneeId, projectId, dueDate, priority }, setFilters] =
     useTasksFilters();
 
   const onStatusChange = (value: string) => {
@@ -56,6 +62,10 @@ export const DataFilter = ({ hideProjectFilter }: DataFilterProps) => {
 
   const onProjectChange = (value: string) => {
     setFilters({ projectId: value === "all" ? null : (value as string) });
+  };
+
+  const onPriorityChange = (value: string) => {
+    setFilters({ priority: value === "all" ? null : (value as Priority) });
   };
 
   if (isLoading) return null;
@@ -103,6 +113,39 @@ export const DataFilter = ({ hideProjectFilter }: DataFilterProps) => {
             <div className="flex w-full items-center gap-x-4">
               <Circle className="size-4 rounded-full bg-emerald-400 p-2" />
               Done
+            </div>
+          </SelectItem>
+        </SelectContent>
+      </Select>
+      <Select
+        defaultValue={priority ?? undefined}
+        onValueChange={(value) => onPriorityChange(value)}
+      >
+        <SelectTrigger className="w-full lg:w-auto h-8">
+          <div className="flex items-center pr-2">
+            <Clock className="size-4 mr-2" />
+            <SelectValue placeholder={"All priorities"} />
+          </div>
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All priorities</SelectItem>
+          <SelectSeparator />
+          <SelectItem value={Priority.HIGH}>
+            <div className="flex w-full items-center gap-x-4">
+              <Circle className="size-4 rounded-full bg-red-600 p-2" />
+              High
+            </div>
+          </SelectItem>
+          <SelectItem value={Priority.MEDIUM}>
+            <div className="flex w-full items-center gap-x-4">
+              <Circle className="size-4 rounded-full bg-green-600 p-2" />
+              Medium
+            </div>
+          </SelectItem>
+          <SelectItem value={Priority.LOW}>
+            <div className="flex w-full items-center gap-x-4">
+              <Circle className="size-4 rounded-full bg-yellow-700 p-2" />
+              Low
             </div>
           </SelectItem>
         </SelectContent>

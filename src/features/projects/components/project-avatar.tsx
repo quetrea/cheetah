@@ -20,7 +20,10 @@ export const ProjectAvatar = ({
   if (image) {
     return (
       <div
-        className={cn("size-5 relative rounded-md overflow-hidden", className)}
+        className={cn(
+          "size-5 relative bg-white rounded-md overflow-hidden",
+          className
+        )}
       >
         <Image src={image} alt={name} fill className="object-cover" />
       </div>

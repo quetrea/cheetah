@@ -9,7 +9,7 @@ import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import { Task } from "../types";
+import { Priority, Task } from "../types";
 import { TaskDate } from "./task-date";
 import { snakeCaseToTitleCase } from "@/lib/utils";
 import { TaskActions } from "./task-actions";
@@ -62,6 +62,7 @@ export const columns: ColumnDef<Task>[] = [
       );
     },
   },
+
   {
     accessorKey: "assignee",
     header: ({ column }) => {
@@ -109,6 +110,7 @@ export const columns: ColumnDef<Task>[] = [
       return <TaskDate value={dueDate} />;
     },
   },
+
   {
     accessorKey: "status",
     header: ({ column }) => {
@@ -126,6 +128,29 @@ export const columns: ColumnDef<Task>[] = [
       const status = row.original.status;
 
       return <Badge variant={status}>{snakeCaseToTitleCase(status)}</Badge>;
+    },
+  },
+  {
+    accessorKey: "priority",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Priority
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const priority = row.original.priority;
+
+      if (priority === null || priority === undefined) {
+        return <div>Undefined</div>;
+      }
+
+      return <Badge variant={priority}>{priority}</Badge>;
     },
   },
   {

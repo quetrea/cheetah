@@ -15,10 +15,10 @@ import { useGetTasks } from "../api/use-get-tasks";
 import { DataFilter } from "./data-filters";
 import { useTasksFilters } from "../hooks/use-task-filters";
 import { DataKanban } from "./data-kanban";
-import { useCallback, useEffect } from "react";
-import { Task, TaskStatus } from "../types";
+import { useCallback } from "react";
+import { TaskStatus } from "../types";
 import { useBulkUpdateTasks } from "../api/use-bulk-update-tasks";
-import { useRouter } from "next/navigation";
+
 import { DataCalendar } from "./data-calendar";
 import { useProjectId } from "@/features/projects/hooks/use-task-id";
 
@@ -29,15 +29,15 @@ interface TaskViewSwitcherProps {
 export const TaskViewSwitcher = ({
   hideProjectFilter,
 }: TaskViewSwitcherProps) => {
-  const [{ status, assigneeId, projectId, dueDate }] = useTasksFilters();
+  const [{ status, assigneeId, projectId, dueDate, priority }] =
+    useTasksFilters();
   const [view, setView] = useQueryState("task-view", {
     defaultValue: "table",
   });
 
   const workspaceId = useWorkspaceId();
   const paramProjectId = useProjectId();
-  const router = useRouter();
-  const { open, setStatus } = useCreateTaskModal();
+  const { open } = useCreateTaskModal();
 
   const { mutate: bulkUpdate } = useBulkUpdateTasks();
 
@@ -47,6 +47,7 @@ export const TaskViewSwitcher = ({
     assigneeId,
     status,
     dueDate,
+    priority,
   });
 
   const createNewTaskHandler = () => {

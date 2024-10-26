@@ -1,6 +1,6 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
-import { TaskStatus } from "@/features/tasks/types";
+import { Priority, TaskStatus } from "@/features/tasks/types";
 
 import { cn } from "@/lib/utils";
 
@@ -17,15 +17,22 @@ const badgeVariants = cva(
           "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
         outline: "text-foreground",
         [TaskStatus.TODO]:
-          "border-transparent bg-red-400 text-primary hover:bg-red-400/80",
+          "border-transparent bg-red-400 dark:text-neutral-900 text-primary hover:bg-red-400/80",
         [TaskStatus.IN_PROGRESS]:
-          "border-transparent bg-yellow-400 text-primary hover:bg-yellow-400/80",
+          "border-transparent bg-yellow-400 dark:text-neutral-900 text-primary hover:bg-yellow-400/80",
         [TaskStatus.IN_REVIEW]:
-          "border-transparent bg-blue-400 text-primary hover:bg-blue-400/80",
+          "border-transparent bg-blue-400 dark:text-neutral-900 text-primary hover:bg-blue-400/80",
         [TaskStatus.DONE]:
-          "border-transparent bg-emerald-400 text-primary hover:bg-emerald-400/80",
+          "border-transparent bg-emerald-400 dark:text-neutral-900 text-primary hover:bg-emerald-400/80",
         [TaskStatus.BACKLOG]:
-          "border-transparent bg-pink-400 text-primary hover:bg-pink-400/80",
+          "border-transparent bg-pink-400 text-primary dark:text-neutral-900 hover:bg-pink-400/80",
+
+        [Priority.HIGH]:
+          "border-transparent bg-red-600 text-primary dark:text-neutral-900 hover:bg-red-600/80",
+        [Priority.MEDIUM]:
+          "border-transparent bg-green-600 text-primary dark:text-neutral-900 hover:bg-green-600/80",
+        [Priority.LOW]:
+          "border-transparent bg-yellow-800 text-primary dark:text-neutral-900 hover:bg-yellow-800/80",
       },
     },
     defaultVariants: {
