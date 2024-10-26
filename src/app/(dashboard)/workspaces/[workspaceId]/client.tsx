@@ -56,7 +56,7 @@ export const WorkspaceIdClient = () => {
     return <PageError message="Failed to load workspace data" />;
   }
   return (
-    <div className="h-full flex flex-col space-y-4">
+    <div className="h-full flex flex-col space-y-4 scroll-smooth">
       <Analytics data={workspaceAnalytics} />
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         <TaskList
