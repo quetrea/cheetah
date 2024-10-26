@@ -9,12 +9,37 @@ import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import { Priority, Task } from "../types";
+import { Checkbox } from "@/components/ui/checkbox";
+import {  Task } from "../types";
 import { TaskDate } from "./task-date";
 import { snakeCaseToTitleCase } from "@/lib/utils";
 import { TaskActions } from "./task-actions";
 
 export const columns: ColumnDef<Task>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+   
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "name",
     header: ({ column }) => {
