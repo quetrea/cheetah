@@ -13,13 +13,7 @@ import { useGetMembers } from "@/features/members/api/use-get-members";
 import { MemberAvatar } from "@/features/members/components/member-avatar";
 import { useDeleteMember } from "@/features/members/api/use-delete-member";
 import { useUpdateMember } from "@/features/members/api/use-update-member";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import {
   DropdownMenu,
@@ -70,10 +64,10 @@ export const MemberList = () => {
     <>
       <ConfirmDialog />
 
-      <Card className="w-full h-full border-none shadow-none dark:bg-neutral-900">
+      <Card className="w-full h-full border-none shadow-none dark:bg-neutral-950">
         <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
           <Button
-            className="dark:bg-neutral-950 dark:text-neutral-400 dark:border-neutral-600 dark:hover:border-neutral-400"
+            className="dark:bg-neutral-900 dark:text-neutral-400 dark:border-neutral-600 dark:hover:border-neutral-400"
             asChild
             variant={"secondary"}
             size={"sm"}
@@ -88,7 +82,7 @@ export const MemberList = () => {
         <div className="px-7">
           <DottedSeparator />
         </div>
-        <CardContent className="p-7">
+        <CardContent className="p-7 ">
           {data?.documents.map((member, index) => (
             <Fragment key={member.$id}>
               <div className="flex items-center gap-2 ">

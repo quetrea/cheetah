@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, format } from "date-fns";
 import {
   PlusIcon,
   CalendarIcon,
@@ -28,7 +28,13 @@ import { useCreateProjectModal } from "@/features/projects/hooks/use-create-proj
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { Member } from "@/features/members/types";
 import { MemberAvatar } from "@/features/members/components/member-avatar";
-import { TaskActions } from "@/features/tasks/components/task-actions";
+
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { Badge } from "@/components/ui/badge";
 
 export const WorkspaceIdClient = () => {
   const workspaceId = useWorkspaceId();
@@ -109,25 +115,61 @@ export const TaskList = ({ data, total }: TaskListProps) => {
           {data.slice(0, 3).map((task) => {
             return (
               <li key={task.$id}>
-                <Link href={`/workspaces/${workspaceId}/tasks/${task.$id}`}>
-                  <Card className="shadow-none rounded-lg hover:opacity-75 transition">
-                    <CardContent className="p-4  ">
-                      <p className="text-sm truncate font-medium">
-                        {task.name}
-                      </p>
-                      <div className="flex items-center gap-x-2">
-                        <p className="text-sm">{task.project?.name}</p>
-                        <div className="size-1 rounded-full bg-neutral-300" />
-                        <div className="text-xs text-muted-foreground flex items-center">
-                          <CalendarIcon className="size-3 mr-1" />
-                          <span className="truncate">
-                            {formatDistanceToNow(new Date(task.dueDate))}
-                          </span>
-                        </div>
+                <HoverCard>
+                  <Link href={`/workspaces/${workspaceId}/tasks/${task.$id}`}>
+                    <HoverCardTrigger>
+                      <Card className="shadow-none rounded-lg hover:opacity-75 transition">
+                        <CardContent className="p-4  ">
+                          <p className="text-sm truncate font-medium">
+                            {task.name}
+                          </p>
+                          <div className="flex items-center gap-x-2">
+                            <p className="text-sm">{task.project?.name}</p>
+                            <div className="size-1 rounded-full bg-neutral-300" />
+                            <div className="text-xs text-muted-foreground flex items-center">
+                              <CalendarIcon className="size-3 mr-1" />
+                              <span className="truncate">
+                                {formatDistanceToNow(new Date(task.dueDate))}
+                              </span>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </HoverCardTrigger>
+                  </Link>
+
+                  <HoverCardContent className="flex w-full flex-col">
+                    <div className="flex items-center gap-x-2">
+                      <ProjectAvatar
+                        name={task.project.name}
+                        image={task.project.imageUrl}
+                      />
+                      {task.project.name}
+                    </div>
+                    <DottedSeparator className="my-4" />
+                    <div className="flex flex-col items-start gap-y-2  border rounded-md p-2.5">
+                      <div className="text-sm flex gap-x-2 max-w-[200px]">
+                        <Badge
+                          variant={task.status}
+                          className="truncate text-xs"
+                        >
+                          {task.name}
+                        </Badge>
                       </div>
-                    </CardContent>
-                  </Card>
-                </Link>
+                      <div className="text-sm flex ">
+                        {task.description ? (
+                          <p className="truncate text-xs">{task.description}</p>
+                        ) : (
+                          <div className="truncate text-xs">No description</div>
+                        )}
+                      </div>
+                      <span className="text-xs text-neutral-500 flex  ">
+                        <CalendarIcon className="size-4 mr-2" />
+                        {format(task.dueDate, "PPP")}
+                      </span>
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
               </li>
             );
           })}
