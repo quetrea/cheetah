@@ -2,7 +2,12 @@
 
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
-import { PlusIcon, CalendarIcon, SettingsIcon } from "lucide-react";
+import {
+  PlusIcon,
+  CalendarIcon,
+  SettingsIcon,
+  MoreVerticalIcon,
+} from "lucide-react";
 
 import { Task } from "@/features/tasks/types";
 import { useGetMembers } from "@/features/members/api/use-get-members";
@@ -23,6 +28,7 @@ import { useCreateProjectModal } from "@/features/projects/hooks/use-create-proj
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { Member } from "@/features/members/types";
 import { MemberAvatar } from "@/features/members/components/member-avatar";
+import { TaskActions } from "@/features/tasks/components/task-actions";
 
 export const WorkspaceIdClient = () => {
   const workspaceId = useWorkspaceId();
@@ -105,7 +111,7 @@ export const TaskList = ({ data, total }: TaskListProps) => {
               <li key={task.$id}>
                 <Link href={`/workspaces/${workspaceId}/tasks/${task.$id}`}>
                   <Card className="shadow-none rounded-lg hover:opacity-75 transition">
-                    <CardContent className="p-4">
+                    <CardContent className="p-4  ">
                       <p className="text-sm truncate font-medium">
                         {task.name}
                       </p>

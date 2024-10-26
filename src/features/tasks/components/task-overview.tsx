@@ -17,7 +17,7 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
   const { open } = useEditTaskModal();
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
-      <div className="bg-muted rounded-lg p-4">
+      <div className="bg-muted dark:bg-neutral-900 rounded-lg p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Overview</p>
           <Button
@@ -32,19 +32,24 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
           </Button>
         </div>
         <DottedSeparator className="my-4" />
-        <div className="flex flex-col gap-y-4">
-          <OverviewProperty label="Assignee">
-            <MemberAvatar name={task.assignee.name} className="size-6" />
-            <p className="text-sm font-medium">{task.assignee.name}</p>
-          </OverviewProperty>
-          <OverviewProperty label="Due date">
-            <TaskDate value={task.dueDate} className="text-sm font-medium" />
-          </OverviewProperty>
-          <OverviewProperty label="Status">
-            <Badge variant={task.status}>
-              {snakeCaseToTitleCase(task.status)}
-            </Badge>
-          </OverviewProperty>
+        <div className="flex flex-col gap-y-1">
+          <div className="p-1 px-4">
+            <Badge className="p-2 px-4 text-sm dark:bg-neutral-800 dark:text-neutral-200">Details</Badge>
+          </div>
+          <div className="p-4 flex flex-col gap-y-4 border rounded-lg">
+            <OverviewProperty label="Assignee">
+              <MemberAvatar name={task.assignee.name} className="size-6" />
+              <p className="text-sm font-medium">{task.assignee.name}</p>
+            </OverviewProperty>
+            <OverviewProperty label="Due date">
+              <TaskDate value={task.dueDate} className="text-sm font-medium" />
+            </OverviewProperty>
+            <OverviewProperty label="Status">
+              <Badge variant={task.status}>
+                {snakeCaseToTitleCase(task.status)}
+              </Badge>
+            </OverviewProperty>
+          </div>
         </div>
       </div>
     </div>
