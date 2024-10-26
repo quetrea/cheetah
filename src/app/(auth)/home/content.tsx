@@ -62,7 +62,7 @@ export const Content = () => {
             Author:
             <span className="group-hover:underline text-neutral-500">
               {" "}
-              Illusion Celesita
+              Illusion Celestia
             </span>{" "}
           </CardFooter>
         </Card>
