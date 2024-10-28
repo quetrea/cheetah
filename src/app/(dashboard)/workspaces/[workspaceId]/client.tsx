@@ -76,16 +76,16 @@ export const WorkspaceIdClient = () => {
       <Analytics data={workspaceAnalytics ?? []} />
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         <TaskList
-          data={workspaceTasks.documents ?? []}
-          total={workspaceTasks.total ?? []}
+          data={workspaceTasks?.documents ?? []}
+          total={workspaceTasks?.total ?? 0}
         />
         <ProjectList
-          data={workspaceProjects.documents ?? []}
-          total={workspaceProjects.total ?? []}
+          data={workspaceProjects?.documents ?? []}
+          total={workspaceProjects?.total ?? 0}
         />
         <MembersList
-          data={workspaceMembers.documents ?? []}
-          total={workspaceMembers.total ?? []}
+          data={workspaceMembers?.documents ?? []}
+          total={workspaceMembers?.total ?? 0}
         />
       </div>
     </div>
