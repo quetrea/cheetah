@@ -10,9 +10,9 @@ import { createAdminClient } from "@/lib/appwrite";
 import { sessionMiddleware } from "@/lib/session-Middleware";
 import { DATABASE_ID, MEMBERS_ID, PROJECTS_ID, TASKS_ID } from "@/config";
 
-import { Task, TaskStatus } from "../types";
+import { Priority, Task, TaskStatus } from "../types";
 import { createTaskSchema } from "../schemas";
-import { posix } from "path";
+import { Member } from "@/features/members/types";
 
 const app = new Hono()
   .delete("/:taskId", sessionMiddleware, async (c) => {
@@ -53,7 +53,7 @@ const app = new Hono()
         status: z.nativeEnum(TaskStatus).nullish(),
         search: z.string().nullish(),
         dueDate: z.string().nullish(),
-        priority: z.string().nullish(),
+        priority: z.nativeEnum(Priority).nullish(),
       })
     ),
     async (c) => {
@@ -321,7 +321,7 @@ const app = new Hono()
       task.projectId
     );
 
-    const member = await databases.getDocument<Project>(
+    const member = await databases.getDocument<Member>(
       DATABASE_ID,
       MEMBERS_ID,
       task.assigneeId

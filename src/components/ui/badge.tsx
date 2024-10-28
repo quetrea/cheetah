@@ -1,5 +1,5 @@
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 import { Priority, TaskStatus } from "@/features/tasks/types";
 
 import { cn } from "@/lib/utils";
@@ -16,6 +16,8 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
         outline: "text-foreground",
+        overview:
+          "py-2 px-4 text-sm  hover:bg-accent/80 cursor-pointer bg-neutral-100 text-black dark:bg-neutral-800 dark:text-neutral-200",
         [TaskStatus.TODO]:
           "border-transparent bg-red-400 dark:text-neutral-900 text-primary hover:bg-red-400/80",
         [TaskStatus.IN_PROGRESS]:
@@ -48,7 +50,7 @@ export interface BadgeProps
 function Badge({ className, variant, ...props }: BadgeProps) {
   return (
     <div className={cn(badgeVariants({ variant }), className)} {...props} />
-  )
+  );
 }
 
-export { Badge, badgeVariants }
+export { Badge, badgeVariants };
