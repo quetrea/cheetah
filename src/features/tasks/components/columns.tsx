@@ -10,17 +10,26 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import {  Task } from "../types";
+import { Task } from "../types";
 import { TaskDate } from "./task-date";
 import { snakeCaseToTitleCase } from "@/lib/utils";
 import { TaskActions } from "./task-actions";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { NameColumn } from "./columns/name-column";
+import { ProjectColumn } from "./columns/project-column";
 
 export const columns: ColumnDef<Task>[] = [
   {
     id: "select",
     header: ({ table }) => (
       <Checkbox
-   
         checked={
           table.getIsAllPageRowsSelected() ||
           (table.getIsSomePageRowsSelected() && "indeterminate")
@@ -31,7 +40,6 @@ export const columns: ColumnDef<Task>[] = [
     ),
     cell: ({ row }) => (
       <Checkbox
-
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
@@ -55,8 +63,9 @@ export const columns: ColumnDef<Task>[] = [
     },
     cell: ({ row }) => {
       const name = row.original.name;
+      const id = row.original.$id;
 
-      return <p className="line-clamp-1">{name}</p>;
+      return <NameColumn name={name} taskId={id} />;
     },
   },
   {
@@ -74,17 +83,9 @@ export const columns: ColumnDef<Task>[] = [
     },
     cell: ({ row }) => {
       const project = row.original.project;
+      const id = row.original.$id;
 
-      return (
-        <div className="flex items-center gap-x-2 text-sm font-medium">
-          <ProjectAvatar
-            className="size-6"
-            image={project.imageUrl}
-            name={project.name}
-          />
-          <p className="line-clamp-1">{project.name}</p>
-        </div>
-      );
+      return <ProjectColumn project={project} taskId={id} />;
     },
   },
 

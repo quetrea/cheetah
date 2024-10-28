@@ -35,9 +35,11 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Badge } from "@/components/ui/badge";
+import { useRouter } from "next/navigation";
 
 export const WorkspaceIdClient = () => {
   const workspaceId = useWorkspaceId();
+  const router = useRouter();
 
   const { data: workspaceAnalytics, isLoading: isLoadingWorkspaceAnalytics } =
     useGetWorkspaceAnalytics({ workspaceId });
@@ -65,23 +67,25 @@ export const WorkspaceIdClient = () => {
     !workspaceProjects ||
     !workspaceMembers
   ) {
-    return <PageError message="Failed to load workspace data" />;
+    return (
+      <PageError message="If you want to see analytics then create a project and task." />
+    );
   }
   return (
     <div className="h-full flex flex-col space-y-4 scroll-smooth">
-      <Analytics data={workspaceAnalytics} />
+      <Analytics data={workspaceAnalytics ?? []} />
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         <TaskList
-          data={workspaceTasks.documents}
-          total={workspaceTasks.total}
+          data={workspaceTasks.documents ?? []}
+          total={workspaceTasks.total ?? []}
         />
         <ProjectList
-          data={workspaceProjects.documents}
-          total={workspaceProjects.total}
+          data={workspaceProjects.documents ?? []}
+          total={workspaceProjects.total ?? []}
         />
         <MembersList
-          data={workspaceMembers.documents}
-          total={workspaceMembers.total}
+          data={workspaceMembers.documents ?? []}
+          total={workspaceMembers.total ?? []}
         />
       </div>
     </div>

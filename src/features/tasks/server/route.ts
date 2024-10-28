@@ -403,6 +403,54 @@ const app = new Hono()
 
       return c.json({ data: updatedTasks });
     }
+  )
+  .post(
+    "/bulk-delete",
+    sessionMiddleware,
+    zValidator(
+      "json",
+      z.object({
+        tasks: z.array(z.string()),
+      })
+    ),
+    async (c) => {
+      const databases = c.get("databases");
+      const user = c.get("user");
+      const { tasks: taskIds } = await c.req.valid("json");
+
+      const tasksToDelete = await databases.listDocuments<Task>(
+        DATABASE_ID,
+        TASKS_ID,
+        [Query.contains("$id", taskIds)]
+      );
+
+      const workspaceIds = new Set(
+        tasksToDelete.documents.map((task) => task.workspaceId)
+      );
+      if (workspaceIds.size !== 1) {
+        return c.json({ error: "All tasks must belong to the same workspace" });
+      }
+
+      const workspaceId = workspaceIds.values().next().value!;
+
+      const member = await getMember({
+        databases,
+        workspaceId,
+        userId: user.$id,
+      });
+
+      if (!member) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const deletedTasks = await Promise.all(
+        taskIds.map(async (taskId) => {
+          return databases.deleteDocument(DATABASE_ID, TASKS_ID, taskId);
+        })
+      );
+
+      return c.json({ data: deletedTasks });
+    }
   );
 
 export default app;

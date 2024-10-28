@@ -34,7 +34,7 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
   };
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
-      <div className="bg-muted dark:bg-neutral-900 rounded-lg p-4">
+      <div className="bg-muted dark:bg-neutral-900 h-full rounded-lg p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Overview</p>
           <Button
@@ -49,7 +49,7 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
           </Button>
         </div>
         <DottedSeparator className="my-4" />
-        <div className="flex lg:flex-row flex-col gap-x-4 gap-y-1">
+        <div className="flex lg:flex-col xl:flex-row flex-col gap-y-1">
           <div className="flex flex-col flex-1">
             <div className="p-1 px-4 pb-2 text-sm flex items-center">
               <Badge className=" border-neutral-700" variant={"overview"}>
@@ -82,6 +82,16 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
               </OverviewProperty>
             </div>
           </div>
+          <div>
+            <DottedSeparator className=" py-7 hidden sm:block xs:block md:block lg:block xl:hidden" />
+          </div>
+          <div>
+            <DottedSeparator
+              direction="vertical"
+              className=" px-7  hidden sm:hidden xs:hidden md:hidden lg:hidden xl:block"
+            />
+          </div>
+
           {data?.labels.total !== 0 ? (
             <div className="flex flex-col flex-1">
               <div className="p-1 px-4 pb-2">
