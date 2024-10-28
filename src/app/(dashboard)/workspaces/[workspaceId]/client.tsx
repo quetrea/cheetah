@@ -68,7 +68,7 @@ export const WorkspaceIdClient = () => {
     !workspaceMembers
   ) {
     return (
-      <PageError message="If you want to see analytics then create a project and task." />
+      <PageError message="If you want to see some analytics, then create a project and task." />
     );
   }
   return (
