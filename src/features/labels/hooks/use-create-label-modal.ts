@@ -9,7 +9,10 @@ export const useCreateLabelModal = () => {
   const [projectId, setProjectId] = useQueryState("projectId", parseAsString);
 
   const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
+  const close = () => {
+    setIsOpen(false);
+    setProjectId(null);
+  };
 
   return {
     isOpen,
