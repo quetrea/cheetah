@@ -1,6 +1,7 @@
 import { Metadata } from "next/types";
 import { Content } from "./content";
 import { Header } from "./header";
+import AdBanner from "@/components/adsense/AdBanner";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -15,6 +16,12 @@ const Home = () => {
   return (
     <div className="w-full">
       <Header />
+      <AdBanner
+        pId={"5888317157317698"}
+        dataAdFormat={"autorelaxed"}
+        dataAdSlot={"3820070985"}
+        dataFullWidthResponsive
+      />
       <Content />
     </div>
   );
