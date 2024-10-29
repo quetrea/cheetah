@@ -9,7 +9,10 @@ export const useUpdateLabelModal = () => {
   const [labelId, setLabelId] = useQueryState("labelId", parseAsString);
 
   const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
+  const close = () => {
+    setIsOpen(false);
+    setLabelId(null);
+  };
 
   return {
     isOpen,
