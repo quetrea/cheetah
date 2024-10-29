@@ -6,7 +6,7 @@ import { QueryProvider } from "@/components/query-provider";
 import { Toaster } from "sonner";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import AdSense from "@/components/adsense/AdSense";
+import { AdSense } from "@/components/adsense/AdSense";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -44,6 +44,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <AdSense pId="5888317157317698" />
           </ThemeProvider>
         </QueryProvider>
       </body>
