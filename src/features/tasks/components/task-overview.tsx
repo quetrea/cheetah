@@ -92,7 +92,7 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
             />
           </div>
 
-          {data?.labels.total !== 0 ? (
+          {data && data?.labels.total !== 0 ? (
             <div className="flex flex-col flex-1">
               <div className="p-1 px-4 pb-2">
                 <Badge className="border-neutral-700" variant={"overview"}>
@@ -103,7 +103,7 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
                 </span>
               </div>
               <div className="p-4 flex flex-col gap-y-4 border border-neutral-300 rounded-lg h-full">
-                {data && (
+                {data.labels.total > 0 && (
                   <div className="flex items-center gap-x-2">
                     {data.labels.documents.map((item) => {
                       return (

@@ -22,64 +22,80 @@ import { z } from "zod";
 
 const app = new Hono()
   .get("/:taskId", sessionMiddleware, async (c) => {
-    const user = c.get("user");
-    const databases = c.get("databases");
+    try {
+      const user = c.get("user");
+      const databases = c.get("databases");
+      const { taskId } = c.req.param();
 
-    const { taskId } = c.req.param();
+      const task = await databases
+        .getDocument<Task>(DATABASE_ID, TASKS_ID, taskId)
+        .catch(() => null);
 
-    const task = await databases.getDocument<Task>(
-      DATABASE_ID,
-      TASKS_ID,
-      taskId
-    );
+      if (!task) {
+        return c.json({ error: "Task not found" }, 404);
+      }
 
-    const currentMember = await getMember({
-      databases,
-      workspaceId: task.workspaceId,
-      userId: user.$id,
-    });
+      const currentMember = await getMember({
+        databases,
+        workspaceId: task.workspaceId,
+        userId: user.$id,
+      });
 
-    const workspace = await databases.getDocument<Workspace>(
-      DATABASE_ID,
-      WORKSPACES_ID,
-      task.workspaceId
-    );
+      if (!currentMember) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
 
-    const project = await databases.getDocument<Project>(
-      DATABASE_ID,
-      PROJECTS_ID,
-      task.projectId
-    );
+      const [workspace, project, member, labels] = await Promise.all([
+        databases.getDocument<Workspace>(
+          DATABASE_ID,
+          WORKSPACES_ID,
+          task.workspaceId
+        ),
+        databases.getDocument<Project>(
+          DATABASE_ID,
+          PROJECTS_ID,
+          task.projectId
+        ),
+        databases.getDocument<Member>(DATABASE_ID, MEMBERS_ID, task.assigneeId),
+        databases.listDocuments(DATABASE_ID, LABELS_ID, [
+          Query.equal("taskId", task.$id),
+        ]),
+      ]);
 
-    const member = await databases.getDocument<Member>(
-      DATABASE_ID,
-      MEMBERS_ID,
-      task.assigneeId
-    );
+      if (!labels.documents.length) {
+        return c.json({
+          data: {
+            member,
+            project,
+            workspace,
+            label: null,
+          },
+        });
+      }
 
-    if (!currentMember) {
-      return c.json({ error: "Unauthorized" }, 401);
+      const label = await databases.getDocument<Label>(
+        DATABASE_ID,
+        LABELS_ID,
+        labels.documents[0].$id
+      );
+
+      return c.json({
+        data: {
+          member,
+          project,
+          workspace,
+          label,
+        },
+      });
+    } catch (error) {
+      console.error("Label fetch error:", error);
+      return c.json(
+        {
+          error: "An error occurred while fetching the label",
+        },
+        500
+      );
     }
-
-    const labels = await databases.listDocuments(DATABASE_ID, LABELS_ID, [
-      Query.equal("taskId", task.$id),
-    ]);
-
-    if (!labels) {
-      return c.json({ error: "This task has no tags defined yet." }, 401);
-    }
-
-    const label = await databases.getDocument<Label>(
-      DATABASE_ID,
-      LABELS_ID,
-      labels.documents[0].$id
-    );
-
-    if (!label) {
-      return c.json({ error: "Label not found" }, 404);
-    }
-
-    return c.json({ data: { ...member, project, workspace, label } });
   })
   .get(
     "/",
