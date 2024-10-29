@@ -1,3 +1,4 @@
+import AdBanner from "@/components/adsense/AdBanner";
 import { CalendarIcon } from "lucide-react";
 
 export const Header = () => {
@@ -16,6 +17,12 @@ export const Header = () => {
           Created at 2024/23/10
         </p>
       </div>
+      <AdBanner
+        pId={"5888317157317698"}
+        dataAdFormat={"autorelaxed"}
+        dataAdSlot={"3820070985"}
+        dataFullWidthResponsive
+      />
     </header>
   );
 };
