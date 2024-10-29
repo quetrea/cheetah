@@ -222,41 +222,21 @@ const app = new Hono()
       Query.equal("workspaceId", workspaceId),
     ]);
 
-    const MembersIds = await Promise.all(
-      members.documents.map(async (member) => {
-        return {
-          id: member.$id,
-        };
-      })
-    );
-    const ProjectsIds = await Promise.all(
-      projects.documents.map(async (project) => {
-        return {
-          id: project.$id,
-        };
-      })
-    );
-    const TasksIds = await Promise.all(
-      tasks.documents.map(async (task) => {
-        return {
-          id: task.$id,
-        };
-      })
-    );
-
-    if (MembersIds.length === 0) {
+    if (members.documents.length === 0) {
       return c.json({ error: "There is no members." }, 401);
     }
-    for (const member of MembersIds) {
-      await databases.deleteDocument(DATABASE_ID, MEMBERS_ID, member.id);
-    }
 
-    for (const project of ProjectsIds) {
-      await databases.deleteDocument(DATABASE_ID, PROJECTS_ID, project.id);
-    }
-    for (const task of TasksIds) {
-      await databases.deleteDocument(DATABASE_ID, TASKS_ID, task.id);
-    }
+    await Promise.all([
+      ...members.documents.map((member) =>
+        databases.deleteDocument(DATABASE_ID, MEMBERS_ID, member.$id)
+      ),
+      ...projects.documents.map((project) =>
+        databases.deleteDocument(DATABASE_ID, PROJECTS_ID, project.$id)
+      ),
+      ...tasks.documents.map((task) =>
+        databases.deleteDocument(DATABASE_ID, TASKS_ID, task.$id)
+      ),
+    ]);
 
     await databases.deleteDocument(DATABASE_ID, WORKSPACES_ID, workspaceId);
 

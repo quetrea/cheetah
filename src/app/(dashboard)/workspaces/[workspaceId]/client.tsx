@@ -61,32 +61,30 @@ export const WorkspaceIdClient = () => {
   if (isLoading) {
     return <PageLoader />;
   }
-  if (
-    !workspaceAnalytics ||
-    !workspaceTasks ||
-    !workspaceProjects ||
-    !workspaceMembers
-  ) {
-    return (
-      <PageError message="If you want to see some analytics, then create a project and task." />
-    );
-  }
+
+  const tasks = workspaceTasks?.documents ?? [];
+  const projects = workspaceProjects?.documents ?? [];
+  const members = workspaceMembers?.documents ?? [];
+  const analytics = workspaceAnalytics ?? {
+    TaskCount: 0,
+    TaskDifferent: 0,
+    AssignedTaskCount: 0,
+    AssignedTaskDifference: 0,
+    CompletedTaskCount: 0,
+    CompletedTaskDifference: 0,
+    InCompleteTaskCount: 0,
+    InCompleteTaskDifference: 0,
+    OverdueTaskCount: 0,
+    OverdueTaskDifference: 0,
+  };
+
   return (
     <div className="h-full flex flex-col space-y-4 scroll-smooth">
-      <Analytics data={workspaceAnalytics ?? []} />
+      <Analytics data={analytics} />
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-        <TaskList
-          data={workspaceTasks?.documents ?? []}
-          total={workspaceTasks?.total ?? 0}
-        />
-        <ProjectList
-          data={workspaceProjects?.documents ?? []}
-          total={workspaceProjects?.total ?? 0}
-        />
-        <MembersList
-          data={workspaceMembers?.documents ?? []}
-          total={workspaceMembers?.total ?? 0}
-        />
+        <TaskList data={tasks} total={workspaceTasks?.total ?? 0} />
+        <ProjectList data={projects} total={workspaceProjects?.total ?? 0} />
+        <MembersList data={members} total={workspaceMembers?.total ?? 0} />
       </div>
     </div>
   );
