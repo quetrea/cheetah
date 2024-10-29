@@ -29,7 +29,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
             </div>
           </div>
 
-          <div className="flex items-center justify-end mr-5 min-w-[300px]">
+          <div className="flex items-center justify-end mr-5 min-w-[300px] ">
             <ThemeToggle />
             <PageList />
             <Button
