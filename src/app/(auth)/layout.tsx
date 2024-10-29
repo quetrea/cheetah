@@ -20,7 +20,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
     <main className="bg-neutral-100 min-h-screen dark:bg-neutral-900">
       <div className="mx-auto w-full ">
         <nav className="flex justify-between border-b p-4 items-center">
-          <div className="flex-1">
+          <div className="flex-1 hidden sm:hidden md:block">
             <div className="hidden dark:block">
               <Image src="/DarkLogo.svg" height={64} width={162} alt="Logo" />
             </div>
