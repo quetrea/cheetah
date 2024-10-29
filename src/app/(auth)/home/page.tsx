@@ -6,7 +6,7 @@ import AdBanner from "@/components/adsense/AdBanner";
 export const metadata: Metadata = {
   title: "Home",
   description: "Create workspaces for your team and create beautiful works",
-  keywords: "workspace, team, collaboration", // Anahtar kelimeler eklendi
+  keywords: "workspace, team, collaboration",
   authors: {
     name: "Illusion",
   },
@@ -16,12 +16,14 @@ const Home = () => {
   return (
     <div className="w-full">
       <Header />
-      <AdBanner
-        pId={"5888317157317698"}
-        dataAdFormat={"autorelaxed"}
-        dataAdSlot={"3820070985"}
-        dataFullWidthResponsive
-      />
+      <div className="h-full">
+        <AdBanner
+          pId={"5888317157317698"}
+          dataAdFormat={"autorelaxed"}
+          dataAdSlot={"3820070985"}
+          dataFullWidthResponsive
+        />
+      </div>
       <Content />
     </div>
   );
