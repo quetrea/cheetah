@@ -20,8 +20,8 @@ export const PageList = () => {
           <li
             key={item.path}
             className={cn(
-              "hover:border-neutral-300 py-1 px-2 cursor-pointer transition-all border-b border-transparent",
-              isActive && "border-neutral-900",
+              "hover:border-neutral-300 py-1 px-2 cursor-pointer transition-all border-none border-transparent",
+              isActive && "border-neutral-900 border-b",
               item.deActive && "hidden"
             )}
           >
