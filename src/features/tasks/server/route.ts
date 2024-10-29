@@ -8,11 +8,18 @@ import { getMember } from "@/features/members/utils";
 
 import { createAdminClient } from "@/lib/appwrite";
 import { sessionMiddleware } from "@/lib/session-Middleware";
-import { DATABASE_ID, MEMBERS_ID, PROJECTS_ID, TASKS_ID } from "@/config";
+import {
+  DATABASE_ID,
+  LABELS_ID,
+  MEMBERS_ID,
+  PROJECTS_ID,
+  TASKS_ID,
+} from "@/config";
 
 import { Priority, Task, TaskStatus } from "../types";
 import { createTaskSchema } from "../schemas";
 import { Member } from "@/features/members/types";
+import { Label } from "@/features/labels/types";
 
 const app = new Hono()
   .delete("/:taskId", sessionMiddleware, async (c) => {

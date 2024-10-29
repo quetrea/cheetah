@@ -24,6 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { NameColumn } from "./columns/name-column";
 import { ProjectColumn } from "./columns/project-column";
+import { LabelsColumn } from "./columns/labels-column";
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -154,6 +155,25 @@ export const columns: ColumnDef<Task>[] = [
       const status = row.original.status;
 
       return <Badge variant={status}>{snakeCaseToTitleCase(status)}</Badge>;
+    },
+  },
+  {
+    accessorKey: "label",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Labels
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const id = row.original.$id;
+
+      return <LabelsColumn taskId={id} />;
     },
   },
   {
