@@ -7,6 +7,7 @@ import Link from "next/link";
 import { PageList } from "./page-list";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/toggle/theme-toggle";
+import { useCurrent } from "@/features/auth/api/use-current";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -15,6 +16,7 @@ interface AuthLayoutProps {
 const AuthLayout = ({ children }: AuthLayoutProps) => {
   const pathname = usePathname();
   const isSignIn = pathname === "/sign-in";
+  const { data, isPending } = useCurrent();
 
   return (
     <main className="bg-neutral-100 min-h-screen dark:bg-neutral-900">
@@ -38,9 +40,13 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
               size={"lg"}
               className="text-md"
             >
-              <Link href={`${isSignIn ? "sign-up" : "sign-in"}`}>
-                {isSignIn ? "Sign Up" : "Login"}
-              </Link>
+              {data && data.user ? (
+                <Link href={`/`}>Go to Dashboard</Link>
+              ) : (
+                <Link href={`${isSignIn ? "sign-up" : "sign-in"}`}>
+                  {isSignIn ? "Sign Up" : "Login"}
+                </Link>
+              )}
             </Button>
           </div>
         </nav>
