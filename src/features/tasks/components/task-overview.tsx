@@ -120,7 +120,7 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
                     })}
                     <Hint label={`Add new label`}>
                       <Button
-                        onClick={createModal}
+                        onClick={handleCreate}
                         size={"smIcon"}
                         variant={"muted"}
                         className="rounded-full border  bg-neutral-200 dark:bg-neutral-600 dark:text-neutral-900 hover:dark:border dark:border-transparent hover:dark:border-neutral-300 hover:dark:bg-neutral-600/20 hover:dark:text-neutral-300 "
