@@ -21,8 +21,10 @@ export const TaskDate = ({ value, className, compeleted }: TaskDateProps) => {
     textColor = "text-orange-500";
   } else if (diffInDays <= 14) {
     textColor = "text-yellow-500";
-  } else if (diffInDays <= 3 && compeleted) {
-    textColor = "text-green-500";
+  }
+
+  if (compeleted) {
+    textColor = "text-green-400";
   }
 
   return (
