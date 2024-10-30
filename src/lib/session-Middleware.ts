@@ -3,6 +3,7 @@ import "server-only";
 import {
   Account,
   Client,
+  Messaging,
   Databases,
   Models,
   Storage,
@@ -10,6 +11,7 @@ import {
   type Databases as DatabasesType,
   Storage as StorageType,
   Users as UsersType,
+  Messaging as MessagingType,
 } from "node-appwrite";
 
 import { getCookie } from "hono/cookie";
@@ -23,6 +25,7 @@ type AdditionalContext = {
     account: AccountType;
     databases: DatabasesType;
     storage: StorageType;
+    messaging: MessagingType;
     users: UsersType;
     user: Models.User<Models.Preferences>;
   };
@@ -45,6 +48,7 @@ export const sessionMiddleware = createMiddleware<AdditionalContext>(
     const account = new Account(client);
     const databases = new Databases(client);
     const storage = new Storage(client);
+    const messaging = new Messaging(client);
 
     const user = await account.get();
 
@@ -52,6 +56,7 @@ export const sessionMiddleware = createMiddleware<AdditionalContext>(
     c.set("databases", databases);
     c.set("storage", storage);
     c.set("user", user);
+    c.set("messaging", messaging);
 
     await next();
   }

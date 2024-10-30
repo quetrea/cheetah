@@ -205,6 +205,8 @@ const app = new Hono()
     async (c) => {
       const user = c.get("user");
       const databases = c.get("databases");
+      const messaging = c.get("messaging");
+
       const {
         name,
         status,
@@ -254,6 +256,12 @@ const app = new Hono()
           position: newPosition,
           priority,
         }
+      );
+
+      await messaging.createPush(
+        "Successfully created a task!",
+        "Task creation",
+        "Task created"
       );
 
       return c.json({ data: task });
