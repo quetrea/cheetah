@@ -205,7 +205,6 @@ const app = new Hono()
     async (c) => {
       const user = c.get("user");
       const databases = c.get("databases");
-      const messaging = c.get("messaging");
 
       const {
         name,
