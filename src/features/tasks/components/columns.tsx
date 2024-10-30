@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { Task } from "../types";
+import { Task, TaskStatus } from "../types";
 import { TaskDate } from "./task-date";
 import { snakeCaseToTitleCase } from "@/lib/utils";
 import { TaskActions } from "./task-actions";
@@ -133,8 +133,11 @@ export const columns: ColumnDef<Task>[] = [
     },
     cell: ({ row }) => {
       const dueDate = row.original.dueDate;
+      const status = row.original.status;
 
-      return <TaskDate value={dueDate} />;
+      return (
+        <TaskDate value={dueDate} compeleted={status === TaskStatus.DONE} />
+      );
     },
   },
 

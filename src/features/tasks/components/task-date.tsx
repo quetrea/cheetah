@@ -5,9 +5,10 @@ import { cn } from "@/lib/utils";
 interface TaskDateProps {
   value: string;
   className?: string;
+  compeleted?: boolean;
 }
 
-export const TaskDate = ({ value, className }: TaskDateProps) => {
+export const TaskDate = ({ value, className, compeleted }: TaskDateProps) => {
   const today = new Date();
   const endDate = new Date(value);
   const diffInDays = differenceInDays(endDate, today);
@@ -20,6 +21,8 @@ export const TaskDate = ({ value, className }: TaskDateProps) => {
     textColor = "text-orange-500";
   } else if (diffInDays <= 14) {
     textColor = "text-yellow-500";
+  } else if (compeleted) {
+    textColor = "text-green-500";
   }
 
   return (
