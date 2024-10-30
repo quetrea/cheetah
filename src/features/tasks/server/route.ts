@@ -258,16 +258,6 @@ const app = new Hono()
         }
       );
 
-      const message = await messaging.createPush(
-        ID.unique(),
-        "Task creation",
-        "Task created",
-        [],
-        [user.$id]
-      );
-
-      console.log(message);
-
       return c.json({ data: task });
     }
   )
