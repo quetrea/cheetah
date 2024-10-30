@@ -17,14 +17,13 @@ export const Header = () => {
           Created at 2024/23/10
         </p>
       </div>
-      <div className="h-[300px]">
-        <AdBanner
-          pId={"5888317157317698"}
-          dataAdFormat={"autorelaxed"}
-          dataAdSlot={"3820070985"}
-          dataFullWidthResponsive
-        />
-      </div>
+
+      <AdBanner
+        pId={"5888317157317698"}
+        dataAdFormat={"autorelaxed"}
+        dataAdSlot={"3820070985"}
+        dataFullWidthResponsive
+      />
     </header>
   );
 };
