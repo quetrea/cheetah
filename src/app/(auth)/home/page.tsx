@@ -16,12 +16,14 @@ const Home = () => {
   return (
     <div className="w-full">
       <Header />
-      <AdBanner
-        pId={"5888317157317698"}
-        dataAdFormat={"auto"}
-        dataAdSlot={"5880964403"}
-        dataFullWidthResponsive
-      />
+      <div>
+        <AdBanner
+          pId={"5888317157317698"}
+          dataAdFormat={"auto"}
+          dataAdSlot={"5880964403"}
+          dataFullWidthResponsive
+        />
+      </div>
       <Content />
     </div>
   );

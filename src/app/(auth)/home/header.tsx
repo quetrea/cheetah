@@ -1,4 +1,3 @@
-import AdBanner from "@/components/adsense/AdBanner";
 import { CalendarIcon } from "lucide-react";
 
 export const Header = () => {

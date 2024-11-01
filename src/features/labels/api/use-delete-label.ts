@@ -27,12 +27,11 @@ export const useDeleteLabel = () => {
       }
       return await response.json();
     },
-    onSuccess: ({ data }) => {
+    onSuccess: ({}) => {
       toast.success("Label deleted");
       queryClient.invalidateQueries({ queryKey: ["workspace-analytics"] });
       queryClient.invalidateQueries({ queryKey: ["project-analytics"] });
       queryClient.invalidateQueries({ queryKey: ["labels"] });
-      queryClient.invalidateQueries({ queryKey: ["label", data.$id] });
     },
     onError: () => {
       toast.error("Failed to delete label");
