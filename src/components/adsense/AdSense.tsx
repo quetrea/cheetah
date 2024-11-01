@@ -1,4 +1,3 @@
-"use client";
 import Script from "next/script";
 import { pid } from "process";
 import React from "react";
