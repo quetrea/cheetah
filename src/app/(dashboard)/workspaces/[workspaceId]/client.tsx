@@ -206,7 +206,7 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
           <p className="text-lg font-semibold">Projects ({total})</p>
 
           <Button
-            className="dark:bg-neutral-950 border border-neutral-600"
+            className="dark:bg-neutral-950 "
             variant={"secondary"}
             size={"icon"}
             onClick={createProject}
@@ -259,7 +259,7 @@ export const MembersList = ({ data, total }: MembersListProps) => {
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Members ({total})</p>
           <Button
-            className="dark:bg-neutral-950 border border-neutral-600"
+            className="dark:bg-neutral-950"
             asChild
             variant={"secondary"}
             size="icon"
