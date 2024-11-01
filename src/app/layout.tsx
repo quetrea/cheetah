@@ -7,6 +7,7 @@ import { Toaster } from "sonner";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { AdSense } from "@/components/adsense/AdSense";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,6 +34,12 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <AdSense pId="5888317157317698" />
+        <Script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5888317157317698`}
+          crossOrigin="anonymous"
+          strategy="lazyOnload"
+        />
       </head>
       <body className={cn(inter.className, "antialiased min-h-screen")}>
         <QueryProvider>

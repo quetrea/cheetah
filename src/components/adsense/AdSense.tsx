@@ -1,3 +1,4 @@
+"use client";
 import Script from "next/script";
 import { pid } from "process";
 import React from "react";
@@ -12,7 +13,7 @@ export const AdSense = ({ pId }: AdsenseTypes) => {
       async
       src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${pId}`}
       crossOrigin="anonymous"
-      strategy="afterInteractive"
+      strategy="lazyOnload"
     />
   );
 };
