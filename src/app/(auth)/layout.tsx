@@ -47,7 +47,9 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
                 </Link>
               )}
             </Button>
-            <ThemeToggle />
+            <div className="ml-2">
+              <ThemeToggle />
+            </div>
           </div>
         </nav>
         <div
