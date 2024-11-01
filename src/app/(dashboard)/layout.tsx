@@ -23,13 +23,13 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <UpdateLabelModal />
       <UpdateTaskModal />
       <div className="flex w-full h-full">
-        <div className="fixed left-0 top-0 hidden lg:block lg:w[246px] h-full overflow-y-auto">
+        <div className="fixed left-0 top-0 hidden lg:block lg:w-[246px] h-full overflow-y-auto">
           <Sidebar />
         </div>
-        <div className="lg:pl-[224px] w-full">
-          <div className="mx-auto max-w-screen-4xl h-full">
+        <div className="lg:pl-[254px]  w-full">
+          <div className="mx-auto flex flex-col max-w-screen-6xl  h-full">
             <Navbar />
-            <main className="h-full py-8 px-6 flex flex-col">{children}</main>
+            <main className="h-full py-8 px-6  flex flex-col">{children}</main>
           </div>
         </div>
       </div>
