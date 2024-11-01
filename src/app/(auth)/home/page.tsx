@@ -18,8 +18,8 @@ const Home = () => {
       <Header />
       <AdBanner
         pId={"5888317157317698"}
-        dataAdFormat={"autorelaxed"}
-        dataAdSlot={"9930091878"}
+        dataAdFormat={"auto"}
+        dataAdSlot={"5880964403"}
         dataFullWidthResponsive
       />
       <Content />
