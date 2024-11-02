@@ -51,7 +51,7 @@ const Privacy = () => {
         <p>
           Our site may contain third-party advertisements. These advertisements
           may use cookies and other tracking technologies to deliver content
-          tailored to users' interests.
+          tailored to users&apos; interests.
         </p>
 
         <h2 className="text-lg font-semibold mt-5">4. Memberships</h2>
