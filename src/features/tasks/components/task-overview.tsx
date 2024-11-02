@@ -143,8 +143,6 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
             </div>
           )}
         </div>
-
-        <div></div>
       </div>
     </div>
   );
