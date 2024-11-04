@@ -309,6 +309,70 @@ const app = new Hono()
       return c.json({ data: workspace });
     }
   )
+  .post("/:workspaceId/leave", sessionMiddleware, async (c) => {
+    const user = c.get("user");
+    const databases = c.get("databases");
+
+    const { workspaceId } = c.req.param();
+
+    if (!user) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    const member = await getMember({
+      databases,
+      workspaceId,
+      userId: user.$id,
+    });
+
+    if (!member) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    const workspace = await databases.getDocument<Workspace>(
+      DATABASE_ID,
+      WORKSPACES_ID,
+      workspaceId
+    );
+
+    if (!workspace) {
+      return c.json(
+        { error: "Failed to find the workspace or maybe it can be deleted" },
+        404
+      );
+    }
+
+    const workspaceCurrentMember = await databases.getDocument<Member>(
+      DATABASE_ID,
+      MEMBERS_ID,
+      member.$id
+    );
+
+    if (!workspaceCurrentMember) {
+      return c.json(
+        { error: "Failed to find the member or maybe it can be deleted" },
+        404
+      );
+    }
+
+    const tasks = await databases.listDocuments(DATABASE_ID, TASKS_ID, [
+      Query.equal("assigneeId", workspaceCurrentMember.$id),
+    ]);
+
+    await Promise.all([
+      ...tasks.documents.map((task) =>
+        databases.deleteDocument(DATABASE_ID, TASKS_ID, task.$id)
+      ),
+    ]);
+
+    await databases.deleteDocument(
+      DATABASE_ID,
+      MEMBERS_ID,
+      workspaceCurrentMember.$id
+    );
+
+    return c.json({ data: workspace });
+  })
   .get("/:workspaceId/analytics", sessionMiddleware, async (c) => {
     const user = c.get("user");
     const databases = c.get("databases");

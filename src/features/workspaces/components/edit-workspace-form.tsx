@@ -43,6 +43,7 @@ import { useResetInviteCode } from "../api/use-reset-invite-code";
 import { useGetMembers } from "@/features/members/api/use-get-members";
 import { useWorkspaceId } from "../hooks/use-workspace-id";
 import { toast } from "sonner"; // Toast bildirimleri
+import { useLeaveWorkspace } from "../api/use-leave-workspace";
 
 interface EditWorkspaceFormProps {
   onCancel?: () => void;
@@ -64,8 +65,16 @@ export const EditWorkspaceForm = ({
   const { mutate: resetInviteCode, isPending: isResettingInviteCode } =
     useResetInviteCode();
 
+  const { mutate: leavingWorkspace, isPending: isLeavingWorkspace } =
+    useLeaveWorkspace();
+
   const [DeleteDialog, confirmDelete] = useConfirm(
     "Delete Workspace",
+    "This action cannot be undone.",
+    "destructive"
+  );
+  const [LeaveDialog, confirmLeave] = useConfirm(
+    "Leave Workspace",
     "This action cannot be undone.",
     "destructive"
   );
@@ -91,6 +100,22 @@ export const EditWorkspaceForm = ({
 
     if (!ok) return;
     deleteWorkspace(
+      {
+        param: { workspaceId: initialValues.$id },
+      },
+      {
+        onSuccess: () => {
+          window.location.href = "/";
+        },
+      }
+    );
+  };
+
+  const handleLeave = async () => {
+    const ok = await confirmLeave();
+    if (!ok) return;
+
+    leavingWorkspace(
       {
         param: { workspaceId: initialValues.$id },
       },
@@ -136,6 +161,7 @@ export const EditWorkspaceForm = ({
 
   return (
     <>
+      <LeaveDialog />
       <DeleteDialog />
       <ResetInviteCodeDialog />
       <div className="flex flex-col gap-y-4 select-none">
@@ -336,6 +362,31 @@ export const EditWorkspaceForm = ({
                   onClick={handleDelete}
                 >
                   Delete Workspace
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {data?.currentMember.role === MemberRole.MEMBER && (
+          <Card className="w-full h-full shadow-none border border-amber-500">
+            <CardContent className="p-7">
+              <div className="flex flex-col ">
+                <h3 className="font-bold">Danger Zone</h3>
+                <p className="text-sm text-muted-foreground">
+                  Leaving a workspace is a irreversible and will remove all your
+                  data in the workspace!
+                </p>
+                <DottedSeparator className="py-7" />
+                <Button
+                  className="mt-6 w-fit ml-auto"
+                  size={"sm"}
+                  variant={"destructive"}
+                  type="button"
+                  disabled={isPending || isLeavingWorkspace}
+                  onClick={handleLeave}
+                >
+                  Leave Workspace
                 </Button>
               </div>
             </CardContent>

@@ -26,7 +26,7 @@ import { DottedSeparator } from "@/components/dotted-separator";
 import { Project } from "@/features/projects/types";
 import { useCreateProjectModal } from "@/features/projects/hooks/use-create-project-modal";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
-import { Member } from "@/features/members/types";
+import { Member, MemberRole } from "@/features/members/types";
 import { MemberAvatar } from "@/features/members/components/member-avatar";
 
 import {
@@ -36,6 +36,11 @@ import {
 } from "@/components/ui/hover-card";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
+import { useLeaveWorkspace } from "@/features/workspaces/api/use-leave-workspace";
+import { useConfirm } from "@/hooks/use-confirm";
+import { Hint } from "@/components/hint";
+import { ListBulletIcon, ResetIcon } from "@radix-ui/react-icons";
+import { useState } from "react";
 
 export const WorkspaceIdClient = () => {
   const workspaceId = useWorkspaceId();
@@ -51,6 +56,29 @@ export const WorkspaceIdClient = () => {
 
   const { data: workspaceMembers, isLoading: isLoadingWorkspacesMembers } =
     useGetMembers({ workspaceId });
+
+  const [LeaveDialog, confirmLeave] = useConfirm(
+    "Leave Workspace",
+    "This action cannot be undone.",
+    "destructive"
+  );
+
+  const handleLeave = async () => {
+    const ok = await confirmLeave();
+    if (!ok) return;
+
+    leavingWorkspace(
+      { param: { workspaceId } },
+      {
+        onSuccess: () => {
+          router.push("/");
+        },
+      }
+    );
+  };
+
+  const { mutate: leavingWorkspace, isPending: isLeavingWorkspace } =
+    useLeaveWorkspace();
 
   const isLoading =
     isLoadingWorkspaceTasks ||
@@ -79,14 +107,28 @@ export const WorkspaceIdClient = () => {
   };
 
   return (
-    <div className="h-full flex flex-col space-y-4 scroll-smooth">
-      <Analytics data={analytics} />
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-        <TaskList data={tasks} total={workspaceTasks?.total ?? 0} />
-        <ProjectList data={projects} total={workspaceProjects?.total ?? 0} />
-        <MembersList data={members} total={workspaceMembers?.total ?? 0} />
+    <>
+      <LeaveDialog />
+      <div className="h-full flex flex-col space-y-4 scroll-smooth">
+        <Analytics data={analytics} />
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+          <TaskList data={tasks} total={workspaceTasks?.total ?? 0} />
+          <ProjectList data={projects} total={workspaceProjects?.total ?? 0} />
+          <MembersList data={members} total={workspaceMembers?.total ?? 0} />
+        </div>
+        {workspaceMembers?.currentMember.role === MemberRole.MEMBER && (
+          <div className="flex justify-end fixed right-5 bottom-5">
+            <Button
+              disabled={isLeavingWorkspace}
+              onClick={handleLeave}
+              variant={"destructive"}
+            >
+              Leave Workspace
+            </Button>
+          </div>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 
@@ -97,24 +139,57 @@ interface TaskListProps {
 export const TaskList = ({ data, total }: TaskListProps) => {
   const { open: createTask } = useCreateTaskModal();
   const workspaceId = useWorkspaceId();
+  const [slice, setSlice] = useState(3);
+
+  const handleResetShowMore = () => {
+    setSlice(3);
+  };
+
+  const handleShowMore = async () => {
+    setSlice((prevSlice) => prevSlice + 6);
+  };
+
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
-      <div className="bg-muted rounded-lg p-4 dark:bg-neutral-900">
+      <span className="bg-white hover:bg-muted duration-300 transition-all rounded-lg p-4 dark:bg-neutral-900">
         <div className="flex items-center justify-between">
-          <p className="text-lg font-semibold">Tasks ({total})</p>
+          <Hint label="View all tasks" side="right">
+            <Link
+              className="text-lg transition-all duration-300 px-2 py-1 rounded-lg hover:bg-white cursor-pointer font-semibold"
+              href={`/workspaces/${workspaceId}/tasks`}
+            >
+              Tasks ({total})
+            </Link>
+          </Hint>
+          <div className="flex gap-x-4 ">
+            {slice > 3 && (
+              <Hint label="Reset show more" side="bottom">
+                <Button
+                  className="dark:bg-neutral-950 border dark:border-neutral-950"
+                  variant={"muted"}
+                  size={"icon"}
+                  onClick={handleResetShowMore}
+                >
+                  <ResetIcon className="size-4 text-neutral-400 " />
+                </Button>
+              </Hint>
+            )}
 
-          <Button
-            className="dark:bg-neutral-950 border dark:border-neutral-950"
-            variant={"muted"}
-            size={"icon"}
-            onClick={createTask}
-          >
-            <PlusIcon className="size-4 text-neutral-400 " />
-          </Button>
+            <Hint label="Create a new task" side="bottom">
+              <Button
+                className="dark:bg-neutral-950 border dark:border-neutral-950"
+                variant={"muted"}
+                size={"icon"}
+                onClick={createTask}
+              >
+                <PlusIcon className="size-4 text-neutral-400 " />
+              </Button>
+            </Hint>
+          </div>
         </div>
         <DottedSeparator className="my-4" />
         <ul className="flex flex-col gap-y-4">
-          {data.slice(0, 3).map((task) => {
+          {data.slice(0, slice).map((task) => {
             return (
               <li key={task.$id}>
                 <HoverCard>
@@ -180,13 +255,13 @@ export const TaskList = ({ data, total }: TaskListProps) => {
           </li>
         </ul>
         <Button
-          asChild
           variant="muted"
           className="mt-4 w-full dark:bg-neutral-950 border dark:border-neutral-950"
+          onClick={handleShowMore}
         >
-          <Link href={`/workspaces/${workspaceId}/tasks`}> Show all</Link>
+          Show more
         </Button>
-      </div>
+      </span>
     </div>
   );
 };
@@ -201,18 +276,23 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
   const workspaceId = useWorkspaceId();
   return (
     <div className="flex flex-col gap-y-4 col-span-1 ">
-      <div className="bg-white dark:bg-neutral-950 border rounded-lg p-4">
+      <div className="bg-white dark:bg-neutral-950 hover:shadow-sm transition-all duration-300 hover:bg-muted border rounded-lg p-4">
         <div className="flex items-center justify-between">
-          <p className="text-lg font-semibold">Projects ({total})</p>
-
-          <Button
-            className="dark:bg-neutral-950 "
-            variant={"secondary"}
-            size={"icon"}
-            onClick={createProject}
-          >
-            <PlusIcon className="size-4 text-neutral-400" />
-          </Button>
+          <Hint label="Your projects total" side="right">
+            <p className="text-lg font-semibold cursor-pointer">
+              Projects ({total})
+            </p>
+          </Hint>
+          <Hint label="Create a new project" side="left">
+            <Button
+              className="dark:bg-neutral-950 "
+              variant={"secondary"}
+              size={"icon"}
+              onClick={createProject}
+            >
+              <PlusIcon className="size-4 text-neutral-400" />
+            </Button>
+          </Hint>
         </div>
         <DottedSeparator className="my-4" />
         <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -255,19 +335,28 @@ export const MembersList = ({ data, total }: MembersListProps) => {
   const workspaceId = useWorkspaceId();
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
-      <div className="bg-white dark:bg-neutral-950  border rounded-lg p-4">
+      <div className="bg-white dark:bg-neutral-950 hover:shadow-sm transition-all duration-300 hover:bg-muted border rounded-lg p-4">
         <div className="flex items-center justify-between">
-          <p className="text-lg font-semibold">Members ({total})</p>
-          <Button
-            className="dark:bg-neutral-950"
-            asChild
-            variant={"secondary"}
-            size="icon"
-          >
-            <Link href={`/workspaces/${workspaceId}/members`}>
-              <SettingsIcon className="size-4 text-neutral-400" />
+          <Hint label="View all members" side="right">
+            <Link
+              href={`/workspaces/${workspaceId}/members`}
+              className="text-lg transition-all duration-300 px-2 py-1 rounded-lg hover:bg-white cursor-pointer font-semibold"
+            >
+              Members ({total})
             </Link>
-          </Button>
+          </Hint>
+          <Hint label="View member list" side="left">
+            <Button
+              className="dark:bg-neutral-950"
+              asChild
+              variant={"secondary"}
+              size="icon"
+            >
+              <Link href={`/workspaces/${workspaceId}/members`}>
+                <ListBulletIcon className="size-4 text-neutral-400" />
+              </Link>
+            </Button>
+          </Hint>
         </div>
         <DottedSeparator className="my-4" />
 

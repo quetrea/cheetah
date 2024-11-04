@@ -22,7 +22,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
     <main className="bg-neutral-100 min-h-screen dark:bg-neutral-900">
       <div className="mx-auto w-full ">
         <nav className="flex justify-between border-b p-4 items-center">
-          <div className="flex-1 hidden sm:hidden md:block">
+          <div className="flex-1 hidden xs:hidden sm:block   md:block lg:block">
             <div className="hidden dark:block">
               <Image src="/DarkLogo.svg" height={64} width={162} alt="Logo" />
             </div>
@@ -31,7 +31,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
             </div>
           </div>
 
-          <div className="flex items-center justify-end mr-5 min-w-[300px] ">
+          <div className="flex items-center justify-end mr-5 min-w-[300px] sm:min-w-[100px] ">
             <PageList />
             <Button
               asChild
@@ -54,9 +54,9 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
         </nav>
         <div
           className={cn(
-            "flex p-4 flex-col items-center justify-center pt-4 md:pt-14",
+            "flex p-4 flex-col items-center justify-center pt-4 md:pt-6",
             pathname === "/home" && "items-start",
-            pathname === "/about" && "items-start",
+            pathname === "/about" && "items-center",
             pathname === "/privacy" && "items-start"
           )}
         >

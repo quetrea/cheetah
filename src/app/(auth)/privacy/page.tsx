@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 const Privacy = () => {
   return (
-    <div className=" flex items-center justify-center border w-full h-full">
+    <div className=" flex items-center justify-center  w-full h-full">
       <div className="max-w-3xl">
         <PrivacyClient />
       </div>

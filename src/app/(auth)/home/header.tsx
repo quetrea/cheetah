@@ -5,8 +5,8 @@ export const Header = () => {
     <header>
       <div className="flex items-center justify-center flex-col gap-y-4">
         <div className="flex flex-col gap-y-2 items-center">
-          <h1 className="font-bold text-5xl">Welcome to Cheetah</h1>
-          <p className="font-normal">
+          <h1 className="font-bold text-5xl text-center">Welcome to Cheetah</h1>
+          <p className="font-normal text-center">
             You can create customizable workspaces, with one click!
           </p>
         </div>
