@@ -4,25 +4,25 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { PageList } from "./page-list";
+
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/themes/theme-toggle";
 import { useCurrent } from "@/features/auth/api/use-current";
 
-interface AuthLayoutProps {
+interface BlogLayoutProps {
   children: React.ReactNode;
 }
 
-const AuthLayout = ({ children }: AuthLayoutProps) => {
+const BlogLayout = ({ children }: BlogLayoutProps) => {
   const pathname = usePathname();
   const isSignIn = pathname === "/sign-in";
   const { data, isPending } = useCurrent();
 
   return (
-    <main className="bg-neutral-100 min-h-screen dark:bg-neutral-900">
-      <div className="mx-auto w-full ">
+    <main className="bg-neutral-400 h-full dark:bg-neutral-900">
+      <div className="mx-auto w-full flex flex-col h-full">
         <nav className="flex justify-between border-b p-4 items-center">
-          <div className="flex-1 hidden xs:hidden sm:block   md:block lg:block">
+          <div className="flex-1 hidden xs:hidden sm:block md:block lg:block">
             <div className="hidden dark:block">
               <Image src="/DarkLogo.svg" height={64} width={162} alt="Logo" />
             </div>
@@ -31,8 +31,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
             </div>
           </div>
 
-          <div className="flex items-center justify-end mr-5 min-w-[300px] sm:min-w-[100px] ">
-            <PageList />
+          <div className="flex items-center justify-end mr-5 min-w-[300px] sm:min-w-[100px]">
             <Button
               asChild
               variant={"secondary"}
@@ -52,12 +51,10 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
             </div>
           </div>
         </nav>
+
         <div
           className={cn(
-            "flex p-4 flex-col items-center justify-center pt-4 md:pt-6",
-            pathname === "/home" && "items-start",
-            pathname === "/about" && "items-center",
-            pathname === "/privacy" && "items-start"
+            "flex-1 p-4 flex-col  items-center justify-center pt-4 md:pt-6"
           )}
         >
           {children}
@@ -67,4 +64,4 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
   );
 };
 
-export default AuthLayout;
+export default BlogLayout;

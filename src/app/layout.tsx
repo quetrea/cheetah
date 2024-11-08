@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { QueryProvider } from "@/components/query-provider";
 import { Toaster } from "sonner";
 import "./globals.css";
-import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ThemeProvider } from "@/components/themes/theme-provider";
 import { AdSense } from "@/components/adsense/AdSense";
 import Script from "next/script";
 

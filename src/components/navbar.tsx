@@ -2,7 +2,7 @@
 import { UserButton } from "@/features/auth/components/user-button";
 import { MobileSidebar } from "./mobile-sidebar";
 import { usePathname } from "next/navigation";
-import { ThemeToggle } from "./toggle/theme-toggle";
+import { ThemeToggle } from "./themes/theme-toggle";
 
 const pathnameMap = {
   tasks: {
