@@ -1,3 +1,4 @@
+import AdBanner from "@/components/adsense/AdBanner";
 import { DottedSeparator } from "@/components/dotted-separator";
 import {
   Accordion,
@@ -63,6 +64,12 @@ const Page = () => {
                 </CardDescription>
               </CardHeader>
               <DottedSeparator className="my-2" />
+              <AdBanner
+                dataAdFormat="autorelaxed"
+                dataFullWidthResponsive
+                dataAdSlot="3712205875"
+                pId="5888317157317698"
+              />
               <Accordion type="multiple">
                 <AccordionItem value="create-account">
                   <AccordionTrigger className="text-lg font-semibold">
@@ -84,7 +91,12 @@ const Page = () => {
                     </Alert>
                   </AccordionContent>
                 </AccordionItem>
-
+                <AdBanner
+                  dataAdFormat="autorelaxed"
+                  dataFullWidthResponsive
+                  dataAdSlot="3712205875"
+                  pId="5888317157317698"
+                />
                 <AccordionItem value="workspace-overview">
                   <AccordionTrigger className="text-lg font-semibold">
                     2. Setting Up Your First Workspace
@@ -112,7 +124,12 @@ const Page = () => {
                 </AccordionItem>
               </Accordion>
             </TabsContent>
-
+            <AdBanner
+              dataAdFormat="autorelaxed"
+              dataFullWidthResponsive
+              dataAdSlot="3712205875"
+              pId="5888317157317698"
+            />
             <TabsContent value="how-to-create-workspace">
               <CardHeader className="p-2">
                 <CardTitle className="text-3xl font-bold">
@@ -146,6 +163,12 @@ const Page = () => {
                         quickly fill in workspace details.
                       </li>
                     </ul>
+                    <AdBanner
+                      dataAdFormat="autorelaxed"
+                      dataFullWidthResponsive
+                      dataAdSlot="3712205875"
+                      pId="5888317157317698"
+                    />
                     <Alert className="my-2" variant="info">
                       Quick tip: Use the sidebar for fast access when managing
                       multiple workspaces!
@@ -175,6 +198,12 @@ const Page = () => {
                         or clients for streamlined task management.
                       </li>
                     </ul>
+                    <AdBanner
+                      dataAdFormat="autorelaxed"
+                      dataFullWidthResponsive
+                      dataAdSlot="3712205875"
+                      pId="5888317157317698"
+                    />
                     <Alert className="my-2" variant="warning">
                       Reminder: Upgrading to the Pro Plan allows you to
                       collaborate with team members on workspaces and projects
