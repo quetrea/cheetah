@@ -20,10 +20,10 @@ const Page = () => {
   return (
     <div className="flex h-full gap-x-4 w-full ">
       <Tabs
-        className="flex w-full  border gap-x-4 overflow-y-auto"
+        className="flex w-full flex-col lg:flex-row   gap-4 overflow-y-auto"
         defaultValue="how-to-use"
       >
-        <Card className="w-1/5 flex flex-col p-4">
+        <Card className="w-full lg:1/3 xl:w-1/5  flex  flex-col p-4">
           <CardHeader>
             <CardTitle className="text-3xl font-bold">Blogs</CardTitle>
             <CardDescription className="text-lg">
@@ -110,30 +110,11 @@ const Page = () => {
                     </Alert>
                   </AccordionContent>
                 </AccordionItem>
-
-                <AccordionItem value="create-project">
-                  <AccordionTrigger className="text-lg font-semibold">
-                    3. Creating Your First Project
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <p>
-                      After setting up your workspace, it&apos;s time to{" "}
-                      <strong>create a project</strong>. You can name it based
-                      on a specific job, task, or project you’re working on.
-                    </p>
-                    <p>
-                      Projects help in grouping related tasks and tracking
-                      progress more effectively. Within each project, you can
-                      create and manage tasks, assign due dates, and organize
-                      them in a Kanban, table, or calendar view.
-                    </p>
-                  </AccordionContent>
-                </AccordionItem>
               </Accordion>
             </TabsContent>
 
             <TabsContent value="how-to-create-workspace">
-              <CardHeader>
+              <CardHeader className="p-2">
                 <CardTitle className="text-3xl font-bold">
                   How to Create a Workspace
                 </CardTitle>
@@ -141,6 +122,7 @@ const Page = () => {
                   A step-by-step guide to creating and managing your workspace.
                 </CardDescription>
               </CardHeader>
+              <DottedSeparator className="my-2" />
               <Accordion type="multiple">
                 <AccordionItem value="workspace-methods">
                   <AccordionTrigger className="text-lg font-semibold">

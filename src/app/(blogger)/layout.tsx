@@ -19,9 +19,9 @@ const BlogLayout = ({ children }: BlogLayoutProps) => {
   const { data, isPending } = useCurrent();
 
   return (
-    <main className="bg-neutral-400 h-full dark:bg-neutral-900">
+    <main className="bg-neutral-100 h-full dark:bg-neutral-900">
       <div className="mx-auto w-full flex flex-col h-full">
-        <nav className="flex justify-between border-b p-4 items-center">
+        <nav className="flex justify-between  border-b p-4 items-center">
           <div className="flex-1 hidden xs:hidden sm:block md:block lg:block">
             <div className="hidden dark:block">
               <Image src="/DarkLogo.svg" height={64} width={162} alt="Logo" />
@@ -31,7 +31,7 @@ const BlogLayout = ({ children }: BlogLayoutProps) => {
             </div>
           </div>
 
-          <div className="flex items-center justify-end mr-5 min-w-[300px] sm:min-w-[100px]">
+          <div className="flex items-center justify-end w-full  lg:mr-5 min-w-[300px] sm:min-w-[100px]">
             <Button
               asChild
               variant={"secondary"}

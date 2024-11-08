@@ -31,24 +31,26 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
             </div>
           </div>
 
-          <div className="flex items-center justify-end mr-5 min-w-[300px] sm:min-w-[100px] ">
+          <div className="flex items-center flex-col lg:flex-row  justify-end lg:mr-5 w-full min-w-[300px] sm:min-w-[100px] ">
             <PageList />
-            <Button
-              asChild
-              variant={"secondary"}
-              size={"lg"}
-              className="text-md"
-            >
-              {data && data.user ? (
-                <Link href={`/`}>Go to Dashboard</Link>
-              ) : (
-                <Link href={`${isSignIn ? "sign-up" : "sign-in"}`}>
-                  {isSignIn ? "Sign Up" : "Login"}
-                </Link>
-              )}
-            </Button>
-            <div className="ml-2">
-              <ThemeToggle type={"auth"} />
+            <div className="flex lg:flex-row flex-col items-center gap-y-4">
+              <Button
+                asChild
+                variant={"secondary"}
+                size={"lg"}
+                className="text-md"
+              >
+                {data && data.user ? (
+                  <Link href={`/`}>Go to Dashboard</Link>
+                ) : (
+                  <Link href={`${isSignIn ? "sign-up" : "sign-in"}`}>
+                    {isSignIn ? "Sign Up" : "Login"}
+                  </Link>
+                )}
+              </Button>
+              <div className="lg:ml-2">
+                <ThemeToggle type={"auth"} />
+              </div>
             </div>
           </div>
         </nav>

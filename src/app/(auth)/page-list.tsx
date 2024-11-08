@@ -14,7 +14,7 @@ const links = [
 export const PageList = () => {
   const pathname = usePathname();
   return (
-    <div className="list-none flex items-center justify-center px-5  sm:px-2 lg:px-6  gap-x-4 sm:gap-x-2">
+    <div className="list-none flex items-center flex-col lg:flex-row justify-center px-5  sm:px-2 lg:px-6  gap-x-4 sm:gap-x-2">
       {Object.values(links).map((item) => {
         const isActive = item.path === pathname;
         if (isActive) {
