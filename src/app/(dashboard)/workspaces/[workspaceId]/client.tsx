@@ -9,6 +9,7 @@ import {
   MoreVerticalIcon,
   Trash,
   Pencil,
+  ExternalLinkIcon,
 } from "lucide-react";
 
 import { Task } from "@/features/tasks/types";
@@ -47,6 +48,12 @@ import { useEditTaskModal } from "@/features/tasks/hooks/use-edit-task-modal";
 import { useDeleteTask } from "@/features/tasks/api/use-delete-task";
 import { RiCloseFill } from "react-icons/ri";
 import { useDeleteMember } from "@/features/members/api/use-delete-member";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export const WorkspaceIdClient = () => {
   const workspaceId = useWorkspaceId();
@@ -188,7 +195,7 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
         <div className="flex items-center justify-between">
           <Hint label="View all tasks" side="right">
             <Link
-              className="text-lg transition-all duration-300 px-2 py-1 rounded-lg hover:bg-white cursor-pointer font-semibold"
+              className="text-lg transition-all duration-300 px-2 py-1 rounded-lg hover:bg-white dark:hover:bg-neutral-950 cursor-pointer font-semibold"
               href={`/workspaces/${workspaceId}/tasks`}
             >
               Tasks ({total})
@@ -225,85 +232,73 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
           {data.slice(0, slice).map((task) => {
             return (
               <li key={task.$id}>
-                <HoverCard>
-                  <Link href={`/workspaces/${workspaceId}/tasks/${task.$id}`}>
-                    <HoverCardTrigger>
-                      <Card className="shadow-none rounded-lg hover:opacity-75 transition flex justify-between items-center">
-                        <CardContent className="p-4 flex  justify-between border w-full rounded-md items-center group">
-                          <div className="w-full flex flex-col  overflow-hidden">
-                            <p className="text-sm truncate font-medium line-clamp-1 w-full">
-                              {task.name}
-                            </p>
-                            <div className="flex items-center gap-x-2">
-                              <p className="text-sm truncate ">
-                                {task.project?.name}
-                              </p>
-                              <div className="size-1 rounded-full bg-neutral-300" />
-                              <div className="text-xs text-muted-foreground flex items-center">
-                                <CalendarIcon className="size-3 mr-1" />
-                                <span className="truncate">
-                                  {formatDistanceToNow(
-                                    new Date(task.$createdAt)
-                                  )}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="space-x-2 hidden group-hover:flex group-hover:pl-2 transition opacity-0 group-hover:opacity-100 duration-500">
-                            <Button
+                <Card className="shadow-none rounded-lg hover:opacity-75 transition flex justify-between items-center">
+                  <CardContent className="p-4 flex  justify-between border w-full rounded-md items-center group">
+                    <div className="w-full flex flex-col  overflow-hidden">
+                      <p className="text-sm truncate font-medium line-clamp-1 w-full">
+                        {task.name}
+                      </p>
+                      <div className="flex items-center gap-x-2">
+                        <p className="text-sm truncate ">
+                          {task.project?.name}
+                        </p>
+                        <div className="size-1 rounded-full bg-neutral-300" />
+                        <div className="text-xs text-muted-foreground flex items-center">
+                          <CalendarIcon className="size-3 mr-1" />
+                          <span className="truncate">
+                            {formatDistanceToNow(new Date(task.$createdAt))}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-x-2   ">
+                      <DropdownMenu modal={false}>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant={"outline"} size={"icon"}>
+                            <MoreVerticalIcon className="size-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+
+                        <DropdownMenuContent
+                          align="end"
+                          side="bottom"
+                          className="w-40 "
+                          sideOffset={10}
+                        >
+                          <div className="flex flex-col">
+                            <DropdownMenuItem className="gap-x-4" asChild>
+                              <Link
+                                href={`/workspaces/${workspaceId}/tasks/${task.$id}`}
+                              >
+                                <ExternalLinkIcon className="size-4" />
+                                Open Task{" "}
+                              </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="gap-x-4"
                               onClick={() => editTask(task.$id)}
-                              variant={"outline"}
-                              size={"icon"}
                             >
                               <Pencil className="size-4" />
-                            </Button>
+                              Edit Task
+                            </DropdownMenuItem>
                             {currentMember.role === MemberRole.ADMIN && (
-                              <Button
-                                onClick={() => onDelete(task.$id)}
-                                variant={"outline"}
-                                size={"icon"}
-                              >
-                                <Trash className="size-4" />
-                              </Button>
+                              <>
+                                <DropdownMenuItem
+                                  className="gap-x-4 text-amber-500"
+                                  onClick={() => onDelete(task.$id)}
+                                >
+                                  <Trash className="size-4" />
+                                  Delete Task
+                                </DropdownMenuItem>
+                              </>
                             )}
                           </div>
-                        </CardContent>
-                      </Card>
-                    </HoverCardTrigger>
-                  </Link>
-
-                  <HoverCardContent className="flex w-full flex-col">
-                    <div className="flex items-center gap-x-2">
-                      <ProjectAvatar
-                        name={task.project.name}
-                        image={task.project.imageUrl}
-                      />
-                      {task.project.name}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
-                    <DottedSeparator className="my-4" />
-                    <div className="flex flex-col items-start gap-y-2  border rounded-md p-2.5">
-                      <div className="text-sm flex gap-x-2 max-w-[200px]">
-                        <Badge
-                          variant={task.status}
-                          className="truncate text-xs"
-                        >
-                          {task.name}
-                        </Badge>
-                      </div>
-                      <div className="text-sm flex ">
-                        {task.description ? (
-                          <p className="truncate text-xs">{task.description}</p>
-                        ) : (
-                          <div className="truncate text-xs">No description</div>
-                        )}
-                      </div>
-                      <span className="text-xs text-neutral-500 flex  ">
-                        <CalendarIcon className="size-4 mr-2" />
-                        {format(task.dueDate, "PPP")}
-                      </span>
-                    </div>
-                  </HoverCardContent>
-                </HoverCard>
+                  </CardContent>
+                </Card>
               </li>
             );
           })}
@@ -341,7 +336,7 @@ export const ProjectList = ({
   const workspaceId = useWorkspaceId();
   return (
     <div className="flex flex-col gap-y-4 col-span-1 ">
-      <div className="bg-white dark:bg-neutral-950 hover:shadow-sm transition-all duration-300 hover:bg-muted border rounded-lg p-4">
+      <div className="bg-white dark:bg-neutral-950  hover:shadow-sm transition-all duration-300 hover:bg-muted border rounded-lg p-4">
         <div className="flex items-center justify-between">
           <Hint label="Your projects total" side="right">
             <p className="text-lg font-semibold cursor-pointer">
@@ -434,7 +429,7 @@ export const MembersList = ({
           <Hint label="View all members" side="right">
             <Link
               href={`/workspaces/${workspaceId}/members`}
-              className="text-lg transition-all duration-300 px-2 py-1 rounded-lg hover:bg-white cursor-pointer font-semibold"
+              className="text-lg transition-all dark:hover:bg-neutral-900 duration-300 px-2 py-1 rounded-lg hover:bg-white cursor-pointer font-semibold"
             >
               Members ({total})
             </Link>
@@ -458,36 +453,34 @@ export const MembersList = ({
           {data.map((member) => {
             return (
               <li key={member.$id}>
-                <Link href={`/workspaces/${workspaceId}/members/${member.$id}`}>
-                  <Card className="shadow-none rounded-lg overflow-hidden w-full">
-                    <CardContent className="p-4 flex items-center gap-x-2 justify-between group w-full">
-                      <div className="flex items-center gap-x-2">
-                        <MemberAvatar className="size-12" name={member.name} />
-                        <div className="flex flex-col items-start overflow-hidden">
-                          <p className="text-sm font-medium line-clamp-1">
-                            {member.name}
-                          </p>
-                          <p className="text-xs text-muted-foreground line-clamp  truncate">
-                            {member.email}
-                          </p>
-                        </div>
+                <Card className="shadow-none rounded-lg overflow-hidden w-full">
+                  <CardContent className="p-4 flex items-center gap-x-2 justify-between group w-full">
+                    <div className="flex items-center gap-x-4">
+                      <MemberAvatar className="size-12" name={member.name} />
+                      <div className="flex flex-col items-start overflow-hidden">
+                        <p className="text-sm font-medium line-clamp-1">
+                          {member.name}
+                        </p>
+                        <p className="text-xs text-muted-foreground line-clamp  truncate">
+                          {member.email}
+                        </p>
                       </div>
-                      <div className="items-center ">
-                        {currentMember.role === MemberRole.ADMIN &&
-                          member.role !== MemberRole.ADMIN && (
-                            <Button
-                              className="opacity-0 group-hover:opacity-100"
-                              onClick={() => onDelete(member.$id)}
-                              variant={"destructive"}
-                              size={"icon"}
-                            >
-                              <RiCloseFill className="size-4 " />
-                            </Button>
-                          )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
+                    </div>
+                    <div className="items-center ">
+                      {currentMember.role === MemberRole.ADMIN &&
+                        member.role !== MemberRole.ADMIN && (
+                          <Button
+                            className="opacity-0 group-hover:opacity-100"
+                            onClick={() => onDelete(member.$id)}
+                            variant={"destructive"}
+                            size={"icon"}
+                          >
+                            <RiCloseFill className="size-4 " />
+                          </Button>
+                        )}
+                    </div>
+                  </CardContent>
+                </Card>
               </li>
             );
           })}
