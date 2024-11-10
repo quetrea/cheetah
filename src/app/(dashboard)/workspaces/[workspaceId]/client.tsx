@@ -7,6 +7,8 @@ import {
   CalendarIcon,
   SettingsIcon,
   MoreVerticalIcon,
+  Trash,
+  Pencil,
 } from "lucide-react";
 
 import { Task } from "@/features/tasks/types";
@@ -41,6 +43,10 @@ import { useConfirm } from "@/hooks/use-confirm";
 import { Hint } from "@/components/hint";
 import { ListBulletIcon, ResetIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
+import { useEditTaskModal } from "@/features/tasks/hooks/use-edit-task-modal";
+import { useDeleteTask } from "@/features/tasks/api/use-delete-task";
+import { RiCloseFill } from "react-icons/ri";
+import { useDeleteMember } from "@/features/members/api/use-delete-member";
 
 export const WorkspaceIdClient = () => {
   const workspaceId = useWorkspaceId();
@@ -114,7 +120,11 @@ export const WorkspaceIdClient = () => {
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
           <TaskList data={tasks} total={workspaceTasks?.total ?? 0} />
           <ProjectList data={projects} total={workspaceProjects?.total ?? 0} />
-          <MembersList data={members} total={workspaceMembers?.total ?? 0} />
+          <MembersList
+            data={members}
+            total={workspaceMembers?.total ?? 0}
+            currentMember={workspaceMembers?.currentMember as Member}
+          />
         </div>
         {workspaceMembers?.currentMember.role === MemberRole.MEMBER && (
           <div className="flex justify-end fixed right-5 bottom-5">
@@ -137,12 +147,26 @@ interface TaskListProps {
   total: number;
 }
 export const TaskList = ({ data, total }: TaskListProps) => {
+  const router = useRouter();
   const { open: createTask } = useCreateTaskModal();
+  const { open: editTask } = useEditTaskModal();
+  const { mutate: deleteTask, isPending } = useDeleteTask();
   const workspaceId = useWorkspaceId();
   const [slice, setSlice] = useState(3);
 
   const handleResetShowMore = () => {
     setSlice(3);
+  };
+
+  const onDelete = (id: string) => {
+    deleteTask(
+      { param: { taskId: id } },
+      {
+        onSuccess: () => {
+          router.refresh();
+        },
+      }
+    );
   };
 
   const handleShowMore = async () => {
@@ -177,7 +201,7 @@ export const TaskList = ({ data, total }: TaskListProps) => {
 
             <Hint label="Create a new task" side="bottom">
               <Button
-                className="dark:bg-neutral-950 border dark:border-neutral-950"
+                className="dark:bg-neutral-950 border  dark:border-neutral-950"
                 variant={"muted"}
                 size={"icon"}
                 onClick={createTask}
@@ -195,20 +219,42 @@ export const TaskList = ({ data, total }: TaskListProps) => {
                 <HoverCard>
                   <Link href={`/workspaces/${workspaceId}/tasks/${task.$id}`}>
                     <HoverCardTrigger>
-                      <Card className="shadow-none rounded-lg hover:opacity-75 transition">
-                        <CardContent className="p-4  ">
-                          <p className="text-sm truncate font-medium">
-                            {task.name}
-                          </p>
-                          <div className="flex items-center gap-x-2">
-                            <p className="text-sm">{task.project?.name}</p>
-                            <div className="size-1 rounded-full bg-neutral-300" />
-                            <div className="text-xs text-muted-foreground flex items-center">
-                              <CalendarIcon className="size-3 mr-1" />
-                              <span className="truncate">
-                                {formatDistanceToNow(new Date(task.$createdAt))}
-                              </span>
+                      <Card className="shadow-none rounded-lg hover:opacity-75 transition flex justify-between items-center">
+                        <CardContent className="p-4 flex  justify-between border w-full rounded-md items-center group">
+                          <div className="w-full flex flex-col  overflow-hidden">
+                            <p className="text-sm truncate font-medium line-clamp-1 w-full">
+                              {task.name}
+                            </p>
+                            <div className="flex items-center gap-x-2">
+                              <p className="text-sm truncate ">
+                                {task.project?.name}
+                              </p>
+                              <div className="size-1 rounded-full bg-neutral-300" />
+                              <div className="text-xs text-muted-foreground flex items-center">
+                                <CalendarIcon className="size-3 mr-1" />
+                                <span className="truncate">
+                                  {formatDistanceToNow(
+                                    new Date(task.$createdAt)
+                                  )}
+                                </span>
+                              </div>
                             </div>
+                          </div>
+                          <div className="space-x-2 hidden group-hover:flex group-hover:pl-2 transition opacity-0 group-hover:opacity-100 duration-500">
+                            <Button
+                              onClick={() => editTask(task.$id)}
+                              variant={"outline"}
+                              size={"icon"}
+                            >
+                              <Pencil className="size-4" />
+                            </Button>
+                            <Button
+                              onClick={() => onDelete(task.$id)}
+                              variant={"outline"}
+                              size={"icon"}
+                            >
+                              <Trash className="size-4" />
+                            </Button>
                           </div>
                         </CardContent>
                       </Card>
@@ -273,6 +319,9 @@ interface ProjectListProps {
 
 export const ProjectList = ({ data, total }: ProjectListProps) => {
   const { open: createProject } = useCreateProjectModal();
+
+  const router = useRouter();
+
   const workspaceId = useWorkspaceId();
   return (
     <div className="flex flex-col gap-y-4 col-span-1 ">
@@ -303,14 +352,25 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
                   href={`/workspaces/${workspaceId}/projects/${project.$id}`}
                 >
                   <Card className="shadow-none rounded-lg hover:opacity-75 transition">
-                    <CardContent className="p-4 flex items-center gap-x-2.5">
-                      <ProjectAvatar
-                        className="size-12"
-                        fallbackClassname="text-lg"
-                        name={project.name}
-                        image={project.imageUrl}
-                      />
-                      <p className=" font-medium truncate">{project.name}</p>
+                    <CardContent className="p-4 flex items-center   justify-between">
+                      <div className="flex gap-x-2.5 items-center">
+                        <ProjectAvatar
+                          className="size-12"
+                          fallbackClassname="text-lg"
+                          name={project.name}
+                          image={project.imageUrl}
+                        />
+                        <p className=" font-medium truncate">{project.name}</p>
+                      </div>
+                      <div className="flex items-center">
+                        <Button variant={"outline"}>
+                          <Link
+                            href={`/workspaces/${workspaceId}/projects/${project.$id}/settings`}
+                          >
+                            <Pencil className="size-4" />
+                          </Link>
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 </Link>
@@ -327,12 +387,28 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
 };
 
 interface MembersListProps {
+  currentMember: Member;
   data: Member[];
   total: number;
 }
 
-export const MembersList = ({ data, total }: MembersListProps) => {
+export const MembersList = ({
+  data,
+  total,
+  currentMember,
+}: MembersListProps) => {
   const workspaceId = useWorkspaceId();
+  const { mutate: kickMember, isPending: kickingMember } = useDeleteMember();
+  const onDelete = (id: string) => {
+    kickMember(
+      { param: { memberId: id } },
+      {
+        onSuccess: () => {
+          window.location.reload();
+        },
+      }
+    );
+  };
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
       <div className="bg-white dark:bg-neutral-950 hover:shadow-sm transition-all duration-300 hover:bg-muted border rounded-lg p-4">
@@ -366,15 +442,29 @@ export const MembersList = ({ data, total }: MembersListProps) => {
               <li key={member.$id}>
                 <Link href={`/workspaces/${workspaceId}/members/${member.$id}`}>
                   <Card className="shadow-none rounded-lg overflow-hidden">
-                    <CardContent className="p-4 flex flex-col items-center gap-y-2">
-                      <MemberAvatar className="size-12" name={member.name} />
-                      <div className="flex flex-col items-center overflow-hidden">
-                        <p className="text-sm font-medium line-clamp-1">
-                          {member.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground line-clamp-1">
-                          {member.email}
-                        </p>
+                    <CardContent className="p-4 flex items-center gap-y-2">
+                      <div className="w-full flex items-center gap-x-2.5">
+                        <MemberAvatar className="size-12" name={member.name} />
+                        <div className="flex flex-col items-start overflow-hidden">
+                          <p className="text-sm font-medium line-clamp-1">
+                            {member.name}
+                          </p>
+                          <p className="text-xs text-muted-foreground line-clamp-1">
+                            {member.email}
+                          </p>
+                        </div>
+                      </div>
+                      <div>
+                        {currentMember.role === MemberRole.ADMIN &&
+                          member.role !== MemberRole.ADMIN && (
+                            <Button
+                              onClick={() => onDelete(member.$id)}
+                              variant={"destructive"}
+                              size={"icon"}
+                            >
+                              <RiCloseFill className="size-4 " />
+                            </Button>
+                          )}
                       </div>
                     </CardContent>
                   </Card>
