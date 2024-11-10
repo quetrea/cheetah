@@ -118,8 +118,16 @@ export const WorkspaceIdClient = () => {
       <div className="h-full flex flex-col space-y-4 scroll-smooth">
         <Analytics data={analytics} />
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-          <TaskList data={tasks} total={workspaceTasks?.total ?? 0} />
-          <ProjectList data={projects} total={workspaceProjects?.total ?? 0} />
+          <TaskList
+            data={tasks}
+            total={workspaceTasks?.total ?? 0}
+            currentMember={workspaceMembers?.currentMember as Member}
+          />
+          <ProjectList
+            data={projects}
+            total={workspaceProjects?.total ?? 0}
+            currentMember={workspaceMembers?.currentMember as Member}
+          />
           <MembersList
             data={members}
             total={workspaceMembers?.total ?? 0}
@@ -143,10 +151,11 @@ export const WorkspaceIdClient = () => {
 };
 
 interface TaskListProps {
+  currentMember: Member;
   data: Task[];
   total: number;
 }
-export const TaskList = ({ data, total }: TaskListProps) => {
+export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
   const router = useRouter();
   const { open: createTask } = useCreateTaskModal();
   const { open: editTask } = useEditTaskModal();
@@ -248,13 +257,15 @@ export const TaskList = ({ data, total }: TaskListProps) => {
                             >
                               <Pencil className="size-4" />
                             </Button>
-                            <Button
-                              onClick={() => onDelete(task.$id)}
-                              variant={"outline"}
-                              size={"icon"}
-                            >
-                              <Trash className="size-4" />
-                            </Button>
+                            {currentMember.role === MemberRole.ADMIN && (
+                              <Button
+                                onClick={() => onDelete(task.$id)}
+                                variant={"outline"}
+                                size={"icon"}
+                              >
+                                <Trash className="size-4" />
+                              </Button>
+                            )}
                           </div>
                         </CardContent>
                       </Card>
@@ -313,11 +324,16 @@ export const TaskList = ({ data, total }: TaskListProps) => {
 };
 
 interface ProjectListProps {
+  currentMember: Member;
   data: Project[];
   total: number;
 }
 
-export const ProjectList = ({ data, total }: ProjectListProps) => {
+export const ProjectList = ({
+  data,
+  total,
+  currentMember,
+}: ProjectListProps) => {
   const { open: createProject } = useCreateProjectModal();
 
   const router = useRouter();
@@ -334,7 +350,7 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
           </Hint>
           <Hint label="Create a new project" side="left">
             <Button
-              className="dark:bg-neutral-950 "
+              className="dark:bg-neutral-900 "
               variant={"secondary"}
               size={"icon"}
               onClick={createProject}
@@ -362,15 +378,17 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
                         />
                         <p className=" font-medium truncate">{project.name}</p>
                       </div>
-                      <div className="flex items-center">
-                        <Button variant={"outline"}>
-                          <Link
-                            href={`/workspaces/${workspaceId}/projects/${project.$id}/settings`}
-                          >
-                            <Pencil className="size-4" />
-                          </Link>
-                        </Button>
-                      </div>
+                      {currentMember.role === MemberRole.ADMIN && (
+                        <div className="flex items-center">
+                          <Button variant={"outline"}>
+                            <Link
+                              href={`/workspaces/${workspaceId}/projects/${project.$id}/settings`}
+                            >
+                              <Pencil className="size-4" />
+                            </Link>
+                          </Button>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 </Link>
@@ -423,7 +441,7 @@ export const MembersList = ({
           </Hint>
           <Hint label="View member list" side="left">
             <Button
-              className="dark:bg-neutral-950"
+              className="dark:bg-neutral-900"
               asChild
               variant={"secondary"}
               size="icon"
@@ -436,28 +454,29 @@ export const MembersList = ({
         </div>
         <DottedSeparator className="my-4" />
 
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
           {data.map((member) => {
             return (
               <li key={member.$id}>
                 <Link href={`/workspaces/${workspaceId}/members/${member.$id}`}>
-                  <Card className="shadow-none rounded-lg overflow-hidden">
-                    <CardContent className="p-4 flex items-center gap-y-2">
-                      <div className="w-full flex items-center gap-x-2.5">
+                  <Card className="shadow-none rounded-lg overflow-hidden w-full">
+                    <CardContent className="p-4 flex items-center gap-x-2 justify-between group w-full">
+                      <div className="flex items-center gap-x-2">
                         <MemberAvatar className="size-12" name={member.name} />
                         <div className="flex flex-col items-start overflow-hidden">
                           <p className="text-sm font-medium line-clamp-1">
                             {member.name}
                           </p>
-                          <p className="text-xs text-muted-foreground line-clamp-1">
+                          <p className="text-xs text-muted-foreground line-clamp  truncate">
                             {member.email}
                           </p>
                         </div>
                       </div>
-                      <div>
+                      <div className="items-center ">
                         {currentMember.role === MemberRole.ADMIN &&
                           member.role !== MemberRole.ADMIN && (
                             <Button
+                              className="opacity-0 group-hover:opacity-100"
                               onClick={() => onDelete(member.$id)}
                               variant={"destructive"}
                               size={"icon"}
