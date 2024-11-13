@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Task } from "../types";
+import { Task, TaskStatus } from "../types";
 import { PencilIcon, PlusIcon } from "lucide-react";
 import { DottedSeparator } from "@/components/dotted-separator";
 import { OverviewProperty } from "./overview-property";
@@ -9,10 +9,11 @@ import { Badge } from "@/components/ui/badge";
 import { snakeCaseToTitleCase } from "@/lib/utils";
 import { useEditTaskModal } from "../hooks/use-edit-task-modal";
 import { useGetLabels } from "@/features/labels/api/use-get-labels";
-import { CreateLabelModal } from "@/features/labels/components/create-label-modal";
+
 import { useCreateLabelModal } from "@/features/labels/hooks/use-create-label-modal";
 import { useUpdateLabelModal } from "@/features/labels/hooks/use-update-label-modal";
 import { Hint } from "@/components/hint";
+import { format } from "date-fns";
 
 interface TaskOverviewProps {
   task: Task;
@@ -64,8 +65,14 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
                 <MemberAvatar name={task.assignee.name} className="size-6" />
                 <p className="text-sm font-medium">{task.assignee.name}</p>
               </OverviewProperty>
-              <OverviewProperty label="Due date">
+              <OverviewProperty label="Created At">
+                <div className="text-sm text-blue-500">
+                  {format(task.$createdAt, "PPP")}
+                </div>
+              </OverviewProperty>
+              <OverviewProperty label="End Date">
                 <TaskDate
+                  compeleted={task.status === TaskStatus.DONE}
                   value={task.dueDate}
                   className="text-sm font-medium"
                 />

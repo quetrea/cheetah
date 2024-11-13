@@ -54,6 +54,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import TaskAnalytics from "@/features/analytics/components/TaskAnalytics";
+import MembersPieChart from "@/features/analytics/components/MembersPieChart";
 
 export const WorkspaceIdClient = () => {
   const workspaceId = useWorkspaceId();
@@ -124,6 +126,29 @@ export const WorkspaceIdClient = () => {
       <LeaveDialog />
       <div className="h-full flex flex-col space-y-4 scroll-smooth">
         <Analytics data={analytics} />
+        <div className="rounded-lg shadow-lg w-full flex items-center  dark:shadow-neutral-700/50 transition dark:shadow-md justify-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 max-h-xl w-full gap-4  ">
+            <div className="flex flex-col h-full lg:flex-row">
+              <TaskAnalytics analytics={analytics} />
+            </div>
+
+            <div className="rounded-md border-transparent transition duration-300 border-2 hover:border-neutral-500 cursor-pointer items-center w-full  flex justify-center">
+              <MembersPieChart
+                totalMembers={workspaceMembers?.total ?? 0}
+                adminCount={
+                  workspaceMembers?.documents.filter(
+                    (member) => member.role === MemberRole.ADMIN
+                  ).length ?? 0
+                }
+                memberCount={
+                  workspaceMembers?.documents.filter(
+                    (member) => member.role === MemberRole.MEMBER
+                  ).length ?? 0
+                }
+              />
+            </div>
+          </div>
+        </div>
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
           <TaskList
             data={tasks}
@@ -234,7 +259,7 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
               <li key={task.$id}>
                 <Card className="shadow-none rounded-lg hover:opacity-75 transition flex justify-between items-center">
                   <CardContent className="p-4 flex  justify-between border w-full rounded-md items-center group">
-                    <div className="w-full flex flex-col  overflow-hidden">
+                    <div className="w-full flex flex-col gap-y-1 overflow-hidden">
                       <p className="text-sm truncate font-medium line-clamp-1 w-full">
                         {task.name}
                       </p>
@@ -242,17 +267,36 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
                         <p className="text-sm truncate ">
                           {task.project?.name}
                         </p>
-                        <div className="size-1 rounded-full bg-neutral-300" />
-                        <div className="text-xs text-muted-foreground flex items-center">
-                          <CalendarIcon className="size-3 mr-1" />
-                          <span className="truncate">
-                            {formatDistanceToNow(new Date(task.$createdAt))}
-                          </span>
+                        <div className="flex gap-x-2 items-center">
+                          <div className="size-1 rounded-full bg-neutral-300" />
+                          <div className="text-xs text-muted-foreground flex items-center gap-x-1  ">
+                            <CalendarIcon className="size-3 mr-1" />
+
+                            <span className="truncate flex text-xs items-center">
+                              <p className="mr-1">Created at</p>
+                              {format(
+                                new Date(task.$createdAt),
+                                "MM/dd/yyyy hh:mm a"
+                              )}
+                            </span>
+                          </div>
+                          <div className="size-1 rounded-full bg-neutral-300" />
+                          <div className="text-xs text-muted-foreground flex items-center gap-x-1  ">
+                            <CalendarIcon className="size-3 mr-1" />
+
+                            <span className="truncate flex text-xs items-center">
+                              <p className="mr-1">Due date</p>
+                              {format(
+                                new Date(task.dueDate),
+                                "MM/dd/yyyy hh:mm a"
+                              )}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="space-x-2   ">
+                    <div className="space-x-2">
                       <DropdownMenu modal={false}>
                         <DropdownMenuTrigger asChild>
                           <Button variant={"outline"} size={"icon"}>

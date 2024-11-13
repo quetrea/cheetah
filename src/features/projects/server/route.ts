@@ -271,8 +271,6 @@ const app = new Hono()
     const TaskCount = thisMonthTasks.total;
     const TaskDifferent = TaskCount - lastMonthTasks.total;
 
-    const lastMonthTaskCount = lastMonthTasks.total;
-
     const thisMonthAssignedTasks = await databases.listDocuments(
       DATABASE_ID,
       TASKS_ID,
