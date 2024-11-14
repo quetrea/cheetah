@@ -6,6 +6,7 @@ import members from "@/features/members/server/route";
 import workspaces from "@/features/workspaces/server/route";
 import projects from "@/features/projects/server/route";
 import tasks from "@/features/tasks/server/route";
+import subtasks from "@/features/subtasks/server/route";
 import plans from "@/features/plans/server/route";
 import labels from "@/features/labels/server/route";
 
@@ -17,6 +18,7 @@ const routes = app
   .route("/workspaces", workspaces)
   .route("/projects", projects)
   .route("/tasks", tasks)
+  .route("/subtasks", subtasks)
   .route("/plans", plans)
   .route("/labels", labels);
 

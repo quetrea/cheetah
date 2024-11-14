@@ -1,0 +1,279 @@
+import { useCreateSubTask } from "@/features/subtasks/api/use-create-subtask";
+import { useGetSubTasks } from "@/features/subtasks/api/use-get-subtasks";
+import { useUpdateSubTask } from "@/features/subtasks/api/use-update-subtasks";
+import { useState } from "react";
+import { Task } from "../types";
+import { Button } from "@/components/ui/button";
+import { CheckIcon, PlusIcon, XIcon } from "lucide-react";
+import { DottedSeparator } from "@/components/dotted-separator";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import { TaskProgress } from "./task-progress";
+import { sub } from "date-fns";
+
+import { Skeleton } from "@/components/ui/skeleton";
+
+interface SubTaskProps {
+  task: Task;
+}
+
+export const SubTasks = ({ task }: SubTaskProps) => {
+  const {
+    data: subTasks,
+    isLoading: subTasksLoading,
+    error,
+  } = useGetSubTasks({
+    taskId: task.$id,
+    workspaceId: task.workspaceId,
+  });
+  const { mutate: createSubTask } = useCreateSubTask();
+  const { mutate: updateSubTask } = useUpdateSubTask();
+  const [isCreating, setIsCreating] = useState(false);
+  const [newSubTaskTitle, setNewSubTaskTitle] = useState("");
+  const [editingSubTaskId, setEditingSubTaskId] = useState<string | null>(null);
+  const [editedTitle, setEditedTitle] = useState("");
+
+  const handleCreateSubTask = () => {
+    if (newSubTaskTitle.trim()) {
+      createSubTask(
+        {
+          json: {
+            title: newSubTaskTitle.trim(),
+            taskId: task.$id,
+            projectId: task.projectId,
+            workspaceId: task.workspaceId,
+            creatorId: task.assigneeId,
+            completed: false,
+          },
+        },
+        {
+          onSuccess: () => {
+            setNewSubTaskTitle("");
+            setIsCreating(false);
+          },
+        }
+      );
+    }
+  };
+  return (
+    <div className="dark:bg-neutral-900 hover:bg-neutral-100 p-4  rounded-md">
+      <div className="flex items-center justify-between">
+        <p className="text-lg font-medium">Sub Tasks</p>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setIsCreating(true)}
+          className={cn(
+            "hover:bg-neutral-100 dark:hover:bg-neutral-800",
+            isCreating && "hidden"
+          )}
+        >
+          <PlusIcon className="h-4 w-4" />
+        </Button>
+      </div>
+      <DottedSeparator className="my-4" />
+
+      <div className="flex flex-col gap-y-2">
+        <div className="flex flex-col">
+          {subTasksLoading ? (
+            <div className="space-y-3">
+              <div className="flex items-center space-x-4">
+                <Skeleton className="h-4 w-4 rounded" />
+                <Skeleton className="h-4 w-[80%]" />
+              </div>
+              <div className="flex items-center space-x-4">
+                <Skeleton className="h-4 w-4 rounded" />
+                <Skeleton className="h-4 w-[70%]" />
+              </div>
+              <div className="flex items-center space-x-4">
+                <Skeleton className="h-4 w-4 rounded" />
+                <Skeleton className="h-4 w-[60%]" />
+              </div>
+              <div className="mt-6">
+                <Skeleton className="h-4 w-[100%]" />
+                <div className="mt-2">
+                  <Skeleton className="h-2 w-[60%]" />
+                </div>
+              </div>
+            </div>
+          ) : error ? (
+            <div className="text-red-500 text-center py-4">
+              {!subTasks?.documents.length && !isCreating && (
+                <div className="text-md text-muted-foreground text-center py-2">
+                  No subtasks yet or not yet set
+                </div>
+              )}
+            </div>
+          ) : null}
+          {subTasks?.documents.map((subtask) => (
+            <div
+              key={subtask.$id}
+              className="flex items-center gap-x-2  p-2 border-2 hover:opacity-75 cursor-pointer rounded-lg"
+            >
+              <Checkbox
+                checked={subtask.completed}
+                onCheckedChange={(checked) => {
+                  if (typeof checked === "boolean") {
+                    // Optimistic update
+                    const oldValue = subtask.completed;
+                    updateSubTask({
+                      json: {
+                        title: subtask.title,
+                        completed: checked,
+                      },
+                      param: {
+                        subTaskId: subtask.$id,
+                      },
+                    });
+                  }
+                }}
+              />
+              {editingSubTaskId === subtask.$id ? (
+                <div className="flex-1 flex items-center gap-x-2">
+                  <Input
+                    value={editedTitle}
+                    onChange={(e) => setEditedTitle(e.target.value)}
+                    className="text-sm"
+                    autoFocus
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && editedTitle.trim()) {
+                        updateSubTask({
+                          json: {
+                            title: editedTitle.trim(),
+                            completed: subtask.completed,
+                          },
+                          param: {
+                            subTaskId: subtask.$id,
+                          },
+                        });
+                        setEditingSubTaskId(null);
+                      }
+                      if (e.key === "Escape") {
+                        setEditingSubTaskId(null);
+                      }
+                    }}
+                  />
+                  <div className="flex items-center gap-x-2">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => {
+                        updateSubTask({
+                          json: {
+                            title: editedTitle.trim(),
+                            completed: subtask.completed,
+                          },
+                          param: {
+                            subTaskId: subtask.$id,
+                          },
+                        });
+                        setEditingSubTaskId(null);
+                      }}
+                      className="h-8 w-8 p-0 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                    >
+                      <CheckIcon className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setEditingSubTaskId(null)}
+                      className="h-8 w-8 p-0 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                    >
+                      <XIcon className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div
+                  onClick={() => {
+                    setEditingSubTaskId(subtask.$id);
+                    setEditedTitle(subtask.title);
+                  }}
+                  className={cn(
+                    "flex-1 text-sm px-3 py-2",
+                    subtask.completed && "line-through text-muted-foreground"
+                  )}
+                >
+                  {subtask.title}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {subTasks && subTasks.total > 0 && (
+          <div className="flex justify-end mt-auto">
+            <div className="w-full p-4">
+              <TaskProgress subtasks={subTasks?.documents} />
+            </div>
+          </div>
+        )}
+
+        {isCreating && (
+          <div className="flex flex-col gap-y-2">
+            <div className="flex items-center gap-x-2 p-4 py-2">
+              <Checkbox checked={false} disabled />
+              <input
+                type="text"
+                className="flex-1 bg-transparent text-sm border-none focus:outline-none"
+                placeholder="Add subtask..."
+                value={newSubTaskTitle}
+                onChange={(e) => setNewSubTaskTitle(e.target.value)}
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && newSubTaskTitle.trim()) {
+                    handleCreateSubTask();
+                  }
+                  if (e.key === "Escape") {
+                    setIsCreating(false);
+                    setNewSubTaskTitle("");
+                  }
+                }}
+              />
+
+              <div className="flex items-center gap-x-2">
+                {newSubTaskTitle.trim() && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={handleCreateSubTask}
+                    className="h-8 w-8 md:h-4 md:w-4 p-0 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                  >
+                    <CheckIcon className="h-4 w-4 md:h-3 md:w-3" />
+                  </Button>
+                )}
+
+                <div className="flex items-center">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => {
+                      setIsCreating(false);
+                      setNewSubTaskTitle("");
+                    }}
+                    className="h-8 w-8 p-0 hover:bg-neutral-100 dark:hover:bg-neutral-800 md:hidden"
+                  >
+                    <XIcon className="h-4 w-4" />
+                  </Button>
+
+                  <span className="hidden md:inline-flex items-center text-xs text-muted-foreground whitespace-nowrap">
+                    Press{" "}
+                    <kbd className="px-1 mx-1 bg-neutral-100 dark:bg-neutral-800 rounded">
+                      Enter
+                    </kbd>{" "}
+                    to save,{" "}
+                    <kbd className="px-1 mx-1 bg-neutral-100 dark:bg-neutral-800 rounded">
+                      Esc
+                    </kbd>{" "}
+                    to cancel
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};

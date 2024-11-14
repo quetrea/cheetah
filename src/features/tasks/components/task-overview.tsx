@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Task, TaskStatus } from "../types";
-import { PencilIcon, PlusIcon } from "lucide-react";
+import { PencilIcon, PlusIcon, CheckIcon, XIcon } from "lucide-react";
 import { DottedSeparator } from "@/components/dotted-separator";
 import { OverviewProperty } from "./overview-property";
 import { MemberAvatar } from "@/features/members/components/member-avatar";
@@ -14,6 +14,7 @@ import { useCreateLabelModal } from "@/features/labels/hooks/use-create-label-mo
 import { useUpdateLabelModal } from "@/features/labels/hooks/use-update-label-modal";
 import { Hint } from "@/components/hint";
 import { format } from "date-fns";
+import { TaskOverviewSkeleton } from "./skeletons/task-overview-skeleton";
 
 interface TaskOverviewProps {
   task: Task;
@@ -21,9 +22,11 @@ interface TaskOverviewProps {
 
 export const TaskOverview = ({ task }: TaskOverviewProps) => {
   const { open } = useEditTaskModal();
+
   const { data, isLoading } = useGetLabels({ taskId: task.$id });
   const { open: createModal, setProjectId } = useCreateLabelModal();
   const { open: updateModal, setLabelId } = useUpdateLabelModal();
+
   const handleCreate = async () => {
     setProjectId(task.projectId);
     createModal();
@@ -33,9 +36,14 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
     setLabelId(id);
     updateModal();
   };
+
+  if (isLoading) {
+    return <TaskOverviewSkeleton />;
+  }
+
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
-      <div className="bg-muted dark:bg-neutral-900 h-full rounded-lg p-4">
+      <div className="bg-muted dark:bg-neutral-900 h-full rounded-lg p-4 space-y-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Overview</p>
           <Button

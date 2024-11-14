@@ -191,7 +191,7 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
   const router = useRouter();
   const { open: createTask } = useCreateTaskModal();
   const { open: editTask } = useEditTaskModal();
-  const { mutate: deleteTask, isPending } = useDeleteTask();
+  const { mutate: deleteTask } = useDeleteTask();
   const workspaceId = useWorkspaceId();
   const [slice, setSlice] = useState(3);
 

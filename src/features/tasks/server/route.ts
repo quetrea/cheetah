@@ -10,16 +10,16 @@ import { createAdminClient } from "@/lib/appwrite";
 import { sessionMiddleware } from "@/lib/session-Middleware";
 import {
   DATABASE_ID,
-  LABELS_ID,
   MEMBERS_ID,
   PROJECTS_ID,
+  SUBTASKS_ID,
   TASKS_ID,
 } from "@/config";
 
 import { Priority, Task, TaskStatus } from "../types";
 import { createTaskSchema } from "../schemas";
 import { Member } from "@/features/members/types";
-import { Label } from "@/features/labels/types";
+import { SubTask } from "@/features/subtasks/types";
 
 const app = new Hono()
   .delete("/:taskId", sessionMiddleware, async (c) => {
@@ -44,7 +44,18 @@ const app = new Hono()
       return c.json({ error: "Unauthorized" }, 401);
     }
 
-    await databases.deleteDocument(DATABASE_ID, TASKS_ID, taskId);
+    const subtasks = await databases.listDocuments<SubTask>(
+      DATABASE_ID,
+      SUBTASKS_ID,
+      [Query.equal("taskId", taskId)]
+    );
+
+    await Promise.all([
+      ...subtasks.documents.map((subtask) =>
+        databases.deleteDocument(DATABASE_ID, SUBTASKS_ID, subtask.$id)
+      ),
+      databases.deleteDocument(DATABASE_ID, TASKS_ID, taskId),
+    ]);
 
     return c.json({ data: { $id: task.$id } });
   })
@@ -205,7 +216,6 @@ const app = new Hono()
     async (c) => {
       const user = c.get("user");
       const databases = c.get("databases");
-      const messaging = c.get("messaging");
 
       const {
         name,
