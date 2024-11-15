@@ -126,16 +126,6 @@ const app = new Hono()
 
     const { taskId } = c.req.query();
 
-    const member = await getMember({
-      databases,
-      workspaceId: user.$id,
-      userId: user.$id,
-    });
-
-    if (!member) {
-      return c.json({ error: "Unauthorized" }, 401);
-    }
-
     const subtasks = await databases.listDocuments<SubTask>(
       DATABASE_ID,
       SUBTASKS_ID,
@@ -152,7 +142,7 @@ const app = new Hono()
       const user = c.get("user");
       const databases = c.get("databases");
 
-      const { title, taskId, projectId, workspaceId, creatorId, completed } =
+      const { title, taskId, projectId, workspaceId, creatorId } =
         c.req.valid("json");
 
       const member = await getMember({
@@ -218,7 +208,7 @@ const app = new Hono()
         }
       }
 
-      const subtask = await databases.updateDocument<SubTask>(
+      const updatedSubTask = await databases.updateDocument<SubTask>(
         DATABASE_ID,
         SUBTASKS_ID,
         subTaskId,
@@ -228,7 +218,7 @@ const app = new Hono()
         }
       );
 
-      return c.json({ data: subtask });
+      return c.json({ data: { ...updatedSubTask } });
     }
   )
   .delete(
