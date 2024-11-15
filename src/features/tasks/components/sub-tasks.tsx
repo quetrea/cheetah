@@ -1,7 +1,7 @@
 import { useCreateSubTask } from "@/features/subtasks/api/use-create-subtask";
 import { useGetSubTasks } from "@/features/subtasks/api/use-get-subtasks";
 import { useUpdateSubTask } from "@/features/subtasks/api/use-update-subtasks";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Task } from "../types";
 import { Button } from "@/components/ui/button";
 import { CheckIcon, PlusIcon, XIcon } from "lucide-react";
@@ -16,6 +16,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 interface SubTaskProps {
   task: Task;
+}
+interface LocalSubTaskState {
+  [key: string]: boolean; // subtask id -> completed state
 }
 
 export const SubTasks = ({ task }: SubTaskProps) => {
@@ -33,6 +36,51 @@ export const SubTasks = ({ task }: SubTaskProps) => {
   const [newSubTaskTitle, setNewSubTaskTitle] = useState("");
   const [editingSubTaskId, setEditingSubTaskId] = useState<string | null>(null);
   const [editedTitle, setEditedTitle] = useState("");
+  const [localCompletionState, setLocalCompletionState] =
+    useState<LocalSubTaskState>({});
+
+  useEffect(() => {
+    if (subTasks?.documents) {
+      const initialState = subTasks.documents.reduce(
+        (acc, subtask) => ({
+          ...acc,
+          [subtask.$id]: subtask.completed,
+        }),
+        {}
+      );
+      setLocalCompletionState(initialState);
+    }
+  }, [subTasks?.documents]);
+
+  const handleCompletionChange = useCallback(
+    async (subtaskId: string, checked: boolean) => {
+      const subtask = subTasks?.documents.find((st) => st.$id === subtaskId);
+      if (!subtask) return;
+
+      setLocalCompletionState((prev) => ({
+        ...prev,
+        [subtaskId]: checked,
+      }));
+
+      try {
+        await updateSubTask({
+          json: {
+            title: subtask.title,
+            completed: checked,
+          },
+          param: {
+            subTaskId: subtaskId,
+          },
+        });
+      } catch (error) {
+        setLocalCompletionState((prev) => ({
+          ...prev,
+          [subtaskId]: !checked,
+        }));
+      }
+    },
+    [subTasks?.documents, updateSubTask]
+  );
 
   const handleCreateSubTask = () => {
     if (newSubTaskTitle.trim()) {
@@ -106,106 +154,107 @@ export const SubTasks = ({ task }: SubTaskProps) => {
               )}
             </div>
           ) : null}
-          {subTasks?.documents.map((subtask) => (
-            <div
-              key={subtask.$id}
-              className="flex items-center gap-x-2  p-2 border-2 hover:opacity-75 cursor-pointer rounded-lg"
-            >
-              <Checkbox
-                checked={subtask.completed}
-                onCheckedChange={(checked) => {
-                  if (typeof checked === "boolean") {
-                    // Optimistic update
-                    const oldValue = subtask.completed;
-                    updateSubTask({
-                      json: {
-                        title: subtask.title,
-                        completed: checked,
-                      },
-                      param: {
-                        subTaskId: subtask.$id,
-                      },
-                    });
+
+          <div className="flex flex-col gap-y-2">
+            {subTasks?.documents.map((subtask) => (
+              <div
+                key={subtask.$id}
+                className="flex items-center gap-x-2 px-2 border-2 hover:opacity-75 cursor-pointer rounded-lg transition-all duration-200 ease-in-out"
+              >
+                <Checkbox
+                  checked={
+                    localCompletionState[subtask.$id] ?? subtask.completed
                   }
-                }}
-              />
-              {editingSubTaskId === subtask.$id ? (
-                <div className="flex-1 flex items-center gap-x-2">
-                  <Input
-                    value={editedTitle}
-                    onChange={(e) => setEditedTitle(e.target.value)}
-                    className="text-sm"
-                    autoFocus
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && editedTitle.trim()) {
-                        updateSubTask({
-                          json: {
-                            title: editedTitle.trim(),
-                            completed: subtask.completed,
-                          },
-                          param: {
-                            subTaskId: subtask.$id,
-                          },
-                        });
-                        setEditingSubTaskId(null);
-                      }
-                      if (e.key === "Escape") {
-                        setEditingSubTaskId(null);
-                      }
-                    }}
-                  />
-                  <div className="flex items-center gap-x-2">
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => {
-                        updateSubTask({
-                          json: {
-                            title: editedTitle.trim(),
-                            completed: subtask.completed,
-                          },
-                          param: {
-                            subTaskId: subtask.$id,
-                          },
-                        });
-                        setEditingSubTaskId(null);
-                      }}
-                      className="h-8 w-8 p-0 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                    >
-                      <CheckIcon className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => setEditingSubTaskId(null)}
-                      className="h-8 w-8 p-0 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                    >
-                      <XIcon className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                <div
-                  onClick={() => {
-                    setEditingSubTaskId(subtask.$id);
-                    setEditedTitle(subtask.title);
+                  onCheckedChange={(checked) => {
+                    if (typeof checked === "boolean") {
+                      handleCompletionChange(subtask.$id, checked);
+                    }
                   }}
-                  className={cn(
-                    "flex-1 text-sm px-3 py-2",
-                    subtask.completed && "line-through text-muted-foreground"
-                  )}
-                >
-                  {subtask.title}
-                </div>
-              )}
-            </div>
-          ))}
+                />
+                {editingSubTaskId === subtask.$id ? (
+                  <div className="flex-1 flex items-center gap-x-2">
+                    <Input
+                      value={editedTitle}
+                      onChange={(e) => setEditedTitle(e.target.value)}
+                      className="text-sm"
+                      autoFocus
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && editedTitle.trim()) {
+                          updateSubTask({
+                            json: {
+                              title: editedTitle.trim(),
+                              completed: subtask.completed,
+                            },
+                            param: {
+                              subTaskId: subtask.$id,
+                            },
+                          });
+                          setEditingSubTaskId(null);
+                        }
+                        if (e.key === "Escape") {
+                          setEditingSubTaskId(null);
+                        }
+                      }}
+                    />
+                    <div className="flex items-center gap-x-2">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => {
+                          updateSubTask({
+                            json: {
+                              title: editedTitle.trim(),
+                              completed: subtask.completed,
+                            },
+                            param: {
+                              subTaskId: subtask.$id,
+                            },
+                          });
+                          setEditingSubTaskId(null);
+                        }}
+                        className="h-8 w-8 p-0 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                      >
+                        <CheckIcon className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => setEditingSubTaskId(null)}
+                        className="h-8 w-8 p-0 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                      >
+                        <XIcon className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => {
+                      setEditingSubTaskId(subtask.$id);
+                      setEditedTitle(subtask.title);
+                    }}
+                    className={cn(
+                      "flex-1 text-sm px-3 py-2 transition-all duration-200",
+                      localCompletionState[subtask.$id] &&
+                        "line-through text-muted-foreground"
+                    )}
+                  >
+                    {subtask.title}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
 
         {subTasks && subTasks.total > 0 && (
           <div className="flex justify-end mt-auto">
             <div className="w-full p-4">
-              <TaskProgress subtasks={subTasks?.documents} />
+              <TaskProgress
+                subtasks={subTasks.documents.map((st) => ({
+                  ...st,
+                  completed: localCompletionState[st.$id] ?? st.completed,
+                }))}
+              />
             </div>
           </div>
         )}

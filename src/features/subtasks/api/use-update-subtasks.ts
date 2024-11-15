@@ -28,7 +28,7 @@ export const useUpdateSubTask = () => {
       return await response.json();
     },
     onSuccess: ({ data }) => {
-      toast.success("Subtask updated");
+      if (data.completed === true) toast.success("Subtask completed");
 
       queryClient.invalidateQueries({ queryKey: ["workspace-analytics"] });
       queryClient.invalidateQueries({ queryKey: ["project-analytics"] });
