@@ -11,5 +11,6 @@ export const createSubTask = z.object({
 
 export const updateSubTask = z.object({
   title: z.string().min(1, "Title is required"),
+  workspaceId: z.string().min(1, "Workspace ID is required"),
   completed: z.boolean().default(false),
 });

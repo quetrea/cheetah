@@ -186,10 +186,37 @@ const app = new Hono()
     sessionMiddleware,
     zValidator("json", updateSubTask),
     async (c) => {
+      const user = c.get("user");
       const databases = c.get("databases");
 
-      const { title, completed } = c.req.valid("json");
+      const { title, completed, workspaceId } = c.req.valid("json");
       const { subTaskId } = c.req.param();
+
+      const member = await getMember({
+        databases,
+        workspaceId,
+        userId: user.$id,
+      });
+
+      if (!member) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const subTask = await databases.getDocument<SubTask>(
+        DATABASE_ID,
+        SUBTASKS_ID,
+        subTaskId
+      );
+
+      if (!subTask) {
+        return c.json({ error: "Subtask not found" }, 404);
+      }
+
+      if (completed) {
+        if (subTask.completed) {
+          return c.json({ error: "Subtask already completed" }, 400);
+        }
+      }
 
       const subtask = await databases.updateDocument<SubTask>(
         DATABASE_ID,
@@ -202,6 +229,42 @@ const app = new Hono()
       );
 
       return c.json({ data: subtask });
+    }
+  )
+  .delete(
+    "/:subTaskId",
+    sessionMiddleware,
+    zValidator("json", z.object({ workspaceId: z.string() })),
+    async (c) => {
+      const user = c.get("user");
+      const databases = c.get("databases");
+
+      const { subTaskId } = c.req.param();
+      const { workspaceId } = c.req.valid("json");
+
+      const member = await getMember({
+        databases,
+        workspaceId,
+        userId: user.$id,
+      });
+
+      if (!member) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const subTask = await databases.getDocument(
+        DATABASE_ID,
+        SUBTASKS_ID,
+        subTaskId
+      );
+
+      if (!subTask) {
+        return c.json({ error: "Subtask not found" }, 404);
+      }
+
+      await databases.deleteDocument(DATABASE_ID, SUBTASKS_ID, subTask.$id);
+
+      return c.json({ data: subTask });
     }
   );
 
