@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
@@ -76,6 +76,19 @@ export const WebhookManager = () => {
     },
   });
 
+  useEffect(() => {
+    if (!isCreating) {
+      form.reset({
+        workspaceId,
+        name: "",
+        url: "",
+        events: [],
+        secret: "",
+        isActive: true,
+      });
+    }
+  }, [isCreating, form, workspaceId]);
+
   const onSubmit = (values: z.infer<typeof createWebhookSchema>) => {
     console.log("Form values before submit:", values);
     createWebhook(
@@ -130,7 +143,19 @@ export const WebhookManager = () => {
           </p>
         </div>
         <Button
-          onClick={() => setIsCreating(!isCreating)}
+          onClick={() => {
+            setIsCreating(!isCreating);
+            if (!isCreating) {
+              form.reset({
+                workspaceId,
+                name: "",
+                url: "",
+                events: [],
+                secret: "",
+                isActive: true,
+              });
+            }
+          }}
           className="w-full sm:w-auto"
         >
           {isCreating ? "Cancel" : "Add Webhook"}
