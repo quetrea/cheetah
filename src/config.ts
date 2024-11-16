@@ -5,6 +5,7 @@ export const PROJECTS_ID = process.env.NEXT_PUBLIC_APPWRITE_PROJECTS_ID!;
 export const TASKS_ID = process.env.NEXT_PUBLIC_APPWRITE_TASKS_ID!;
 export const LABELS_ID = process.env.NEXT_PUBLIC_APPWRITE_LABELS_ID!;
 export const SUBTASKS_ID = process.env.NEXT_PUBLIC_APPWRITE_SUBTASKS_ID!;
+export const WEBHOOKS_ID = process.env.NEXT_PUBLIC_APPWRITE_WEBHOOKS_ID!;
 
 export const PLANS_ID = process.env.NEXT_PUBLIC_APPWRITE_PLANS_ID!;
 

@@ -33,7 +33,12 @@ import { Workspace } from "../types";
 import { MemberRole } from "@/features/members/types";
 
 // İkonlar
-import { ArrowLeftIcon, CopyIcon, ImageIcon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CopyIcon,
+  ImageIcon,
+} from "lucide-react";
 
 // API çağrıları
 import { useUpdateWorkspace } from "../api/use-update-workspace";
@@ -44,6 +49,7 @@ import { useGetMembers } from "@/features/members/api/use-get-members";
 import { useWorkspaceId } from "../hooks/use-workspace-id";
 import { toast } from "sonner"; // Toast bildirimleri
 import { useLeaveWorkspace } from "../api/use-leave-workspace";
+import { WebhookManager } from "@/features/webhooks/components/webhook-manager";
 
 interface EditWorkspaceFormProps {
   onCancel?: () => void;
@@ -180,9 +186,25 @@ export const EditWorkspaceForm = ({
                 <ArrowLeftIcon className="size-4 mr-2" />
                 Back
               </Button>
-              <CardTitle className="text-xl font-bold">
+              <CardTitle className="text-xl flex-1 font-bold">
                 {initialValues.name}
               </CardTitle>
+
+              <Button
+                size={"sm"}
+                variant={"secondary"}
+                onClick={
+                  onCancel
+                    ? onCancel
+                    : () =>
+                        router.push(
+                          `/workspaces/${initialValues.$id}/settings/webhooks`
+                        )
+                }
+              >
+                <ArrowRightIcon className="size-4 mr-2" />
+                Webhooks
+              </Button>
             </CardHeader>
             <div className="px-7">
               <DottedSeparator />

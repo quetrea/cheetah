@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { UserButton } from "@/features/auth/components/user-button";
+import { ThemeToggle } from "@/components/themes/theme-toggle";
 
 interface StandaloneLayoutProps {
   children: React.ReactNode;
@@ -19,7 +20,10 @@ const StandaloneLayout = ({ children }: StandaloneLayoutProps) => {
               <Image src="/LightLogo.svg" height={56} width={152} alt="Logo" />
             </div>
           </Link>
-          <UserButton />
+          <div className="flex items-center gap-x-4">
+            <ThemeToggle />
+            <UserButton />
+          </div>
         </nav>
         <div className="flex flex-col items-center justify-center py-4">
           {children}

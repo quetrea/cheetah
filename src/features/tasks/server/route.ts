@@ -14,12 +14,20 @@ import {
   PROJECTS_ID,
   SUBTASKS_ID,
   TASKS_ID,
+  WEBHOOKS_ID,
 } from "@/config";
 
 import { Priority, Task, TaskStatus } from "../types";
 import { createTaskSchema } from "../schemas";
 import { Member } from "@/features/members/types";
 import { SubTask } from "@/features/subtasks/types";
+import {
+  generateSignature,
+  sendDiscordWebhook,
+  statusColors,
+  triggerWebhooks,
+} from "@/lib/webhook";
+import { Webhook, WebhookEvent } from "@/features/webhooks/types";
 
 const app = new Hono()
   .delete("/:taskId", sessionMiddleware, async (c) => {
@@ -56,6 +64,32 @@ const app = new Hono()
       ),
       databases.deleteDocument(DATABASE_ID, TASKS_ID, taskId),
     ]);
+
+    const webhooks = await databases.listDocuments<Webhook>(
+      DATABASE_ID,
+      WEBHOOKS_ID,
+      [Query.equal("workspaceId", task.workspaceId)]
+    );
+
+    const activeWebhooks = webhooks.documents.filter(
+      (webhook) =>
+        webhook.isActive && webhook.events.includes(WebhookEvent.TASK_DELETED)
+    );
+
+    await Promise.allSettled(
+      activeWebhooks.map(async (webhook) => {
+        try {
+          await sendDiscordWebhook(webhook, {
+            title: "Task Deleted",
+            description: `Task "${task.name}" has been deleted`,
+            fields: [{ name: "Task ID", value: task.$id, inline: true }],
+            color: 0xef4444,
+          });
+        } catch (error) {
+          console.error(`Webhook delivery failed for ${webhook.url}:`, error);
+        }
+      })
+    );
 
     return c.json({ data: { $id: task.$id } });
   })
@@ -268,6 +302,40 @@ const app = new Hono()
         }
       );
 
+      const webhooks = await databases.listDocuments<Webhook>(
+        DATABASE_ID,
+        WEBHOOKS_ID,
+        [Query.equal("workspaceId", task.workspaceId)]
+      );
+
+      const activeWebhooks = webhooks.documents.filter(
+        (webhook) =>
+          webhook.isActive && webhook.events.includes(WebhookEvent.TASK_CREATED)
+      );
+
+      // ... existing code ...
+      await Promise.allSettled(
+        activeWebhooks.map(async (webhook) => {
+          try {
+            await sendDiscordWebhook(webhook, {
+              title: "Task Created",
+              description: `Task "${task.name}" has been created`,
+              fields: [
+                { name: "Status", value: task.status, inline: true },
+                {
+                  name: "Priority",
+                  value: task.priority || "Not set",
+                  inline: true,
+                },
+              ],
+              color: statusColors[task.status as keyof typeof statusColors],
+            });
+          } catch (error) {
+            console.error(`Webhook delivery failed for ${webhook.url}:`, error);
+          }
+        })
+      );
+
       return c.json({ data: task });
     }
   )
@@ -320,6 +388,41 @@ const app = new Hono()
           priority,
         }
       );
+
+      const webhooks = await databases.listDocuments<Webhook>(
+        DATABASE_ID,
+        WEBHOOKS_ID,
+        [Query.equal("workspaceId", existingTask.workspaceId)]
+      );
+
+      const activeWebhooks = webhooks.documents.filter(
+        (webhook) =>
+          webhook.isActive && webhook.events.includes(WebhookEvent.TASK_UPDATED)
+      );
+
+      // ... existing code ...
+      await Promise.allSettled(
+        activeWebhooks.map(async (webhook) => {
+          try {
+            await sendDiscordWebhook(webhook, {
+              title: "Task Updated",
+              description: `Task "${task.name}" has been updated`,
+              fields: [
+                { name: "Status", value: task.status, inline: true },
+                {
+                  name: "Priority",
+                  value: task.priority || "Not set",
+                  inline: true,
+                },
+              ],
+              color: statusColors[task.status as keyof typeof statusColors],
+            });
+          } catch (error) {
+            console.error(`Webhook delivery failed for ${webhook.url}:`, error);
+          }
+        })
+      );
+      // ... existing code ...
 
       return c.json({ data: task });
     }
@@ -429,6 +532,59 @@ const app = new Hono()
             status,
             position,
           });
+        })
+      );
+
+      const webhooks = await databases.listDocuments<Webhook>(
+        DATABASE_ID,
+        WEBHOOKS_ID,
+        [Query.equal("workspaceId", workspaceId)]
+      );
+
+      const activeWebhooks = webhooks.documents.filter(
+        (webhook) =>
+          webhook.isActive && webhook.events.includes(WebhookEvent.TASK_UPDATED)
+      );
+
+      // Prepare webhook payload with more details
+      await Promise.allSettled(
+        activeWebhooks.map(async (webhook) => {
+          try {
+            const taskDetails = updatedTasks.map((task) => ({
+              name: task.name,
+              status: task.status,
+              position: task.position,
+              url: `${process.env.NEXT_PUBLIC_APP_URL}/tasks/${task.$id}`, // Add your app URL
+            }));
+
+            await sendDiscordWebhook(webhook, {
+              title: "Bulk Task Update",
+              description: `${updatedTasks.length} tasks have been updated`,
+              fields: [
+                {
+                  name: "Updated Tasks",
+                  value: taskDetails
+                    .map((task) => `• ${task.name} - ${task.status}`)
+                    .join("\n")
+                    .slice(0, 1024), // Discord field value limit
+                  inline: false,
+                },
+                {
+                  name: "Workspace",
+                  value: workspaceId,
+                  inline: true,
+                },
+                {
+                  name: "Updated By",
+                  value: user.email || user.$id,
+                  inline: true,
+                },
+              ],
+              color: 0x3b82f6,
+            });
+          } catch (error) {
+            console.error(`Webhook delivery failed for ${webhook.url}:`, error);
+          }
         })
       );
 

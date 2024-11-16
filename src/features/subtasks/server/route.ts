@@ -11,10 +11,13 @@ import {
   SUBTASKS_ID,
   TASKS_ID,
   WORKSPACES_ID,
+  WEBHOOKS_ID,
 } from "@/config";
 import { Project } from "@/features/projects/types";
 import { Task } from "@/features/tasks/types";
 import { Workspace } from "@/features/workspaces/types";
+import { Webhook, WebhookEvent } from "@/features/webhooks/types";
+import { sendDiscordWebhook } from "@/lib/webhook";
 import { createSubTask, updateSubTask } from "../schemas";
 
 const app = new Hono()
@@ -168,6 +171,35 @@ const app = new Hono()
         }
       );
 
+      const webhooks = await databases.listDocuments<Webhook>(
+        DATABASE_ID,
+        WEBHOOKS_ID,
+        [Query.equal("workspaceId", workspaceId)]
+      );
+
+      const activeWebhooks = webhooks.documents.filter(
+        (webhook) =>
+          webhook.isActive &&
+          webhook.events.includes(WebhookEvent.SUBTASK_CREATED)
+      );
+
+      await Promise.allSettled(
+        activeWebhooks.map(async (webhook) => {
+          try {
+            await sendDiscordWebhook(webhook, {
+              title: "Subtask Created",
+              description: `New subtask "${subtask.title}" has been created`,
+              fields: [
+                { name: "Task ID", value: subtask.taskId, inline: true },
+                { name: "Created By", value: user.email, inline: true },
+              ],
+            });
+          } catch (error) {
+            console.error(`Webhook delivery failed for ${webhook.url}:`, error);
+          }
+        })
+      );
+
       return c.json({ data: subtask });
     }
   )
@@ -218,6 +250,39 @@ const app = new Hono()
         }
       );
 
+      const webhooks = await databases.listDocuments<Webhook>(
+        DATABASE_ID,
+        WEBHOOKS_ID,
+        [Query.equal("workspaceId", workspaceId)]
+      );
+
+      const activeWebhooks = webhooks.documents.filter(
+        (webhook) =>
+          webhook.isActive &&
+          webhook.events.includes(WebhookEvent.SUBTASK_UPDATED)
+      );
+
+      await Promise.allSettled(
+        activeWebhooks.map(async (webhook) => {
+          try {
+            await sendDiscordWebhook(webhook, {
+              title: "Subtask Updated",
+              description: `Subtask "${updatedSubTask.title}" has been updated`,
+              fields: [
+                {
+                  name: "Status",
+                  value: completed ? "Completed" : "Pending",
+                  inline: true,
+                },
+                { name: "Updated By", value: user.email, inline: true },
+              ],
+            });
+          } catch (error) {
+            console.error(`Webhook delivery failed for ${webhook.url}:`, error);
+          }
+        })
+      );
+
       return c.json({ data: { ...updatedSubTask } });
     }
   )
@@ -253,6 +318,35 @@ const app = new Hono()
       }
 
       await databases.deleteDocument(DATABASE_ID, SUBTASKS_ID, subTask.$id);
+
+      const webhooks = await databases.listDocuments<Webhook>(
+        DATABASE_ID,
+        WEBHOOKS_ID,
+        [Query.equal("workspaceId", workspaceId)]
+      );
+
+      const activeWebhooks = webhooks.documents.filter(
+        (webhook) =>
+          webhook.isActive &&
+          webhook.events.includes(WebhookEvent.SUBTASK_DELETED)
+      );
+
+      await Promise.allSettled(
+        activeWebhooks.map(async (webhook) => {
+          try {
+            await sendDiscordWebhook(webhook, {
+              title: "Subtask Deleted",
+              description: `Subtask "${subTask.title}" has been deleted`,
+              fields: [
+                { name: "Task ID", value: subTask.taskId, inline: true },
+                { name: "Deleted By", value: user.email, inline: true },
+              ],
+            });
+          } catch (error) {
+            console.error(`Webhook delivery failed for ${webhook.url}:`, error);
+          }
+        })
+      );
 
       return c.json({ data: subTask });
     }

@@ -9,6 +9,7 @@ import tasks from "@/features/tasks/server/route";
 import subtasks from "@/features/subtasks/server/route";
 import plans from "@/features/plans/server/route";
 import labels from "@/features/labels/server/route";
+import webhooks from "@/features/webhooks/server/route";
 
 const app = new Hono().basePath("/api");
 
@@ -19,6 +20,7 @@ const routes = app
   .route("/projects", projects)
   .route("/tasks", tasks)
   .route("/subtasks", subtasks)
+  .route("/webhooks", webhooks)
   .route("/plans", plans)
   .route("/labels", labels);
 

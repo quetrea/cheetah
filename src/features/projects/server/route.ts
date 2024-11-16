@@ -8,11 +8,19 @@ import { getMember } from "@/features/members/utils";
 
 import { sessionMiddleware } from "@/lib/session-Middleware";
 
-import { DATABASE_ID, IMAGES_BUCKET_ID, PROJECTS_ID, TASKS_ID } from "@/config";
+import {
+  DATABASE_ID,
+  IMAGES_BUCKET_ID,
+  PROJECTS_ID,
+  TASKS_ID,
+  WEBHOOKS_ID,
+} from "@/config";
 import { createProjectSchema, updateProjectSchema } from "../schemas";
 
 import { Project } from "../types";
 import { Task, TaskStatus } from "@/features/tasks/types";
+import { Webhook, WebhookEvent } from "@/features/webhooks/types";
+import { sendDiscordWebhook } from "@/lib/webhook";
 
 const app = new Hono()
   .post(
@@ -64,6 +72,36 @@ const app = new Hono()
           imageUrl: uploadedImageUrl,
           workspaceId: workspaceId,
         }
+      );
+
+      const webhooks = await databases.listDocuments<Webhook>(
+        DATABASE_ID,
+        WEBHOOKS_ID,
+        [Query.equal("workspaceId", workspaceId)]
+      );
+
+      const activeWebhooks = webhooks.documents.filter(
+        (webhook) =>
+          webhook.isActive &&
+          webhook.events.includes(WebhookEvent.PROJECT_CREATED)
+      );
+
+      await Promise.allSettled(
+        activeWebhooks.map(async (webhook) => {
+          try {
+            await sendDiscordWebhook(webhook, {
+              title: "Project Created",
+              description: `New project "${project.name}" has been created`,
+              fields: [
+                { name: "Created By", value: user.email, inline: true },
+                { name: "Project ID", value: project.$id, inline: true },
+              ],
+              color: 0x10b981, // Yeşil
+            });
+          } catch (error) {
+            console.error(`Webhook delivery failed for ${webhook.url}:`, error);
+          }
+        })
       );
 
       return c.json({ data: project });
@@ -185,6 +223,36 @@ const app = new Hono()
         }
       );
 
+      const webhooks = await databases.listDocuments<Webhook>(
+        DATABASE_ID,
+        WEBHOOKS_ID,
+        [Query.equal("workspaceId", existingProject.workspaceId)]
+      );
+
+      const activeWebhooks = webhooks.documents.filter(
+        (webhook) =>
+          webhook.isActive &&
+          webhook.events.includes(WebhookEvent.PROJECT_UPDATED)
+      );
+
+      await Promise.allSettled(
+        activeWebhooks.map(async (webhook) => {
+          try {
+            await sendDiscordWebhook(webhook, {
+              title: "Project Updated",
+              description: `Project "${project.name}" has been updated`,
+              fields: [
+                { name: "Updated By", value: user.email, inline: true },
+                { name: "Project ID", value: project.$id, inline: true },
+              ],
+              color: 0x3b82f6, // Mavi
+            });
+          } catch (error) {
+            console.error(`Webhook delivery failed for ${webhook.url}:`, error);
+          }
+        })
+      );
+
       return c.json({ data: project });
     }
   )
@@ -219,6 +287,41 @@ const app = new Hono()
     }
 
     await databases.deleteDocument(DATABASE_ID, PROJECTS_ID, projectId);
+
+    const webhooks = await databases.listDocuments<Webhook>(
+      DATABASE_ID,
+      WEBHOOKS_ID,
+      [Query.equal("workspaceId", existingProject.workspaceId)]
+    );
+
+    const activeWebhooks = webhooks.documents.filter(
+      (webhook) =>
+        webhook.isActive &&
+        webhook.events.includes(WebhookEvent.PROJECT_DELETED)
+    );
+
+    await Promise.allSettled(
+      activeWebhooks.map(async (webhook) => {
+        try {
+          await sendDiscordWebhook(webhook, {
+            title: "Project Deleted",
+            description: `Project "${existingProject.name}" has been deleted`,
+            fields: [
+              { name: "Deleted By", value: user.email, inline: true },
+              { name: "Project ID", value: projectId, inline: true },
+              {
+                name: "Tasks Deleted",
+                value: tasks.total.toString(),
+                inline: true,
+              },
+            ],
+            color: 0xdc2626, // Kırmızı
+          });
+        } catch (error) {
+          console.error(`Webhook delivery failed for ${webhook.url}:`, error);
+        }
+      })
+    );
 
     return c.json({ data: { $id: projectId } });
   })
