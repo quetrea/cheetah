@@ -90,7 +90,6 @@ export const WebhookManager = () => {
   }, [isCreating, form, workspaceId]);
 
   const onSubmit = (values: z.infer<typeof createWebhookSchema>) => {
-    console.log("Form values before submit:", values);
     createWebhook(
       { json: values },
       {
