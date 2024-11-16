@@ -68,7 +68,6 @@ export const DataKanban = ({ data, onChange }: DataKanbanProps) => {
       newTasks[status as TaskStatus].sort((a, b) => (a.position = b.position));
     });
 
-    console.log(newTasks);
     setTasks(newTasks);
   }, [data]);
 
