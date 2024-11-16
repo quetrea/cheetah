@@ -1,6 +1,7 @@
 import React from "react";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { motion } from "framer-motion";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -40,11 +41,111 @@ const MembersPieChart: React.FC<MembersPieChartProps> = ({
     ],
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        delayChildren: 0.5,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  const chartVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1 },
+  };
+
   return (
-    <div className="w-full max-w-sm mx-auto p-4 flex flex-col gap-y-4">
-      <h2 className="text-center text-2xl">Members Analytics</h2>
-      <Pie data={data} />
-    </div>
+    <motion.div
+      className="w-full max-w-lg mx-auto p-4"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.h2
+        className="text-2xl bg-gradient-to-r text-center from-foreground to-foreground/70 bg-clip-text text-transparent mb-8"
+        variants={itemVariants}
+      >
+        Members Analytics
+      </motion.h2>
+
+      <div className="flex items-center gap-x-8">
+        <motion.div
+          variants={chartVariants}
+          whileHover={{
+            scale: 1.02,
+            transition: { duration: 0.2 },
+          }}
+          className="w-[300px]"
+        >
+          <Pie
+            data={data}
+            options={{
+              plugins: {
+                legend: {
+                  display: false,
+                },
+              },
+            }}
+          />
+        </motion.div>
+
+        <motion.div
+          className="flex flex-col gap-3 flex-1"
+          variants={itemVariants}
+        >
+          <motion.div
+            className="flex items-center gap-x-2 p-2 rounded-lg bg-[rgba(75,192,192,0.1)]"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <div className="w-3 h-3 rounded-full bg-[rgb(75,192,192)]" />
+            <div className="flex justify-between flex-row w-full">
+              <div className="font-medium">Admin</div>
+              <div className="font-bold text-[rgb(75,192,192)] px-2">
+                {adminCount}
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="flex items-center gap-x-2 p-2 rounded-lg bg-[rgba(255,99,132,0.1)]"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <div className="w-3 h-3 rounded-full bg-[rgb(255,99,132)]" />
+            <div className="flex justify-between flex-row w-full">
+              <div className="font-medium">Member</div>
+              <div className="font-bold text-[rgb(255,99,132)] px-2">
+                {memberCount}
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="flex items-center gap-x-2 p-2 rounded-lg bg-[rgba(255,206,86,0.1)]"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <div className="w-3 h-3 rounded-full bg-[rgb(255,206,86)]" />
+            <div className="flex justify-between flex-row w-full">
+              <div className="font-medium">Other</div>
+              <div className="font-bold text-[rgb(255,206,86)] px-2">
+                {totalMembers - (adminCount + memberCount)}
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </div>
+    </motion.div>
   );
 };
 

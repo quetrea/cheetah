@@ -7,6 +7,7 @@ import { useCreateProject } from "../api/use-create-project";
 import { createProjectSchema } from "../schemas";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -67,129 +68,174 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
     }
   };
 
-  return (
-    <Card className="w-full h-full border-none shadow-none">
-      <CardHeader className="flex p-7">
-        <CardTitle className="text-xl font-bold">
-          Create a new project
-        </CardTitle>
-      </CardHeader>
-      <div className="px-7">
-        <DottedSeparator />
-      </div>
-      <CardContent className="p-7">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="flex flex-col gap-y-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Project name</FormLabel>
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        staggerChildren: 0.1,
+      },
+    },
+  };
 
-                    <FormControl>
-                      <Input
-                        {...field}
-                        disabled={isPending}
-                        placeholder="Enter project name"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="image"
-                render={({ field }) => (
-                  <div className="flex flex-col gap-y-2">
-                    <div className="flex items-center gap-x-5">
-                      {field.value ? (
-                        <div className="size-[72px] relative rounded-md overflow-hidden">
-                          <Image
-                            className="object-cover"
-                            fill
-                            src={
-                              field.value instanceof File
-                                ? URL.createObjectURL(field.value)
-                                : field.value
-                            }
-                            alt="Logo"
-                          />
-                        </div>
-                      ) : (
-                        <Avatar className="size-[72px]">
-                          <AvatarFallback>
-                            <ImageIcon className="size-[38px] text-neutral-400" />
-                          </AvatarFallback>
-                        </Avatar>
-                      )}
-                      <div className="flex flex-col">
-                        <p className="text-sm">Project Icon</p>
-                        <p className="text-sm text-muted-foreground">
-                          JPG,PNG,SVG or JPEG, max 2mb
-                        </p>
-                        <input
-                          className="hidden"
-                          type="file"
-                          accept=" .jpg, .png, jpeg, .svg"
-                          ref={inputRef}
-                          onChange={handleImageChange}
+  const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.3 },
+    },
+  };
+
+  return (
+    <motion.div initial="hidden" animate="visible" variants={containerVariants}>
+      <Card className="w-full h-full border-none shadow-none">
+        <motion.div variants={itemVariants}>
+          <CardHeader className="flex p-7">
+            <CardTitle className="text-xl font-bold">
+              Create a new project
+            </CardTitle>
+          </CardHeader>
+        </motion.div>
+
+        <div className="px-7">
+          <DottedSeparator />
+        </div>
+
+        <CardContent className="p-7">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <motion.div
+                className="flex flex-col gap-y-4"
+                variants={itemVariants}
+              >
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Project name</FormLabel>
+
+                      <FormControl>
+                        <Input
+                          {...field}
                           disabled={isPending}
+                          placeholder="Enter project name"
                         />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="image"
+                  render={({ field }) => (
+                    <div className="flex flex-col gap-y-2">
+                      <div className="flex items-center gap-x-5">
                         {field.value ? (
-                          <Button
-                            type="button"
-                            size={"sm"}
-                            disabled={isPending}
-                            variant={"destructive"}
-                            className="w-fit mt-2"
-                            onClick={() => {
-                              field.onChange(null);
-                              if (inputRef.current) {
-                                inputRef.current.value = "";
+                          <div className="size-[72px] relative rounded-md overflow-hidden">
+                            <Image
+                              className="object-cover"
+                              fill
+                              src={
+                                field.value instanceof File
+                                  ? URL.createObjectURL(field.value)
+                                  : field.value
                               }
-                            }}
-                          >
-                            Remove Image
-                          </Button>
+                              alt="Logo"
+                            />
+                          </div>
                         ) : (
-                          <Button
-                            type="button"
-                            disabled={isPending}
-                            variant={"teritary"}
-                            className="w-fit mt-2"
-                            onClick={() => inputRef.current?.click()}
-                          >
-                            Upload Image
-                          </Button>
+                          <Avatar className="size-[72px]">
+                            <AvatarFallback>
+                              <ImageIcon className="size-[38px] text-neutral-400" />
+                            </AvatarFallback>
+                          </Avatar>
                         )}
+                        <div className="flex flex-col">
+                          <p className="text-sm">Project Icon</p>
+                          <p className="text-sm text-muted-foreground">
+                            JPG,PNG,SVG or JPEG, max 2mb
+                          </p>
+                          <input
+                            className="hidden"
+                            type="file"
+                            accept=" .jpg, .png, jpeg, .svg"
+                            ref={inputRef}
+                            onChange={handleImageChange}
+                            disabled={isPending}
+                          />
+                          {field.value ? (
+                            <Button
+                              type="button"
+                              size={"sm"}
+                              disabled={isPending}
+                              variant={"destructive"}
+                              className="w-fit mt-2"
+                              onClick={() => {
+                                field.onChange(null);
+                                if (inputRef.current) {
+                                  inputRef.current.value = "";
+                                }
+                              }}
+                            >
+                              Remove Image
+                            </Button>
+                          ) : (
+                            <Button
+                              type="button"
+                              disabled={isPending}
+                              variant={"teritary"}
+                              className="w-fit mt-2"
+                              onClick={() => inputRef.current?.click()}
+                            >
+                              Upload Image
+                            </Button>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
-              />
-            </div>
-            <DottedSeparator className="py-7" />
-            <div className="flex items-center justify-between">
-              <Button
-                type="button"
-                size={"lg"}
-                disabled={isPending}
-                variant={"secondary"}
-                onClick={onCancel}
-                className={cn(!onCancel && "invisible")}
+                  )}
+                />
+              </motion.div>
+
+              <DottedSeparator className="py-7" />
+
+              <motion.div
+                className="flex items-center justify-between"
+                variants={itemVariants}
               >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isPending} size={"lg"}>
-                Create Project
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button
+                    type="button"
+                    size={"lg"}
+                    disabled={isPending}
+                    variant={"secondary"}
+                    onClick={onCancel}
+                    className={cn(!onCancel && "invisible")}
+                  >
+                    Cancel
+                  </Button>
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button type="submit" disabled={isPending} size={"lg"}>
+                    Create Project
+                  </Button>
+                </motion.div>
+              </motion.div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 };

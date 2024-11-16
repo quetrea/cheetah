@@ -37,7 +37,7 @@ import { useLeaveWorkspace } from "@/features/workspaces/api/use-leave-workspace
 import { useConfirm } from "@/hooks/use-confirm";
 import { Hint } from "@/components/hint";
 import { ListBulletIcon, ResetIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useEditTaskModal } from "@/features/tasks/hooks/use-edit-task-modal";
 import { useDeleteTask } from "@/features/tasks/api/use-delete-task";
 import { RiCloseFill } from "react-icons/ri";
@@ -52,10 +52,53 @@ import TaskAnalytics from "@/features/analytics/components/TaskAnalytics";
 import MembersPieChart from "@/features/analytics/components/MembersPieChart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { motion, useAnimation, useInView } from "framer-motion";
+
+// Ana container animasyonu
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+// Liste item animasyonu
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+    },
+  },
+};
+
+// Skeleton animasyonu
+const skeletonVariants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut",
+    },
+  },
+};
 
 // Analytics Section Skeleton
 const AnalyticsSkeleton = () => (
-  <div className="rounded-lg shadow-lg w-full dark:shadow-neutral-700/50 transition dark:shadow-md">
+  <motion.div
+    variants={skeletonVariants}
+    initial="hidden"
+    animate="visible"
+    className="rounded-lg shadow-lg w-full"
+  >
     <div className="grid grid-cols-1 lg:grid-cols-2 max-h-xl w-full gap-4">
       {/* Task Analytics Skeleton */}
       <div className="flex flex-col h-full lg:flex-row">
@@ -66,7 +109,7 @@ const AnalyticsSkeleton = () => (
         <Skeleton className="w-full h-[300px] rounded-lg" />
       </div>
     </div>
-  </div>
+  </motion.div>
 );
 
 const AnalyticsCardSkeleton = () => {
@@ -103,7 +146,12 @@ const TopAnalyticsSkeleton = () => {
 
 // Task List Skeleton
 const TaskListSkeleton = () => (
-  <div className="flex flex-col gap-y-4">
+  <motion.div
+    variants={skeletonVariants}
+    initial="hidden"
+    animate="visible"
+    className="flex flex-col gap-y-4"
+  >
     <div className="bg-white dark:bg-neutral-950 hover:shadow-sm transition-all duration-300 hover:bg-muted border rounded-lg p-4">
       <div className="flex items-center justify-between mb-4">
         <Skeleton className="h-8 w-32" />
@@ -118,7 +166,7 @@ const TaskListSkeleton = () => (
         ))}
       </div>
     </div>
-  </div>
+  </motion.div>
 );
 
 // Project List Skeleton
@@ -339,7 +387,12 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
   if (!data) return <TaskListSkeleton />;
 
   return (
-    <div className="flex flex-col gap-y-4 col-span-1">
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="flex flex-col gap-y-4"
+    >
       <span className="bg-white hover:bg-muted duration-300 transition-all rounded-lg p-4 dark:bg-neutral-900">
         <div className="flex items-center justify-between">
           <Hint label="View all tasks" side="right">
@@ -377,103 +430,104 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
           </div>
         </div>
         <DottedSeparator className="my-4" />
-        <ul className="flex flex-col gap-y-4">
-          {data.slice(0, slice).map((task) => {
-            return (
-              <li key={task.$id}>
-                <Card className="shadow-none rounded-lg hover:opacity-75 transition flex justify-between items-center">
-                  <CardContent className="p-4 flex  justify-between border w-full rounded-md items-center group">
-                    <div className="w-full flex flex-col gap-y-1 overflow-hidden">
-                      <p className="text-sm truncate font-medium line-clamp-1 w-full">
-                        {task.name}
-                      </p>
-                      <div className="flex items-center gap-x-2">
-                        <p className="text-sm truncate ">
-                          {task.project?.name}
-                        </p>
-                        <div className="flex gap-x-2 items-center">
-                          <div className="size-1 rounded-full bg-neutral-300" />
-                          <div className="text-xs text-muted-foreground flex items-center gap-x-1  ">
-                            <CalendarIcon className="size-3 mr-1" />
+        <motion.ul className="space-y-4">
+          {data.slice(0, slice).map((task) => (
+            <motion.li
+              key={task.$id}
+              variants={itemVariants}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Card className="shadow-none rounded-lg transition">
+                <CardContent className="p-4 flex  justify-between border w-full rounded-md items-center group">
+                  <div className="w-full flex flex-col gap-y-1 overflow-hidden">
+                    <p className="text-sm truncate font-medium line-clamp-1 w-full">
+                      {task.name}
+                    </p>
+                    <div className="flex items-center gap-x-2">
+                      <p className="text-sm truncate ">{task.project?.name}</p>
+                      <div className="flex gap-x-2 items-center">
+                        <div className="size-1 rounded-full bg-neutral-300" />
+                        <div className="text-xs text-muted-foreground flex items-center gap-x-1  ">
+                          <CalendarIcon className="size-3 mr-1" />
 
-                            <span className="truncate flex text-xs items-center">
-                              <p className="mr-1">Created at</p>
-                              {format(
-                                new Date(task.$createdAt),
-                                "MM/dd/yyyy hh:mm a"
-                              )}
-                            </span>
-                          </div>
-                          <div className="size-1 rounded-full bg-neutral-300" />
-                          <div className="text-xs text-muted-foreground flex items-center gap-x-1  ">
-                            <CalendarIcon className="size-3 mr-1" />
+                          <span className="truncate flex text-xs items-center">
+                            <p className="mr-1">Created at</p>
+                            {format(
+                              new Date(task.$createdAt),
+                              "MM/dd/yyyy hh:mm a"
+                            )}
+                          </span>
+                        </div>
+                        <div className="size-1 rounded-full bg-neutral-300" />
+                        <div className="text-xs text-muted-foreground flex items-center gap-x-1  ">
+                          <CalendarIcon className="size-3 mr-1" />
 
-                            <span className="truncate flex text-xs items-center">
-                              <p className="mr-1">Due date</p>
-                              {format(
-                                new Date(task.dueDate),
-                                "MM/dd/yyyy hh:mm a"
-                              )}
-                            </span>
-                          </div>
+                          <span className="truncate flex text-xs items-center">
+                            <p className="mr-1">Due date</p>
+                            {format(
+                              new Date(task.dueDate),
+                              "MM/dd/yyyy hh:mm a"
+                            )}
+                          </span>
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="space-x-2">
-                      <DropdownMenu modal={false}>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant={"outline"} size={"icon"}>
-                            <MoreVerticalIcon className="size-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
+                  <div className="space-x-2">
+                    <DropdownMenu modal={false}>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant={"outline"} size={"icon"}>
+                          <MoreVerticalIcon className="size-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
 
-                        <DropdownMenuContent
-                          align="end"
-                          side="bottom"
-                          className="w-40 "
-                          sideOffset={10}
-                        >
-                          <div className="flex flex-col">
-                            <DropdownMenuItem className="gap-x-4" asChild>
-                              <Link
-                                href={`/workspaces/${workspaceId}/tasks/${task.$id}`}
-                              >
-                                <ExternalLinkIcon className="size-4" />
-                                Open Task{" "}
-                              </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="gap-x-4"
-                              onClick={() => editTask(task.$id)}
+                      <DropdownMenuContent
+                        align="end"
+                        side="bottom"
+                        className="w-40 "
+                        sideOffset={10}
+                      >
+                        <div className="flex flex-col">
+                          <DropdownMenuItem className="gap-x-4" asChild>
+                            <Link
+                              href={`/workspaces/${workspaceId}/tasks/${task.$id}`}
                             >
-                              <Pencil className="size-4" />
-                              Edit Task
-                            </DropdownMenuItem>
-                            {currentMember.role === MemberRole.ADMIN && (
-                              <>
-                                <DropdownMenuItem
-                                  className="gap-x-4 text-amber-500"
-                                  onClick={() => onDelete(task.$id)}
-                                >
-                                  <Trash className="size-4" />
-                                  Delete Task
-                                </DropdownMenuItem>
-                              </>
-                            )}
-                          </div>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </CardContent>
-                </Card>
-              </li>
-            );
-          })}
+                              <ExternalLinkIcon className="size-4" />
+                              Open Task{" "}
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="gap-x-4"
+                            onClick={() => editTask(task.$id)}
+                          >
+                            <Pencil className="size-4" />
+                            Edit Task
+                          </DropdownMenuItem>
+                          {currentMember.role === MemberRole.ADMIN && (
+                            <>
+                              <DropdownMenuItem
+                                className="gap-x-4 text-amber-500"
+                                onClick={() => onDelete(task.$id)}
+                              >
+                                <Trash className="size-4" />
+                                Delete Task
+                              </DropdownMenuItem>
+                            </>
+                          )}
+                        </div>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.li>
+          ))}
           <li className="text-sm text-muted-foreground text-center hidden first-of-type:block">
             No tasks found
           </li>
-        </ul>
+        </motion.ul>
         <Button
           variant="muted"
           className="mt-4 w-full dark:bg-neutral-950 border dark:border-neutral-950"
@@ -482,7 +536,7 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
           Show more
         </Button>
       </span>
-    </div>
+    </motion.div>
   );
 };
 
@@ -504,7 +558,12 @@ export const ProjectList = ({
   if (!data) return <ProjectListSkeleton />;
 
   return (
-    <div className="flex flex-col gap-y-4 col-span-1 ">
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="flex flex-col gap-y-4"
+    >
       <div className="bg-white dark:bg-neutral-950  hover:shadow-sm transition-all duration-300 hover:bg-muted border rounded-lg p-4">
         <div className="flex items-center justify-between">
           <Hint label="Your projects total" side="right">
@@ -524,47 +583,53 @@ export const ProjectList = ({
           </Hint>
         </div>
         <DottedSeparator className="my-4" />
-        <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {data.map((project) => {
-            return (
-              <li key={project.$id}>
-                <Link
-                  href={`/workspaces/${workspaceId}/projects/${project.$id}`}
-                >
-                  <Card className="shadow-none rounded-lg hover:opacity-75 transition">
-                    <CardContent className="p-4 flex items-center   justify-between">
-                      <div className="flex gap-x-2.5 items-center">
-                        <ProjectAvatar
-                          className="size-12"
-                          fallbackClassname="text-lg"
-                          name={project.name}
-                          image={project.imageUrl}
-                        />
-                        <p className=" font-medium truncate">{project.name}</p>
+        <motion.ul
+          className="grid grid-cols-1 lg:grid-cols-2 gap-4"
+          variants={containerVariants}
+        >
+          {data.map((project) => (
+            <motion.li
+              key={project.$id}
+              variants={itemVariants}
+              whileHover={{
+                scale: 1.05,
+                transition: { duration: 0.2 },
+              }}
+            >
+              <Link href={`/workspaces/${workspaceId}/projects/${project.$id}`}>
+                <Card className="shadow-none rounded-lg hover:opacity-75 transition">
+                  <CardContent className="p-4 flex items-center   justify-between">
+                    <div className="flex gap-x-2.5 items-center">
+                      <ProjectAvatar
+                        className="size-12"
+                        fallbackClassname="text-lg"
+                        name={project.name}
+                        image={project.imageUrl}
+                      />
+                      <p className=" font-medium truncate">{project.name}</p>
+                    </div>
+                    {currentMember.role === MemberRole.ADMIN && (
+                      <div className="flex items-center">
+                        <Button variant={"outline"}>
+                          <Link
+                            href={`/workspaces/${workspaceId}/projects/${project.$id}/settings`}
+                          >
+                            <Pencil className="size-4" />
+                          </Link>
+                        </Button>
                       </div>
-                      {currentMember.role === MemberRole.ADMIN && (
-                        <div className="flex items-center">
-                          <Button variant={"outline"}>
-                            <Link
-                              href={`/workspaces/${workspaceId}/projects/${project.$id}/settings`}
-                            >
-                              <Pencil className="size-4" />
-                            </Link>
-                          </Button>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                </Link>
-              </li>
-            );
-          })}
+                    )}
+                  </CardContent>
+                </Card>
+              </Link>
+            </motion.li>
+          ))}
           <li className="text-sm text-muted-foreground text-center hidden first-of-type:block">
             No projects found
           </li>
-        </ul>
+        </motion.ul>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -595,7 +660,12 @@ export const MembersList = ({
   if (!data) return <MembersListSkeleton />;
 
   return (
-    <div className="flex flex-col gap-y-4 col-span-1">
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="flex flex-col gap-y-4"
+    >
       <div className="bg-white dark:bg-neutral-950 hover:shadow-sm transition-all duration-300 hover:bg-muted border rounded-lg p-4">
         <div className="flex items-center justify-between">
           <Hint label="View all members" side="right">
@@ -621,46 +691,106 @@ export const MembersList = ({
         </div>
         <DottedSeparator className="my-4" />
 
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-          {data.map((member) => {
-            return (
-              <li key={member.$id}>
-                <Card className="shadow-none rounded-lg overflow-hidden w-full">
-                  <CardContent className="p-4 flex items-center gap-x-2 justify-between group w-full">
-                    <div className="flex items-center gap-x-4">
-                      <MemberAvatar className="size-12" name={member.name} />
-                      <div className="flex flex-col items-start overflow-hidden">
-                        <p className="text-sm font-medium line-clamp-1">
-                          {member.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground line-clamp  truncate">
-                          {member.email}
-                        </p>
-                      </div>
+        <motion.ul
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4"
+          variants={containerVariants}
+        >
+          {data.map((member) => (
+            <motion.li
+              key={member.$id}
+              variants={itemVariants}
+              whileHover={{
+                scale: 1.03,
+                transition: { duration: 0.2 },
+              }}
+            >
+              <Card className="shadow-none rounded-lg overflow-hidden w-full">
+                <CardContent className="p-4 flex items-center gap-x-2 justify-between group w-full">
+                  <div className="flex items-center gap-x-4">
+                    <MemberAvatar className="size-12" name={member.name} />
+                    <div className="flex flex-col items-start overflow-hidden">
+                      <p className="text-sm font-medium line-clamp-1">
+                        {member.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground line-clamp  truncate">
+                        {member.email}
+                      </p>
                     </div>
-                    <div className="items-center ">
-                      {currentMember.role === MemberRole.ADMIN &&
-                        member.role !== MemberRole.ADMIN && (
-                          <Button
-                            className="opacity-0 group-hover:opacity-100"
-                            onClick={() => onDelete(member.$id)}
-                            variant={"destructive"}
-                            size={"icon"}
-                          >
-                            <RiCloseFill className="size-4 " />
-                          </Button>
-                        )}
-                    </div>
-                  </CardContent>
-                </Card>
-              </li>
-            );
-          })}
+                  </div>
+                  <div className="items-center ">
+                    {currentMember.role === MemberRole.ADMIN &&
+                      member.role !== MemberRole.ADMIN && (
+                        <Button
+                          className="opacity-0 group-hover:opacity-100"
+                          onClick={() => onDelete(member.$id)}
+                          variant={"destructive"}
+                          size={"icon"}
+                        >
+                          <RiCloseFill className="size-4 " />
+                        </Button>
+                      )}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.li>
+          ))}
           <li className="text-sm text-muted-foreground text-center hidden first-of-type:block">
             No members found
           </li>
-        </ul>
+        </motion.ul>
       </div>
-    </div>
+    </motion.div>
+  );
+};
+
+// Scroll animasyonu için özel hook
+const useScrollAnimation = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, {
+    amount: 0.1,
+    once: true,
+  });
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (isInView) {
+      controls.start("visible");
+    }
+  }, [isInView, controls]);
+
+  return { ref, controls, isInView };
+};
+
+// Scroll animasyonu için wrapper component
+const ScrollAnimationWrapper = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const { ref, controls, isInView } = useScrollAnimation();
+
+  return (
+    <motion.div
+      ref={ref}
+      animate={controls}
+      initial="hidden"
+      variants={{
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            type: "spring",
+            duration: 0.6,
+            bounce: 0.3,
+          },
+        },
+        hidden: {
+          opacity: 0,
+          y: 50,
+        },
+      }}
+    >
+      {children}
+    </motion.div>
   );
 };

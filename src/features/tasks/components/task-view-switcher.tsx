@@ -3,6 +3,7 @@ import { useQueryState } from "nuqs";
 import { Loader2, PlusIcon } from "lucide-react";
 import { useCreateTaskModal } from "../hooks/use-create-task-modal";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import { DottedSeparator } from "@/components/dotted-separator";
@@ -129,32 +130,69 @@ export const TaskViewSwitcher = ({
     [bulkUpdate]
   );
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.4 },
+    },
+  };
+
   const renderContent = () => {
     if (isLoadingTasks) {
       return (
-        <div className="space-y-4">
-          {/* Filters Skeleton */}
-
-          {/* Content Skeleton based on view */}
+        <motion.div
+          className="space-y-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
           {view === "table" && <TableSkeleton />}
           {view === "kanban" && <KanbanSkeleton />}
           {view === "calendar" && <CalendarSkeleton />}
-        </div>
+        </motion.div>
       );
     }
 
     return (
-      <>
-        <TabsContent value="table" className="mt-0">
-          <DataTable columns={columns} data={tasks?.documents ?? []} />
-        </TabsContent>
-        <TabsContent value="kanban" className="mt-0">
-          <DataKanban onChange={onKanbanChange} data={tasks?.documents ?? []} />
-        </TabsContent>
-        <TabsContent value="calendar" className="mt-0 h-full pb-4">
-          <DataCalendar data={tasks?.documents ?? []} />
-        </TabsContent>
-      </>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={view}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          {view === "table" && (
+            <TabsContent value="table" className="mt-0">
+              <DataTable columns={columns} data={tasks?.documents ?? []} />
+            </TabsContent>
+          )}
+          {view === "kanban" && (
+            <TabsContent value="kanban" className="mt-0">
+              <DataKanban
+                onChange={onKanbanChange}
+                data={tasks?.documents ?? []}
+              />
+            </TabsContent>
+          )}
+          {view === "calendar" && (
+            <TabsContent value="calendar" className="mt-0 h-full pb-4">
+              <DataCalendar data={tasks?.documents ?? []} />
+            </TabsContent>
+          )}
+        </motion.div>
+      </AnimatePresence>
     );
   };
 
@@ -164,8 +202,16 @@ export const TaskViewSwitcher = ({
       onValueChange={setView}
       className="flex-1 w-full border rounded-lg"
     >
-      <div className="h-full flex flex-col overflow-auto p-4">
-        <div className="flex flex-col gap-y-2 lg:flex-row justify-between items-center">
+      <motion.div
+        className="h-full flex flex-col overflow-auto p-4"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div
+          className="flex flex-col gap-y-2 lg:flex-row justify-between items-center"
+          variants={itemVariants}
+        >
           <TabsList className="w-full lg:w-auto">
             <TabsTrigger className="h-8 w-full lg:w-auto" value="table">
               Table
@@ -177,20 +223,32 @@ export const TaskViewSwitcher = ({
               Calendar
             </TabsTrigger>
           </TabsList>
-          <Button
-            onClick={() => createNewTaskHandler()}
-            className="w-full lg:w-auto"
-            size={"sm"}
-          >
-            <PlusIcon className="size-4 mr-2" />
-            New
-          </Button>
-        </div>
-        <DottedSeparator className="my-4" />
-        <DataFilter hideProjectFilter={hideProjectFilter} />
-        <DottedSeparator className="my-4" />
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <Button
+              onClick={() => createNewTaskHandler()}
+              className="w-full lg:w-auto"
+              size={"sm"}
+            >
+              <PlusIcon className="size-4 mr-2" />
+              New
+            </Button>
+          </motion.div>
+        </motion.div>
+
+        <motion.div variants={itemVariants}>
+          <DottedSeparator className="my-4" />
+        </motion.div>
+
+        <motion.div variants={itemVariants}>
+          <DataFilter hideProjectFilter={hideProjectFilter} />
+        </motion.div>
+
+        <motion.div variants={itemVariants}>
+          <DottedSeparator className="my-4" />
+        </motion.div>
+
         {renderContent()}
-      </div>
+      </motion.div>
     </Tabs>
   );
 };

@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useGetTask } from "@/features/tasks/api/use-get-task";
 import { useTaskId } from "@/features/tasks/hooks/use-task-id";
 import { PageLoader } from "@/components/page-loader";
@@ -21,15 +22,57 @@ export const TaskIdClient = () => {
   if (!data) {
     return <PageError message="Task not found" />;
   }
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
+
   return (
-    <div className="flex flex-col">
-      <TaskBreadcrumbs project={data.project} task={data} />
+    <motion.div
+      className="flex flex-col"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
+      <motion.div variants={itemVariants}>
+        <TaskBreadcrumbs project={data.project} task={data} />
+      </motion.div>
+
       <DottedSeparator className="my-6" />
-      <div className="grid gird-cols-1 lg:grid-cols-2 gap-4">
-        <TaskOverview task={data} />
-        <SubTasks task={data} />
-        <TaskDescription task={data} />
-      </div>
-    </div>
+
+      <motion.div
+        className="grid gird-cols-1 lg:grid-cols-2 gap-4"
+        variants={containerVariants}
+      >
+        <motion.div variants={itemVariants}>
+          <TaskOverview task={data} />
+        </motion.div>
+
+        <motion.div variants={itemVariants}>
+          <SubTasks task={data} />
+        </motion.div>
+
+        <motion.div variants={itemVariants}>
+          <TaskDescription task={data} />
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 };

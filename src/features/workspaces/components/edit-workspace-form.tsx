@@ -6,6 +6,7 @@ import Image from "next/image"; // Next.js Image bileşeni
 import { useForm } from "react-hook-form"; // React Hook Form
 import { zodResolver } from "@hookform/resolvers/zod"; // Zod ile form doğrulama
 import { cn } from "@/lib/utils"; // Yardımcı fonksiyonlar
+import { motion, AnimatePresence } from "framer-motion";
 
 import { useRouter } from "next/navigation";
 
@@ -165,164 +166,251 @@ export const EditWorkspaceForm = ({
       .then(() => toast.success("Invite link copied to clipboard"));
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.4 },
+    },
+  };
+
   return (
     <>
       <LeaveDialog />
       <DeleteDialog />
       <ResetInviteCodeDialog />
-      <div className="flex flex-col gap-y-4 select-none">
+      <motion.div
+        className="flex flex-col gap-y-4 select-none"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+      >
         {data?.currentMember.role === MemberRole.ADMIN && (
-          <Card className="w-full h-full shadow-none border select-none border-sky-500">
-            <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
-              <Button
-                size={"sm"}
-                variant={"secondary"}
-                onClick={
-                  onCancel
-                    ? onCancel
-                    : () => router.push(`/workspaces/${initialValues.$id}`)
-                }
-              >
-                <ArrowLeftIcon className="size-4 mr-2" />
-                Back
-              </Button>
-              <CardTitle className="text-xl flex-1 font-bold">
-                {initialValues.name}
-              </CardTitle>
+          <motion.div variants={itemVariants}>
+            <Card className="w-full h-full shadow-none border select-none border-sky-500">
+              <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button
+                    size={"sm"}
+                    variant={"secondary"}
+                    onClick={
+                      onCancel
+                        ? onCancel
+                        : () => router.push(`/workspaces/${initialValues.$id}`)
+                    }
+                  >
+                    <ArrowLeftIcon className="size-4 mr-2" />
+                    Back
+                  </Button>
+                </motion.div>
+                <CardTitle className="text-xl flex-1 font-bold">
+                  <motion.span
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    {initialValues.name}
+                  </motion.span>
+                </CardTitle>
 
-              <Button
-                size={"sm"}
-                variant={"secondary"}
-                onClick={
-                  onCancel
-                    ? onCancel
-                    : () =>
-                        router.push(
-                          `/workspaces/${initialValues.$id}/settings/webhooks`
-                        )
-                }
-              >
-                <ArrowRightIcon className="size-4 mr-2" />
-                Webhooks
-              </Button>
-            </CardHeader>
-            <div className="px-7">
-              <DottedSeparator />
-            </div>
-            <CardContent className="p-7">
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
-                  <div className="flex flex-col gap-y-4">
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Workspace name</FormLabel>
-
-                          <FormControl>
-                            <Input
-                              {...field}
-                              disabled={isPending}
-                              placeholder="Enter workspace name"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="image"
-                      render={({ field }) => (
-                        <div className="flex flex-col gap-y-2">
-                          <div className="flex items-center gap-x-5">
-                            {field.value ? (
-                              <div className="size-[72px] relative rounded-md overflow-hidden">
-                                <Image
-                                  className="object-cover"
-                                  fill
-                                  src={
-                                    field.value instanceof File
-                                      ? URL.createObjectURL(field.value)
-                                      : field.value
-                                  }
-                                  alt="Logo"
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button
+                    size={"sm"}
+                    variant={"secondary"}
+                    onClick={
+                      onCancel
+                        ? onCancel
+                        : () =>
+                            router.push(
+                              `/workspaces/${initialValues.$id}/settings/webhooks`
+                            )
+                    }
+                  >
+                    <ArrowRightIcon className="size-4 mr-2" />
+                    Webhooks
+                  </Button>
+                </motion.div>
+              </CardHeader>
+              <div className="px-7">
+                <DottedSeparator />
+              </div>
+              <CardContent className="p-7">
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <motion.div
+                      className="flex flex-col gap-y-4"
+                      variants={itemVariants}
+                    >
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>
+                              <motion.span
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.3 }}
+                              >
+                                Workspace name
+                              </motion.span>
+                            </FormLabel>
+                            <FormControl>
+                              <motion.div whileTap={{ scale: 0.995 }}>
+                                <Input
+                                  {...field}
+                                  disabled={isPending}
+                                  placeholder="Enter workspace name"
                                 />
+                              </motion.div>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="image"
+                        render={({ field }) => (
+                          <div className="flex flex-col gap-y-2">
+                            <div className="flex items-center gap-x-5">
+                              <AnimatePresence mode="wait">
+                                {field.value ? (
+                                  <motion.div
+                                    key="image"
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.8 }}
+                                    className="size-[72px] relative rounded-md overflow-hidden"
+                                  >
+                                    <Image
+                                      className="object-cover"
+                                      fill
+                                      src={
+                                        field.value instanceof File
+                                          ? URL.createObjectURL(field.value)
+                                          : field.value
+                                      }
+                                      alt="Logo"
+                                    />
+                                  </motion.div>
+                                ) : (
+                                  <motion.div
+                                    key="avatar"
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.8 }}
+                                  >
+                                    <Avatar className="size-[72px]">
+                                      <AvatarFallback>
+                                        <ImageIcon className="size-[38px] text-neutral-400" />
+                                      </AvatarFallback>
+                                    </Avatar>
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                              <div className="flex flex-col">
+                                <p className="text-sm">Workspace Icon</p>
+                                <p className="text-sm text-muted-foreground">
+                                  JPG,PNG,SVG or JPEG, max 2mb
+                                </p>
+                                <input
+                                  className="hidden"
+                                  type="file"
+                                  accept=" .jpg, .png, jpeg, .svg"
+                                  ref={inputRef}
+                                  onChange={handleImageChange}
+                                  disabled={isPending}
+                                />
+                                {field.value ? (
+                                  <Button
+                                    type="button"
+                                    size={"sm"}
+                                    disabled={isPending}
+                                    variant={"destructive"}
+                                    className="w-fit mt-2"
+                                    onClick={() => {
+                                      field.onChange(null);
+                                      if (inputRef.current) {
+                                        inputRef.current.value = "";
+                                      }
+                                    }}
+                                  >
+                                    Remove Image
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    type="button"
+                                    disabled={isPending}
+                                    variant={"teritary"}
+                                    className="w-fit mt-2"
+                                    onClick={() => inputRef.current?.click()}
+                                  >
+                                    Upload Image
+                                  </Button>
+                                )}
                               </div>
-                            ) : (
-                              <Avatar className="size-[72px]">
-                                <AvatarFallback>
-                                  <ImageIcon className="size-[38px] text-neutral-400" />
-                                </AvatarFallback>
-                              </Avatar>
-                            )}
-                            <div className="flex flex-col">
-                              <p className="text-sm">Workspace Icon</p>
-                              <p className="text-sm text-muted-foreground">
-                                JPG,PNG,SVG or JPEG, max 2mb
-                              </p>
-                              <input
-                                className="hidden"
-                                type="file"
-                                accept=" .jpg, .png, jpeg, .svg"
-                                ref={inputRef}
-                                onChange={handleImageChange}
-                                disabled={isPending}
-                              />
-                              {field.value ? (
-                                <Button
-                                  type="button"
-                                  size={"sm"}
-                                  disabled={isPending}
-                                  variant={"destructive"}
-                                  className="w-fit mt-2"
-                                  onClick={() => {
-                                    field.onChange(null);
-                                    if (inputRef.current) {
-                                      inputRef.current.value = "";
-                                    }
-                                  }}
-                                >
-                                  Remove Image
-                                </Button>
-                              ) : (
-                                <Button
-                                  type="button"
-                                  disabled={isPending}
-                                  variant={"teritary"}
-                                  className="w-fit mt-2"
-                                  onClick={() => inputRef.current?.click()}
-                                >
-                                  Upload Image
-                                </Button>
-                              )}
                             </div>
                           </div>
-                        </div>
-                      )}
-                    />
-                  </div>
-                  <DottedSeparator className="py-7" />
-                  <div className="flex items-center justify-between">
-                    <Button
-                      type="button"
-                      size={"lg"}
-                      disabled={isPending}
-                      variant={"secondary"}
-                      onClick={onCancel}
-                      className={cn(!onCancel && "invisible")}
+                        )}
+                      />
+                    </motion.div>
+
+                    <motion.div variants={itemVariants}>
+                      <DottedSeparator className="py-7" />
+                    </motion.div>
+
+                    <motion.div
+                      className="flex items-center justify-between"
+                      variants={itemVariants}
                     >
-                      Cancel
-                    </Button>
-                    <Button type="submit" disabled={isPending} size={"lg"}>
-                      Save Changes
-                    </Button>
-                  </div>
-                </form>
-              </Form>
-            </CardContent>
-          </Card>
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <Button
+                          type="button"
+                          size={"lg"}
+                          disabled={isPending}
+                          variant={"secondary"}
+                          onClick={onCancel}
+                          className={cn(!onCancel && "invisible")}
+                        >
+                          Cancel
+                        </Button>
+                      </motion.div>
+
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <Button type="submit" disabled={isPending} size={"lg"}>
+                          {isPending ? "Saving..." : "Save Changes"}
+                        </Button>
+                      </motion.div>
+                    </motion.div>
+                  </form>
+                </Form>
+              </CardContent>
+            </Card>
+          </motion.div>
         )}
 
         <Card className="w-full h-full shadow-none border border-gray-500">
@@ -414,7 +502,7 @@ export const EditWorkspaceForm = ({
             </CardContent>
           </Card>
         )}
-      </div>
+      </motion.div>
     </>
   );
 };
