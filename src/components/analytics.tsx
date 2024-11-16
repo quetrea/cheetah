@@ -2,10 +2,13 @@ import { ProjectAnalyticsResponseType } from "@/features/projects/api/use-get-pr
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import { AnalyticsCard } from "./analytics-card";
 import { DottedSeparator } from "./dotted-separator";
+import { Skeleton } from "./ui/skeleton";
+
+// Analytics Card Skeleton Component
 
 export const Analytics = ({ data }: ProjectAnalyticsResponseType) => {
   return (
-    <ScrollArea className="border rounded-lg w-full whitespace-nowrap  shrink-0">
+    <ScrollArea className="border rounded-lg w-full whitespace-nowrap shrink-0">
       <div className="w-full flex flex-row">
         <div className="flex items-center flex-1">
           <AnalyticsCard
@@ -56,3 +59,6 @@ export const Analytics = ({ data }: ProjectAnalyticsResponseType) => {
     </ScrollArea>
   );
 };
+
+// Optional: Export skeleton for use in other components
+export default Analytics;

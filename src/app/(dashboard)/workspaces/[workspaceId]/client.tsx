@@ -32,12 +32,6 @@ import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { Member, MemberRole } from "@/features/members/types";
 import { MemberAvatar } from "@/features/members/components/member-avatar";
 
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
-import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
 import { useLeaveWorkspace } from "@/features/workspaces/api/use-leave-workspace";
 import { useConfirm } from "@/hooks/use-confirm";
@@ -56,6 +50,124 @@ import {
 } from "@/components/ui/dropdown-menu";
 import TaskAnalytics from "@/features/analytics/components/TaskAnalytics";
 import MembersPieChart from "@/features/analytics/components/MembersPieChart";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+
+// Analytics Section Skeleton
+const AnalyticsSkeleton = () => (
+  <div className="rounded-lg shadow-lg w-full dark:shadow-neutral-700/50 transition dark:shadow-md">
+    <div className="grid grid-cols-1 lg:grid-cols-2 max-h-xl w-full gap-4">
+      {/* Task Analytics Skeleton */}
+      <div className="flex flex-col h-full lg:flex-row">
+        <Skeleton className="w-full h-[300px] rounded-lg" />
+      </div>
+      {/* Members Pie Chart Skeleton */}
+      <div className="rounded-md border-transparent transition duration-300 border-2">
+        <Skeleton className="w-full h-[300px] rounded-lg" />
+      </div>
+    </div>
+  </div>
+);
+
+const AnalyticsCardSkeleton = () => {
+  return (
+    <div className="flex flex-col p-4 w-full">
+      <Skeleton className="h-5 w-24 mb-2" /> {/* Title */}
+      <div className="space-y-2">
+        <Skeleton className="h-8 w-16" /> {/* Value */}
+        <div className="flex items-center gap-x-2">
+          <Skeleton className="h-4 w-4" /> {/* Arrow icon */}
+          <Skeleton className="h-4 w-12" /> {/* Difference value */}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Analytics Skeleton Component
+const TopAnalyticsSkeleton = () => {
+  return (
+    <ScrollArea className="border rounded-lg w-full whitespace-nowrap shrink-0">
+      <div className="w-full flex flex-row">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <div key={index} className="flex items-center flex-1">
+            <AnalyticsCardSkeleton />
+            {index < 4 && <DottedSeparator direction="vertical" />}
+          </div>
+        ))}
+      </div>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
+  );
+};
+
+// Task List Skeleton
+const TaskListSkeleton = () => (
+  <div className="flex flex-col gap-y-4">
+    <div className="bg-white dark:bg-neutral-950 hover:shadow-sm transition-all duration-300 hover:bg-muted border rounded-lg p-4">
+      <div className="flex items-center justify-between mb-4">
+        <Skeleton className="h-8 w-32" />
+        <Skeleton className="h-8 w-8" />
+      </div>
+      <DottedSeparator className="my-4" />
+      <div className="space-y-3">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="flex items-center gap-x-4">
+            <Skeleton className="w-full h-[72px] rounded-lg" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+// Project List Skeleton
+const ProjectListSkeleton = () => (
+  <div className="flex flex-col gap-y-4">
+    <div className="bg-white dark:bg-neutral-950 hover:shadow-sm transition-all duration-300 hover:bg-muted border rounded-lg p-4">
+      <div className="flex items-center justify-between mb-4">
+        <Skeleton className="h-8 w-32" />
+        <Skeleton className="h-8 w-8" />
+      </div>
+      <DottedSeparator className="my-4" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <Skeleton key={i} className="h-[100px] rounded-lg" />
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+// Members List Skeleton
+const MembersListSkeleton = () => (
+  <div className="flex flex-col gap-y-4 col-span-1">
+    <div className="bg-white dark:bg-neutral-950 hover:shadow-sm transition-all duration-300 hover:bg-muted border rounded-lg p-4">
+      <div className="flex items-center justify-between mb-4">
+        <Skeleton className="h-8 w-32" />
+        <Skeleton className="h-8 w-8" />
+      </div>
+      <DottedSeparator className="my-4" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="w-full">
+            <Card className="shadow-none rounded-lg overflow-hidden">
+              <CardContent className="p-4 flex items-center gap-x-2">
+                <div className="flex items-center gap-x-4">
+                  <Skeleton className="size-12 rounded-full" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-3 w-32" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
 
 export const WorkspaceIdClient = () => {
   const workspaceId = useWorkspaceId();
@@ -101,10 +213,6 @@ export const WorkspaceIdClient = () => {
     isLoadingWorkspaceAnalytics ||
     isLoadingWorkspacesMembers;
 
-  if (isLoading) {
-    return <PageLoader />;
-  }
-
   const tasks = workspaceTasks?.documents ?? [];
   const projects = workspaceProjects?.documents ?? [];
   const members = workspaceMembers?.documents ?? [];
@@ -120,6 +228,20 @@ export const WorkspaceIdClient = () => {
     OverdueTaskCount: 0,
     OverdueTaskDifference: 0,
   };
+
+  if (isLoading) {
+    return (
+      <div className="h-full p-6 space-y-4">
+        <TopAnalyticsSkeleton />
+        <AnalyticsSkeleton />
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+          <TaskListSkeleton />
+          <ProjectListSkeleton />
+          <MembersListSkeleton />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -213,6 +335,8 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
   const handleShowMore = async () => {
     setSlice((prevSlice) => prevSlice + 6);
   };
+
+  if (!data) return <TaskListSkeleton />;
 
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
@@ -375,9 +499,10 @@ export const ProjectList = ({
 }: ProjectListProps) => {
   const { open: createProject } = useCreateProjectModal();
 
-  const router = useRouter();
-
   const workspaceId = useWorkspaceId();
+
+  if (!data) return <ProjectListSkeleton />;
+
   return (
     <div className="flex flex-col gap-y-4 col-span-1 ">
       <div className="bg-white dark:bg-neutral-950  hover:shadow-sm transition-all duration-300 hover:bg-muted border rounded-lg p-4">
@@ -466,6 +591,9 @@ export const MembersList = ({
       }
     );
   };
+
+  if (!data) return <MembersListSkeleton />;
+
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
       <div className="bg-white dark:bg-neutral-950 hover:shadow-sm transition-all duration-300 hover:bg-muted border rounded-lg p-4">
