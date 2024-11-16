@@ -114,21 +114,25 @@ export const WebhookManager = () => {
 
   return (
     <Card className="p-6 space-y-8">
-      <div className="flex items-center p-4 gap-x-6 justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center p-4 gap-4 sm:gap-x-6 sm:justify-between">
         <Button
           variant={"outline"}
           onClick={() => router.push(`/workspaces/${workspaceId}/settings`)}
+          className="w-full sm:w-auto"
         >
           <ArrowLeftIcon className="size-4 mr-2" />
           Back
         </Button>
         <div className="flex-1">
-          <h2 className="text-xl font-bold">Discord Webhooks</h2>
+          <h2 className="text-lg sm:text-xl font-bold">Discord Webhooks</h2>
           <p className="text-muted-foreground text-sm">
             Manage your webhook integrations
           </p>
         </div>
-        <Button onClick={() => setIsCreating(!isCreating)}>
+        <Button
+          onClick={() => setIsCreating(!isCreating)}
+          className="w-full sm:w-auto"
+        >
           {isCreating ? "Cancel" : "Add Webhook"}
         </Button>
       </div>
@@ -556,14 +560,16 @@ export const WebhookManager = () => {
               ) : (
                 <>
                   <CardHeader className="pb-4">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-1">
-                        <CardTitle>{webhook.name}</CardTitle>
-                        <CardDescription className="truncate max-w-[300px]">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                      <div className="space-y-1 w-full sm:w-auto">
+                        <CardTitle className="break-all">
+                          {webhook.name}
+                        </CardTitle>
+                        <CardDescription className="truncate max-w-[200px] sm:max-w-[300px]">
                           {webhook.url}
                         </CardDescription>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-end">
                         <Switch
                           checked={webhook.isActive}
                           onCheckedChange={(checked: boolean) =>
@@ -601,7 +607,11 @@ export const WebhookManager = () => {
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
                       {webhook.events.map((event) => (
-                        <Badge key={event} variant="secondary">
+                        <Badge
+                          key={event}
+                          variant="secondary"
+                          className="text-xs break-all"
+                        >
                           {event}
                         </Badge>
                       ))}
