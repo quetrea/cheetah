@@ -4,7 +4,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreVerticalIcon } from "lucide-react";
 
 import { MemberAvatar } from "@/features/members/components/member-avatar";
-import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,17 +13,29 @@ import { Task, TaskStatus } from "../types";
 import { TaskDate } from "./task-date";
 import { snakeCaseToTitleCase } from "@/lib/utils";
 import { TaskActions } from "./task-actions";
-import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+
 import { NameColumn } from "./columns/name-column";
 import { ProjectColumn } from "./columns/project-column";
 import { LabelsColumn } from "./columns/labels-column";
+import { Skeleton } from "@/components/ui/skeleton";
+
+// Skeleton component for table cells
+const TableCellSkeleton = () => (
+  <div className="flex items-center space-x-2">
+    <Skeleton className="h-4 w-24" />
+  </div>
+);
+
+// Skeleton component for avatar cells
+const AvatarCellSkeleton = () => (
+  <div className="flex items-center gap-x-2">
+    <Skeleton className="size-6 rounded-full" />
+    <Skeleton className="h-4 w-24" />
+  </div>
+);
+
+// Skeleton component for badge cells
+const BadgeCellSkeleton = () => <Skeleton className="h-5 w-16 rounded-full" />;
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -66,6 +77,7 @@ export const columns: ColumnDef<Task>[] = [
       const name = row.original.name;
       const id = row.original.$id;
 
+      if (!name || !id) return <TableCellSkeleton />;
       return <NameColumn name={name} taskId={id} />;
     },
   },
@@ -86,10 +98,10 @@ export const columns: ColumnDef<Task>[] = [
       const project = row.original.project;
       const id = row.original.$id;
 
+      if (!project || !id) return <TableCellSkeleton />;
       return <ProjectColumn project={project} taskId={id} />;
     },
   },
-
   {
     accessorKey: "assignee",
     header: ({ column }) => {
@@ -106,6 +118,7 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => {
       const assignee = row.original.assignee;
 
+      if (!assignee) return <AvatarCellSkeleton />;
       return (
         <div className="flex items-center gap-x-2 text-sm font-medium">
           <MemberAvatar
@@ -135,12 +148,12 @@ export const columns: ColumnDef<Task>[] = [
       const dueDate = row.original.dueDate;
       const status = row.original.status;
 
+      if (!dueDate) return <TableCellSkeleton />;
       return (
         <TaskDate value={dueDate} compeleted={status === TaskStatus.DONE} />
       );
     },
   },
-
   {
     accessorKey: "status",
     header: ({ column }) => {
@@ -157,6 +170,7 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => {
       const status = row.original.status;
 
+      if (!status) return <BadgeCellSkeleton />;
       return <Badge variant={status}>{snakeCaseToTitleCase(status)}</Badge>;
     },
   },
@@ -176,6 +190,7 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => {
       const id = row.original.$id;
 
+      if (!id) return <BadgeCellSkeleton />;
       return <LabelsColumn taskId={id} />;
     },
   },
@@ -196,7 +211,7 @@ export const columns: ColumnDef<Task>[] = [
       const priority = row.original.priority;
 
       if (priority === null || priority === undefined) {
-        return <div>Undefined</div>;
+        return <BadgeCellSkeleton />;
       }
 
       return <Badge variant={priority}>{priority}</Badge>;
@@ -208,6 +223,7 @@ export const columns: ColumnDef<Task>[] = [
       const id = row.original.$id;
       const projectId = row.original.projectId;
 
+      if (!id || !projectId) return <Skeleton className="size-8" />;
       return (
         <TaskActions id={id} projectId={projectId}>
           <Button variant={"ghost"} className="size-8 p-0">

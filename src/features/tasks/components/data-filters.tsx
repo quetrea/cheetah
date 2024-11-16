@@ -22,10 +22,42 @@ import { useTasksFilters } from "../hooks/use-task-filters";
 import { MemberAvatar } from "@/features/members/components/member-avatar";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { DatePicker } from "@/components/date-picker";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface DataFilterProps {
   hideProjectFilter?: boolean;
 }
+
+const FilterSkeleton = () => {
+  return (
+    <div className="flex flex-col lg:flex-row gap-2">
+      {/* Status Filter Skeleton */}
+      <div className="w-full lg:w-[150px]">
+        <Skeleton className="h-8 w-full rounded-md" />
+      </div>
+
+      {/* Priority Filter Skeleton */}
+      <div className="w-full lg:w-[150px]">
+        <Skeleton className="h-8 w-full rounded-md" />
+      </div>
+
+      {/* Assignee Filter Skeleton */}
+      <div className="w-full lg:w-[150px]">
+        <Skeleton className="h-8 w-full rounded-md" />
+      </div>
+
+      {/* Project Filter Skeleton */}
+      <div className="w-full lg:w-[150px]">
+        <Skeleton className="h-8 w-full rounded-md" />
+      </div>
+
+      {/* Date Filter Skeleton */}
+      <div className="w-full lg:w-[150px]">
+        <Skeleton className="h-8 w-full rounded-md" />
+      </div>
+    </div>
+  );
+};
 
 export const DataFilter = ({ hideProjectFilter }: DataFilterProps) => {
   const workspaceId = useWorkspaceId();
@@ -68,7 +100,7 @@ export const DataFilter = ({ hideProjectFilter }: DataFilterProps) => {
     setFilters({ priority: value === "all" ? null : (value as Priority) });
   };
 
-  if (isLoading) return null;
+  if (isLoading) return <FilterSkeleton />;
 
   return (
     <div className="flex flex-col lg:flex-row gap-2">
@@ -207,6 +239,32 @@ export const DataFilter = ({ hideProjectFilter }: DataFilterProps) => {
           setFilters({ dueDate: date ? date.toISOString() : null });
         }}
       />
+    </div>
+  );
+};
+
+// Optional: Create skeletons for select content
+const SelectContentSkeleton = () => {
+  return (
+    <div className="p-2 space-y-2">
+      <Skeleton className="h-8 w-full" />
+      <Skeleton className="h-px w-full" /> {/* Separator */}
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div key={i} className="flex items-center gap-x-2">
+          <Skeleton className="h-6 w-6 rounded-full" /> {/* Avatar/Icon */}
+          <Skeleton className="h-4 flex-1" /> {/* Text */}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// Optional: Create skeleton for individual filter items
+const FilterItemSkeleton = ({ withIcon = true }: { withIcon?: boolean }) => {
+  return (
+    <div className="flex items-center gap-x-2">
+      {withIcon && <Skeleton className="size-4" />}
+      <Skeleton className="h-4 w-24" />
     </div>
   );
 };
