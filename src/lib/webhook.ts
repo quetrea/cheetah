@@ -108,7 +108,7 @@ export const sendDiscordWebhook = async (
   }
 ) => {
   const discordPayload = {
-    username: "Task Update",
+    username: title,
     embeds: [
       {
         title,
