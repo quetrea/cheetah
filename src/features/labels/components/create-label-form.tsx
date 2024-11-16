@@ -53,7 +53,6 @@ export const CreateLabelForm = ({
   });
 
   const onSubmit = (values: z.infer<typeof createLabelSchema>) => {
-    console.log("Form submitted with values:", values);
     mutate(
       {
         json: {

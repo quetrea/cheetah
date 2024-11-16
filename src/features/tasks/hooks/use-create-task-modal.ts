@@ -25,7 +25,7 @@ export const useCreateTaskModal = () => {
 
   const openWithStatus = (initialStatus: TaskStatus) => {
     setStatus(initialStatus);
-    console.log(initialStatus);
+
     setIsOpen(true);
   };
 

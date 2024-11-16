@@ -36,10 +36,6 @@ export const CreateTaskFormWrapper = ({
 
   const isLoading = isLoadingMembers || isLoadingProjects;
 
-  if (!modalStatus) {
-    console.log(modalStatus);
-  }
-
   if (isLoading) {
     return (
       <Card className="w-full h-[714px] border-none shadow-none">

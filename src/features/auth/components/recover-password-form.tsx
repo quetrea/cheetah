@@ -51,7 +51,6 @@ export const EditRecoveryPassword = ({
   });
 
   const onSubmit = (values: z.infer<typeof updatePasswordRecovery>) => {
-    console.log({ values });
     mutate({
       form: {
         password: values.password,
