@@ -226,93 +226,98 @@ export const SubTasks = ({ task }: SubTaskProps) => {
 
             <div className="flex flex-col gap-y-2">
               <AnimatePresence mode="popLayout">
-                {subTasks?.documents.map((subtask) => (
-                  <motion.div
-                    key={subtask.$id}
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex items-center gap-x-2 p-2 border-2 hover:opacity-75 cursor-pointer rounded-lg group relative"
-                  >
-                    <Checkbox
-                      checked={
-                        localCompletionState[subtask.$id] ?? subtask.completed
-                      }
-                      onCheckedChange={(checked) => {
-                        if (typeof checked === "boolean") {
-                          handleCompletionChange(subtask.$id, checked);
+                {subTasks?.documents
+                  .slice()
+                  .reverse()
+                  .map((subtask) => (
+                    <motion.div
+                      key={subtask.$id}
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="flex items-center gap-x-2 p-2 border-2 hover:opacity-75 cursor-pointer rounded-lg group relative"
+                    >
+                      <Checkbox
+                        checked={
+                          localCompletionState[subtask.$id] ?? subtask.completed
                         }
-                      }}
-                    />
+                        onCheckedChange={(checked) => {
+                          if (typeof checked === "boolean") {
+                            handleCompletionChange(subtask.$id, checked);
+                          }
+                        }}
+                      />
 
-                    {editingSubTaskId === subtask.$id ? (
-                      <div className="flex-1 flex items-center gap-x-2 p-0">
-                        <Input
-                          value={editedTitle}
-                          onChange={(e) => setEditedTitle(e.target.value)}
-                          className="text-sm border-none py-0"
-                          autoFocus
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter" && editedTitle.trim()) {
-                              handleEdit(subtask.$id, editedTitle);
-                            }
-                            if (e.key === "Escape") {
-                              setEditingSubTaskId(null);
-                              setEditedTitle("");
-                            }
-                          }}
-                        />
-                        <div className="flex items-center gap-x-2">
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            onClick={() => handleEdit(subtask.$id, editedTitle)}
-                            className="h-8 w-8 p-0"
-                          >
-                            <CheckIcon className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            onClick={() => {
-                              setEditingSubTaskId(null);
-                              setEditedTitle("");
+                      {editingSubTaskId === subtask.$id ? (
+                        <div className="flex-1 flex items-center gap-x-2 p-0">
+                          <Input
+                            value={editedTitle}
+                            onChange={(e) => setEditedTitle(e.target.value)}
+                            className="text-sm border-none py-0"
+                            autoFocus
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" && editedTitle.trim()) {
+                                handleEdit(subtask.$id, editedTitle);
+                              }
+                              if (e.key === "Escape") {
+                                setEditingSubTaskId(null);
+                                setEditedTitle("");
+                              }
                             }}
-                            className="h-8 w-8 p-0"
+                          />
+                          <div className="flex items-center gap-x-2">
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              onClick={() =>
+                                handleEdit(subtask.$id, editedTitle)
+                              }
+                              className="h-8 w-8 p-0"
+                            >
+                              <CheckIcon className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              onClick={() => {
+                                setEditingSubTaskId(null);
+                                setEditedTitle("");
+                              }}
+                              className="h-8 w-8 p-0"
+                            >
+                              <XIcon className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex-1 flex items-center justify-between">
+                          <div
+                            onClick={() => {
+                              setEditingSubTaskId(subtask.$id);
+                              setEditedTitle(subtask.title);
+                            }}
+                            className={cn(
+                              "flex-1 text-sm px-3 py-2",
+                              (localCompletionState[subtask.$id] ??
+                                subtask.completed) &&
+                                "line-through text-muted-foreground"
+                            )}
                           >
-                            <XIcon className="h-4 w-4" />
+                            {subtask.title}
+                          </div>
+                          <Button
+                            onClick={() => handleDeleteSubTask(subtask.$id)}
+                            className="hidden group-hover:flex"
+                            variant="ghost"
+                            size="icon"
+                          >
+                            <Trash className="size-4 text-muted-foreground hover:text-red-500 transition-colors" />
                           </Button>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="flex-1 flex items-center justify-between">
-                        <div
-                          onClick={() => {
-                            setEditingSubTaskId(subtask.$id);
-                            setEditedTitle(subtask.title);
-                          }}
-                          className={cn(
-                            "flex-1 text-sm px-3 py-2",
-                            (localCompletionState[subtask.$id] ??
-                              subtask.completed) &&
-                              "line-through text-muted-foreground"
-                          )}
-                        >
-                          {subtask.title}
-                        </div>
-                        <Button
-                          onClick={() => handleDeleteSubTask(subtask.$id)}
-                          className="hidden group-hover:flex"
-                          variant="ghost"
-                          size="icon"
-                        >
-                          <Trash className="size-4 text-muted-foreground hover:text-red-500 transition-colors" />
-                        </Button>
-                      </div>
-                    )}
-                  </motion.div>
-                ))}
+                      )}
+                    </motion.div>
+                  ))}
 
                 {isCreating && (
                   <motion.div
