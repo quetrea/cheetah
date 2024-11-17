@@ -15,6 +15,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { useDeleteSubTask } from "@/features/subtasks/api/use-delete-subtask";
 import { motion, AnimatePresence } from "framer-motion";
+import { useUpdateTask } from "@/features/tasks/api/use-update-task";
+import { TaskStatus } from "@/features/tasks/types";
 
 interface SubTaskProps {
   task: Task;
@@ -38,6 +40,7 @@ export const SubTasks = ({ task }: SubTaskProps) => {
     showErrorToast: false,
   });
   const { mutate: deleteSubTask } = useDeleteSubTask();
+  const { mutate: updateTask } = useUpdateTask({ showSuccessToast: false });
   const [isCreating, setIsCreating] = useState(false);
   const [newSubTaskTitle, setNewSubTaskTitle] = useState("");
   const [editingSubTaskId, setEditingSubTaskId] = useState<string | null>(null);
@@ -80,6 +83,27 @@ export const SubTasks = ({ task }: SubTaskProps) => {
             subTaskId: subtaskId,
           },
         });
+
+        const updatedCompletionState = {
+          ...localCompletionState,
+          [subtaskId]: checked,
+        };
+
+        const allSubtasksCompleted = subTasks?.documents.every(
+          (st) => updatedCompletionState[st.$id] ?? st.completed
+        );
+
+        if (allSubtasksCompleted) {
+          updateTask({
+            json: { status: TaskStatus.DONE },
+            param: { taskId: task.$id },
+          });
+        } else {
+          updateTask({
+            json: { status: TaskStatus.IN_PROGRESS },
+            param: { taskId: task.$id },
+          });
+        }
       } catch (error) {
         setLocalCompletionState((prev) => ({
           ...prev,
@@ -88,7 +112,14 @@ export const SubTasks = ({ task }: SubTaskProps) => {
         toast.error("Failed to update task status");
       }
     },
-    [subTasks?.documents, task.workspaceId, updateSubTask]
+    [
+      subTasks?.documents,
+      task.workspaceId,
+      task.$id,
+      updateSubTask,
+      updateTask,
+      localCompletionState,
+    ]
   );
 
   const handleEdit = useCallback(
