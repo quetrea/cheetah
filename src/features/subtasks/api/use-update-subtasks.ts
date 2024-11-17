@@ -12,7 +12,17 @@ type RequestType = InferRequestType<
   (typeof client.api.subtasks)[":subTaskId"]["$patch"]
 >;
 
-export const useUpdateSubTask = () => {
+interface UpdateSubTaskOptions {
+  showSuccessToast?: boolean;
+  showErrorToast?: boolean;
+}
+
+export const useUpdateSubTask = (
+  options: UpdateSubTaskOptions = {
+    showSuccessToast: true,
+    showErrorToast: true,
+  }
+) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ResponseType, Error, RequestType>({
@@ -28,7 +38,11 @@ export const useUpdateSubTask = () => {
       return await response.json();
     },
     onSuccess: ({ data }) => {
-      if (data.completed === true) toast.success("Subtask completed");
+      if (options.showSuccessToast) {
+        if (data.completed === true) {
+          toast.success(`Subtask [${data.name}] completed`);
+        }
+      }
 
       queryClient.invalidateQueries({ queryKey: ["workspace-analytics"] });
       queryClient.invalidateQueries({ queryKey: ["project-analytics"] });
@@ -36,7 +50,9 @@ export const useUpdateSubTask = () => {
       queryClient.invalidateQueries({ queryKey: ["subtask", data.$id] });
     },
     onError: () => {
-      toast.error("Failed to update subtask");
+      if (options.showErrorToast) {
+        toast.error("Failed to update subtask");
+      }
     },
   });
 

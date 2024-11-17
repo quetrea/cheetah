@@ -11,6 +11,7 @@ import {
 } from "../schemas";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -145,52 +146,182 @@ export const EditAccountSettings = ({
     });
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.4,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
     <>
       <UpdateDialog />
-      <div className="flex flex-col gap-y-4 select-none">
-        <Card className="w-full h-full shadow-none border select-none border-sky-500">
-          <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
-            <Button
-              size={"sm"}
-              variant={"secondary"}
-              onClick={onCancel ? onCancel : () => router.push(`/`)}
-            >
-              <ArrowLeftIcon className="size-4 mr-2" />
-              Back
-            </Button>
-            <CardTitle className="text-xl font-bold">
-              {initialValues.name}
-            </CardTitle>
-          </CardHeader>
-          <div className="px-7">
-            <DottedSeparator />
-          </div>
-          <CardContent className="p-7">
-            <div className="">
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
-                  <div className="flex flex-col gap-y-4">
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>User name</FormLabel>
+      <motion.div
+        className="flex flex-col gap-y-4 select-none"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div variants={cardVariants}>
+          <Card className="w-full h-full shadow-none border select-none border-sky-500">
+            <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
+              <Button
+                size={"sm"}
+                variant={"secondary"}
+                onClick={onCancel ? onCancel : () => router.push(`/`)}
+              >
+                <ArrowLeftIcon className="size-4 mr-2" />
+                Back
+              </Button>
+              <CardTitle className="text-xl font-bold">
+                {initialValues.name}
+              </CardTitle>
+            </CardHeader>
+            <div className="px-7">
+              <DottedSeparator />
+            </div>
+            <CardContent className="p-7">
+              <div className="">
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <div className="flex flex-col gap-y-4">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>User name</FormLabel>
 
-                          <FormControl>
-                            <Input
-                              {...field}
-                              disabled={isPending}
-                              placeholder="Enter user name"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                            <FormControl>
+                              <Input
+                                {...field}
+                                disabled={isPending}
+                                placeholder="Enter user name"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <DottedSeparator className="py-7" />
+                    <div className="flex items-center justify-between">
+                      <Button
+                        type="button"
+                        size={"lg"}
+                        disabled={isPending}
+                        variant={"secondary"}
+                        onClick={onCancel}
+                        className={cn(!onCancel && "invisible")}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="submit"
+                        className="px-3.5"
+                        disabled={isPending}
+                      >
+                        Save Name
+                      </Button>
+                    </div>
+                  </form>
+                </Form>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        <motion.div variants={cardVariants}>
+          <Card className="w-full h-full shadow-none border select-none border-sky-500">
+            <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
+              <CardTitle className="text-xl font-bold">
+                Change your email
+              </CardTitle>
+            </CardHeader>
+            <div className="px-7">
+              <DottedSeparator />
+            </div>
+            <CardContent className="p-7">
+              <Form {...formUpdateEmail}>
+                <form
+                  onSubmit={formUpdateEmail.handleSubmit(onEmailChangeSubmit)}
+                >
+                  <div className=" flex flex-col gap-y-4 items-center">
+                    <div className="flex gap-4">
+                      <FormField
+                        control={formUpdateEmail.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+
+                            <FormControl>
+                              <Input
+                                {...field}
+                                disabled={isUpdatingEmail}
+                                placeholder="Enter email"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={formUpdateEmail.control}
+                        name="password"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Current Password</FormLabel>
+
+                            <FormControl>
+                              <Input
+                                {...field}
+                                autoComplete="off"
+                                aria-autocomplete="none"
+                                type={"password"}
+                                disabled={isUpdatingEmail}
+                                placeholder="Enter your current password"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <div className="flex-col  flex items-start gap-y-2  w-full rounded-md">
+                      <p className="flex text-xs items-center gap-x-2">
+                        <AlertCircle className="size-4" />
+                        If you are logging in without a password, this will not
+                        work.{" "}
+                      </p>
+                      <span
+                        onClick={() => onSubmitRecovery()}
+                        className="text-xs flex justify-end hover:underline text-sky-700 cursor-pointer"
+                      >
+                        Recovery Password with Email Sent
+                      </span>
+                    </div>
                   </div>
-                  <DottedSeparator className="py-7" />
+                  <DottedSeparator className="my-4" />
                   <div className="flex items-center justify-between">
                     <Button
                       type="button"
@@ -203,213 +334,121 @@ export const EditAccountSettings = ({
                       Cancel
                     </Button>
                     <Button
+                      variant={"destructive"}
                       type="submit"
-                      className="px-3.5"
                       disabled={isPending}
+                      className="px-3.5 py-2"
                     >
-                      Save Name
+                      Save Changes
                     </Button>
                   </div>
                 </form>
               </Form>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        <motion.div variants={cardVariants}>
+          <Card className="w-full h-full shadow-none border select-none border-sky-500">
+            <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
+              <CardTitle className="text-xl font-bold">
+                Change your password
+              </CardTitle>
+            </CardHeader>
+            <div className="px-7">
+              <DottedSeparator />
             </div>
-          </CardContent>
-        </Card>
-        <Card className="w-full h-full shadow-none border select-none border-sky-500">
-          <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
-            <CardTitle className="text-xl font-bold">
-              Change your email
-            </CardTitle>
-          </CardHeader>
-          <div className="px-7">
-            <DottedSeparator />
-          </div>
-          <CardContent className="p-7">
-            <Form {...formUpdateEmail}>
-              <form
-                onSubmit={formUpdateEmail.handleSubmit(onEmailChangeSubmit)}
-              >
-                <div className=" flex flex-col gap-y-4 items-center">
-                  <div className="flex gap-4">
-                    <FormField
-                      control={formUpdateEmail.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email</FormLabel>
+            <CardContent className="p-7">
+              <Form {...formUpdatePassword}>
+                <form
+                  onSubmit={formUpdatePassword.handleSubmit(
+                    onPasswordChangeSubmit
+                  )}
+                >
+                  <div className=" flex flex-col gap-y-4 items-center">
+                    <div className="flex gap-4">
+                      <FormField
+                        control={formUpdatePassword.control}
+                        name="oldPassword"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Old password</FormLabel>
 
-                          <FormControl>
-                            <Input
-                              {...field}
-                              disabled={isUpdatingEmail}
-                              placeholder="Enter email"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={formUpdateEmail.control}
-                      name="password"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Current Password</FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                type={"password"}
+                                disabled={isLoadingChangePassword}
+                                placeholder="Enter current password"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={formUpdatePassword.control}
+                        name="password"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>New Password</FormLabel>
 
-                          <FormControl>
-                            <Input
-                              {...field}
-                              autoComplete="off"
-                              aria-autocomplete="none"
-                              type={"password"}
-                              disabled={isUpdatingEmail}
-                              placeholder="Enter your current password"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                            <FormControl>
+                              <Input
+                                {...field}
+                                aria-autocomplete="none"
+                                type={"password"}
+                                disabled={isLoadingChangePassword}
+                                placeholder="Enter your new password"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <div className="flex-col  flex items-start gap-y-2  w-full rounded-md">
+                      <p className="flex text-xs items-center gap-x-2">
+                        <AlertCircle className="size-4" />
+                        If you are logging in without a password, this will not
+                        work.{" "}
+                      </p>
+                      <span
+                        onClick={() => onSubmitRecovery()}
+                        className="text-xs flex justify-end hover:underline text-sky-700 cursor-pointer"
+                      >
+                        Recovery Password with Email Sent
+                      </span>
+                    </div>
                   </div>
-
-                  <div className="flex-col  flex items-start gap-y-2  w-full rounded-md">
-                    <p className="flex text-xs items-center gap-x-2">
-                      <AlertCircle className="size-4" />
-                      If you are logging in without a password, this will not
-                      work.{" "}
-                    </p>
-                    <span
-                      onClick={() => onSubmitRecovery()}
-                      className="text-xs flex justify-end hover:underline text-sky-700 cursor-pointer"
+                  <DottedSeparator className="my-4" />
+                  <div className="flex items-center justify-between">
+                    <Button
+                      type="button"
+                      size={"lg"}
+                      disabled={isPending}
+                      variant={"secondary"}
+                      onClick={onCancel}
+                      className={cn(!onCancel && "invisible")}
                     >
-                      Recovery Password with Email Sent
-                    </span>
-                  </div>
-                </div>
-                <DottedSeparator className="my-4" />
-                <div className="flex items-center justify-between">
-                  <Button
-                    type="button"
-                    size={"lg"}
-                    disabled={isPending}
-                    variant={"secondary"}
-                    onClick={onCancel}
-                    className={cn(!onCancel && "invisible")}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant={"destructive"}
-                    type="submit"
-                    disabled={isPending}
-                    className="px-3.5 py-2"
-                  >
-                    Save Changes
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
-        <Card className="w-full h-full shadow-none border select-none border-sky-500">
-          <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
-            <CardTitle className="text-xl font-bold">
-              Change your password
-            </CardTitle>
-          </CardHeader>
-          <div className="px-7">
-            <DottedSeparator />
-          </div>
-          <CardContent className="p-7">
-            <Form {...formUpdatePassword}>
-              <form
-                onSubmit={formUpdatePassword.handleSubmit(
-                  onPasswordChangeSubmit
-                )}
-              >
-                <div className=" flex flex-col gap-y-4 items-center">
-                  <div className="flex gap-4">
-                    <FormField
-                      control={formUpdatePassword.control}
-                      name="oldPassword"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Old password</FormLabel>
-
-                          <FormControl>
-                            <Input
-                              {...field}
-                              type={"password"}
-                              disabled={isLoadingChangePassword}
-                              placeholder="Enter current password"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={formUpdatePassword.control}
-                      name="password"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>New Password</FormLabel>
-
-                          <FormControl>
-                            <Input
-                              {...field}
-                              aria-autocomplete="none"
-                              type={"password"}
-                              disabled={isLoadingChangePassword}
-                              placeholder="Enter your new password"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="flex-col  flex items-start gap-y-2  w-full rounded-md">
-                    <p className="flex text-xs items-center gap-x-2">
-                      <AlertCircle className="size-4" />
-                      If you are logging in without a password, this will not
-                      work.{" "}
-                    </p>
-                    <span
-                      onClick={() => onSubmitRecovery()}
-                      className="text-xs flex justify-end hover:underline text-sky-700 cursor-pointer"
+                      Cancel
+                    </Button>
+                    <Button
+                      variant={"destructive"}
+                      type="submit"
+                      disabled={isPending}
+                      className="px-3.5 py-2"
                     >
-                      Recovery Password with Email Sent
-                    </span>
+                      Save Changes
+                    </Button>
                   </div>
-                </div>
-                <DottedSeparator className="my-4" />
-                <div className="flex items-center justify-between">
-                  <Button
-                    type="button"
-                    size={"lg"}
-                    disabled={isPending}
-                    variant={"secondary"}
-                    onClick={onCancel}
-                    className={cn(!onCancel && "invisible")}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant={"destructive"}
-                    type="submit"
-                    disabled={isPending}
-                    className="px-3.5 py-2"
-                  >
-                    Save Changes
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
-      </div>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </motion.div>
     </>
   );
 };

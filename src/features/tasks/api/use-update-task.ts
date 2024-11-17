@@ -13,7 +13,13 @@ type RequestType = InferRequestType<
   (typeof client.api.tasks)[":taskId"]["$patch"]
 >;
 
-export const useUpdateTask = () => {
+interface UpdateTaskOptions {
+  showSuccessToast?: boolean;
+}
+
+export const useUpdateTask = (
+  options: UpdateTaskOptions = { showSuccessToast: true }
+) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ResponseType, Error, RequestType>({
@@ -29,7 +35,9 @@ export const useUpdateTask = () => {
       return await response.json();
     },
     onSuccess: ({ data }) => {
-      toast.success("Task updated");
+      if (options.showSuccessToast) {
+        toast.success("Task updated");
+      }
 
       queryClient.invalidateQueries({ queryKey: ["workspace-analytics"] });
       queryClient.invalidateQueries({ queryKey: ["project-analytics"] });
