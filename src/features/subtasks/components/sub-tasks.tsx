@@ -34,12 +34,15 @@ export const SubTasks = ({ task }: SubTaskProps) => {
     taskId: task.$id,
     workspaceId: task.workspaceId,
   });
-  const { mutate: createSubTask } = useCreateSubTask();
-  const { mutate: updateSubTask } = useUpdateSubTask({
-    showSuccessToast: false,
-    showErrorToast: false,
-  });
-  const { mutate: deleteSubTask } = useDeleteSubTask();
+  const { mutate: createSubTask, isPending: creatingSubTask } =
+    useCreateSubTask();
+  const { mutate: updateSubTask, isPending: updatingSubTask } =
+    useUpdateSubTask({
+      showSuccessToast: false,
+      showErrorToast: false,
+    });
+  const { mutate: deleteSubTask, isPending: deletingSubTask } =
+    useDeleteSubTask();
   const { mutate: updateTask } = useUpdateTask({ showSuccessToast: false });
   const [isCreating, setIsCreating] = useState(false);
   const [newSubTaskTitle, setNewSubTaskTitle] = useState("");
@@ -125,7 +128,7 @@ export const SubTasks = ({ task }: SubTaskProps) => {
   const handleEdit = useCallback(
     async (subtaskId: string, newTitle: string) => {
       const subtask = subTasks?.documents.find((st) => st.$id === subtaskId);
-      if (!subtask) return;
+      if (!subtask || updatingSubTask) return;
 
       try {
         await updateSubTask({
@@ -144,11 +147,11 @@ export const SubTasks = ({ task }: SubTaskProps) => {
         toast.error("Failed to update task title");
       }
     },
-    [subTasks?.documents, updateSubTask, task.workspaceId]
+    [subTasks?.documents, updateSubTask, task.workspaceId, updatingSubTask]
   );
 
-  const handleCreateSubTask = () => {
-    if (newSubTaskTitle.trim()) {
+  const handleCreateSubTask = useCallback(() => {
+    if (newSubTaskTitle.trim() && !creatingSubTask) {
       createSubTask(
         {
           json: {
@@ -168,18 +171,24 @@ export const SubTasks = ({ task }: SubTaskProps) => {
         }
       );
     }
-  };
+  }, [newSubTaskTitle, creatingSubTask, createSubTask, task]);
 
-  const handleDeleteSubTask = (subTaskId: string) => {
-    deleteSubTask({
-      json: {
-        workspaceId: task.workspaceId,
-      },
-      param: {
-        subTaskId: subTaskId,
-      },
-    });
-  };
+  const handleDeleteSubTask = useCallback(
+    (subTaskId: string) => {
+      if (deletingSubTask) return;
+
+      deleteSubTask({
+        json: {
+          workspaceId: task.workspaceId,
+        },
+        param: {
+          subTaskId: subTaskId,
+        },
+      });
+    },
+    [task.workspaceId, deleteSubTask, deletingSubTask]
+  );
+
   return (
     <div className="dark:bg-neutral-900 hover:bg-neutral-100 p-4  rounded-md">
       <div className="flex items-center justify-between">
@@ -273,6 +282,7 @@ export const SubTasks = ({ task }: SubTaskProps) => {
                               onClick={() =>
                                 handleEdit(subtask.$id, editedTitle)
                               }
+                              disabled={updatingSubTask}
                               className="h-8 w-8 p-0"
                             >
                               <CheckIcon className="h-4 w-4" />
@@ -308,6 +318,7 @@ export const SubTasks = ({ task }: SubTaskProps) => {
                           </div>
                           <Button
                             onClick={() => handleDeleteSubTask(subtask.$id)}
+                            disabled={deletingSubTask}
                             className="hidden group-hover:flex"
                             variant="ghost"
                             size="icon"
@@ -336,8 +347,13 @@ export const SubTasks = ({ task }: SubTaskProps) => {
                         value={newSubTaskTitle}
                         onChange={(e) => setNewSubTaskTitle(e.target.value)}
                         autoFocus
+                        disabled={creatingSubTask}
                         onKeyDown={(e) => {
-                          if (e.key === "Enter" && newSubTaskTitle.trim()) {
+                          if (
+                            e.key === "Enter" &&
+                            newSubTaskTitle.trim() &&
+                            !creatingSubTask
+                          ) {
                             handleCreateSubTask();
                           }
                           if (e.key === "Escape") {
