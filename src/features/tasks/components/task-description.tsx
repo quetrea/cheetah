@@ -35,6 +35,46 @@ const formats = [
   "link",
 ];
 
+// Modern stil ayarları
+const customStyles = `
+  .ql-toolbar {
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    border-color: hsl(var(--border));
+    background: hsl(var(--muted));
+  }
+  
+  .ql-container {
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    border-color: hsl(var(--border));
+    background: hsl(var(--background));
+  }
+
+  .ql-editor {
+    min-height: 120px;
+    font-size: 0.925rem;
+    line-height: 1.6;
+  }
+
+  .ql-editor.ql-blank::before {
+    color: hsl(var(--muted-foreground));
+    font-style: normal;
+  }
+
+  .dark .ql-snow .ql-stroke {
+    stroke: hsl(var(--foreground));
+  }
+
+  .dark .ql-snow .ql-fill {
+    fill: hsl(var(--foreground));
+  }
+
+  .dark .ql-toolbar.ql-snow .ql-picker-label {
+    color: hsl(var(--foreground));
+  }
+`;
+
 interface TaskDescriptionProps {
   task: Task;
 }
@@ -45,10 +85,20 @@ export const TaskDescription = ({ task }: TaskDescriptionProps) => {
 
   const { mutate, isPending } = useUpdateTask();
 
+  // HTML temizleme fonksiyonu
+  const cleanHTML = (html: string) => {
+    return html
+      .replace(/<p><br><\/p>/g, "") // Boş paragrafları kaldır
+      .replace(/(<p>|<\/p>)/g, "") // Gereksiz p etiketlerini kaldır
+      .trim();
+  };
+
   const handleSave = () => {
+    // Kaydetmeden önce HTML'i temizle
+    const cleanedValue = cleanHTML(value);
     mutate(
       {
-        json: { description: value },
+        json: { description: cleanedValue },
         param: { taskId: task.$id },
       },
       {
@@ -60,29 +110,42 @@ export const TaskDescription = ({ task }: TaskDescriptionProps) => {
   };
 
   return (
-    <div className="p-4 border rounded-lg">
-      <div className="flex items-center justify-between">
-        <p className="text-lg font-semibold">Task Description</p>
+    <div className="p-4 border rounded-lg bg-card">
+      <style>{customStyles}</style>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <p className="text-lg font-semibold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            Task Description
+          </p>
+          {!isEditing && !value && (
+            <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-md">
+              No description
+            </span>
+          )}
+        </div>
         <Button
           onClick={() => setIsEditing((prev) => !prev)}
           size="sm"
-          variant={"secondary"}
+          variant={isEditing ? "destructive" : "secondary"}
+          className="transition-all duration-200"
         >
           {isEditing ? (
-            <XIcon className={"size-4 mr-2"} />
+            <XIcon className="size-4 mr-2" />
           ) : (
             <PencilIcon className="size-4 mr-2" />
           )}
           {isEditing ? "Cancel" : "Edit"}
         </Button>
       </div>
-      <DottedSeparator className="my-4" />
+      <DottedSeparator className="mb-4" />
       {isEditing ? (
         <div className="flex flex-col gap-y-4">
           <div
             className={cn(
               "prose prose-sm dark:prose-invert max-w-none",
-              "focus-within:outline-none"
+              "focus-within:outline-none rounded-lg overflow-hidden",
+              "[&_.ql-editor]:px-3",
+              "transition-all duration-200"
             )}
           >
             <ReactQuill
@@ -97,16 +160,25 @@ export const TaskDescription = ({ task }: TaskDescriptionProps) => {
           </div>
           <Button
             className="w-fit ml-auto"
-            size={"sm"}
+            size="sm"
             onClick={handleSave}
             disabled={isPending}
           >
-            {isPending ? "Saving..." : "Save Changes"}
+            {isPending ? (
+              <>
+                <span className="animate-pulse">Saving</span>
+                <span className="animate-pulse">...</span>
+              </>
+            ) : (
+              "Save Changes"
+            )}
           </Button>
         </div>
       ) : (
         <div
-          className="prose prose-sm dark:prose-invert max-w-none"
+          className={cn(
+            "prose prose-sm dark:prose-invert max-w-none whitespace-pre-line"
+          )}
           dangerouslySetInnerHTML={{
             __html:
               value ||
