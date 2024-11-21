@@ -34,23 +34,22 @@ const BlogLayout = ({ children }: BlogLayoutProps) => {
           transition={{ duration: 0.3 }}
           className="flex justify-between border-b p-4 items-center relative"
         >
-          {/* Logo */}
-          <motion.div
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="flex-1 hidden xs:hidden sm:block md:block lg:block"
-          >
-            <div className="hidden dark:block">
-              <CheetahLogo variant="blog" />
-            </div>
-            <div className="block dark:hidden">
-              <CheetahLogo variant="blog" />
-            </div>
-          </motion.div>
+          {/* Logo ve PageList Container */}
+          <div className="flex items-center gap-x-8 flex-1">
+            <motion.div
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="hidden xs:hidden sm:block md:block lg:block"
+            >
+              <div className="hidden dark:block">
+                <CheetahLogo variant="blog" />
+              </div>
+              <div className="block dark:hidden">
+                <CheetahLogo variant="blog" />
+              </div>
+            </motion.div>
 
-          {/* Center Navigation */}
-          <div className="flex-1 flex justify-center">
             <PageList />
           </div>
 

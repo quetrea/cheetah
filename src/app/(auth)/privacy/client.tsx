@@ -3,80 +3,145 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DottedSeparator } from "@/components/dotted-separator";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 },
+};
+
+const PolicySection = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => (
+  <motion.div variants={item} className="mb-8">
+    <h2 className="text-xl font-semibold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+      {title}
+    </h2>
+    <div className="space-y-3 text-muted-foreground">{children}</div>
+  </motion.div>
+);
 
 export const PrivacyClient = () => {
   const router = useRouter();
+
   return (
-    <Card className="w-full h-full border-none shadow-none">
-      <CardHeader className="flex p-7 flex-row items-center justify-between">
-        <CardTitle className="text-xl font-bold">Privacy Policy</CardTitle>
+    <motion.div
+      initial="hidden"
+      animate="show"
+      variants={container}
+      className="max-w-4xl mx-auto w-full"
+    >
+      <Card className="border shadow-lg">
+        <CardHeader className="space-y-6 p-8">
+          <div className="flex items-center justify-between">
+            <Button
+              variant="ghost"
+              onClick={() => router.back()}
+              className="hover:bg-purple-100 dark:hover:bg-purple-900/20"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Go Back
+            </Button>
+            <span className="text-sm text-muted-foreground">
+              Last updated: {new Date().toLocaleDateString()}
+            </span>
+          </div>
+          <CardTitle className="text-3xl font-bold text-center bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            Privacy Policy
+          </CardTitle>
+          <p className="text-center text-muted-foreground max-w-2xl mx-auto">
+            At Cheetah, we take your privacy seriously. This policy describes
+            what personal information we collect and how we use it.
+          </p>
+        </CardHeader>
 
-        <div className="">
-          <Button variant="primary" onClick={() => router.back()}>
-            Go Back
-          </Button>
-        </div>
-      </CardHeader>
-      <div className="px-7">
         <DottedSeparator />
-      </div>
-      <CardContent className="p-7">
-        <h2 className="text-lg font-semibold">1. Information We Collect</h2>
-        <p>When you visit our site, we collect the following information:</p>
-        <ul className="list-disc pl-5">
-          <li>
-            Personal Information: Information such as your name, email address,
-            and phone number.
-          </li>
-          <li>
-            Usage Data: Information about how the site is used (pages visited,
-            click data, etc.).
-          </li>
-          <li>Cookies: Small data files stored in your browser.</li>
-        </ul>
 
-        <h2 className="text-lg font-semibold mt-5">
-          2. How We Use Your Information
-        </h2>
-        <p>We use the information we collect for the following purposes:</p>
-        <ul className="list-disc pl-5">
-          <li>To provide and maintain our services.</li>
-          <li>To improve user experience.</li>
-          <li>For advertising and marketing purposes.</li>
-          <li>To comply with legal obligations.</li>
-        </ul>
+        <CardContent className="p-8 space-y-6">
+          <PolicySection title="1. Information We Collect">
+            <p>
+              We collect various types of information to provide and improve our
+              services:
+            </p>
+            <ul className="list-disc pl-6 space-y-2 mt-2">
+              <li>
+                <span className="font-medium text-foreground">
+                  Personal Information:
+                </span>{" "}
+                Name, email address, and contact details
+              </li>
+              <li>
+                <span className="font-medium text-foreground">Usage Data:</span>{" "}
+                Interaction with our platform, features used, and preferences
+              </li>
+              <li>
+                <span className="font-medium text-foreground">
+                  Technical Data:
+                </span>{" "}
+                IP address, browser type, device information
+              </li>
+            </ul>
+          </PolicySection>
 
-        <h2 className="text-lg font-semibold mt-5">3. Advertisements</h2>
-        <p>
-          Our site may contain third-party advertisements. These advertisements
-          may use cookies and other tracking technologies to deliver content
-          tailored to users&apos; interests.
-        </p>
+          <PolicySection title="2. How We Use Your Information">
+            <p>Your information helps us provide and improve our services:</p>
+            <ul className="list-disc pl-6 space-y-2 mt-2">
+              <li>Personalize your experience and content</li>
+              <li>Process your transactions and maintain your account</li>
+              <li>Send important notifications and updates</li>
+              <li>Analyze usage patterns to improve our platform</li>
+            </ul>
+          </PolicySection>
 
-        <h2 className="text-lg font-semibold mt-5">4. Memberships</h2>
-        <p>
-          You may need to create a membership to access certain services on our
-          site. The information we collect during membership registration will
-          be used to personalize user experience and improve our services.
-        </p>
+          <PolicySection title="3. Data Protection">
+            <p>We implement robust security measures to protect your data:</p>
+            <ul className="list-disc pl-6 space-y-2 mt-2">
+              <li>Encryption of sensitive information</li>
+              <li>Regular security assessments and updates</li>
+              <li>Strict access controls and authentication</li>
+              <li>Compliance with industry security standards</li>
+            </ul>
+          </PolicySection>
 
-        <h2 className="text-lg font-semibold mt-5">
-          5. How We Protect Your Data
-        </h2>
-        <p>
-          We take necessary security measures to protect your personal data.
-          However, we cannot guarantee that data transmission over the internet
-          is completely secure.
-        </p>
+          <PolicySection title="4. Your Rights">
+            <p>You have several rights regarding your personal data:</p>
+            <ul className="list-disc pl-6 space-y-2 mt-2">
+              <li>Access your personal information</li>
+              <li>Request corrections or deletions</li>
+              <li>Object to processing of your data</li>
+              <li>Download a copy of your data</li>
+            </ul>
+          </PolicySection>
 
-        <h2 className="text-lg font-semibold mt-5">
-          6. Changes to This Privacy Policy
-        </h2>
-        <p>
-          We may update our privacy policy from time to time. When changes are
-          made, we will publish the updated policy on this page.
-        </p>
-      </CardContent>
-    </Card>
+          <PolicySection title="5. Contact Us">
+            <p>
+              If you have any questions about this Privacy Policy, please
+              contact us:
+            </p>
+            <div className="bg-muted p-4 rounded-lg mt-2">
+              <p className="font-medium">Email: privacy@cheetah.com</p>
+              <p className="font-medium">
+                Address: 123 Privacy Street, Security City, 12345
+              </p>
+            </div>
+          </PolicySection>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 };

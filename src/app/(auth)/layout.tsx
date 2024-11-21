@@ -34,84 +34,83 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
           transition={{ duration: 0.3 }}
           className="flex justify-between border-b p-4 items-center relative"
         >
-          {/* Logo */}
-          <motion.div
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="flex-1 hidden xs:hidden sm:block md:block lg:block"
-          >
-            <Link href="/home">
-              <CheetahLogo variant="default" />
-            </Link>
-          </motion.div>
+          {/* Logo ve PageList Container */}
+          <div className="flex items-center gap-x-8 flex-1">
+            <motion.div
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="hidden xs:hidden sm:block md:block lg:block"
+            >
+              <Link href="/home">
+                <CheetahLogo variant="privacy" />
+              </Link>
+            </motion.div>
 
-          {/* Navigation ve Auth Buttons Container */}
-          <div className="flex items-center flex-col lg:flex-row justify-end w-full min-w-[300px] sm:min-w-[100px] relative">
             <PageList />
+          </div>
 
-            {/* Desktop Auth Buttons ve Theme Toggle Container */}
-            <div className="hidden md:flex items-center gap-3 ml-4">
-              <div className="flex items-center gap-4">
-                {!data?.user ? (
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.4 }}
-                    className="flex items-center gap-2"
-                  >
-                    <Button
-                      asChild
-                      variant={isSignIn ? "primary" : "outline"}
-                      size="sm"
-                      className={cn(
-                        isSignIn &&
-                          "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0",
-                        !isSignIn &&
-                          "hover:text-purple-600 hover:border-purple-600"
-                      )}
-                    >
-                      <Link href="/sign-in">Login</Link>
-                    </Button>
-                    <Button
-                      asChild
-                      variant={!isSignIn ? "primary" : "outline"}
-                      size="sm"
-                      className={cn(
-                        !isSignIn &&
-                          "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0",
-                        isSignIn &&
-                          "hover:text-purple-600 hover:border-purple-600"
-                      )}
-                    >
-                      <Link href="/sign-up">Sign Up</Link>
-                    </Button>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.4 }}
-                  >
-                    <Button
-                      asChild
-                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
-                      size="sm"
-                    >
-                      <Link href="/">Go to Dashboard</Link>
-                    </Button>
-                  </motion.div>
-                )}
-
-                {/* Desktop Theme Toggle - Yeni pozisyon */}
+          {/* Desktop Auth Buttons ve Theme Toggle Container */}
+          <div className="hidden md:flex items-center gap-3 ml-4">
+            <div className="flex items-center gap-4">
+              {!data?.user ? (
                 <motion.div
-                  initial={{ y: -10, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.3 }}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="flex items-center gap-2"
                 >
-                  <ThemeToggle />
+                  <Button
+                    asChild
+                    variant={isSignIn ? "primary" : "outline"}
+                    size="sm"
+                    className={cn(
+                      isSignIn &&
+                        "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0",
+                      !isSignIn &&
+                        "hover:text-purple-600 hover:border-purple-600"
+                    )}
+                  >
+                    <Link href="/sign-in">Login</Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant={!isSignIn ? "primary" : "outline"}
+                    size="sm"
+                    className={cn(
+                      !isSignIn &&
+                        "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0",
+                      isSignIn &&
+                        "hover:text-purple-600 hover:border-purple-600"
+                    )}
+                  >
+                    <Link href="/sign-up">Sign Up</Link>
+                  </Button>
                 </motion.div>
-              </div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <Button
+                    asChild
+                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                    size="sm"
+                  >
+                    <Link href="/">Go to Dashboard</Link>
+                  </Button>
+                </motion.div>
+              )}
+
+              {/* Desktop Theme Toggle - Yeni pozisyon */}
+              <motion.div
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                <ThemeToggle />
+              </motion.div>
             </div>
           </div>
         </motion.nav>

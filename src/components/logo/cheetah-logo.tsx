@@ -5,7 +5,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 interface CheetahLogoProps {
-  variant?: "default" | "blog" | "compact";
+  variant?: "default" | "blog" | "privacy" | "compact";
   className?: string;
   subtitleClassName?: string;
 }
@@ -18,6 +18,7 @@ export const CheetahLogo = ({
   const subtitles = {
     default: "Lightning-Fast Project Management",
     blog: "Blog & News",
+    privacy: "Privacy Policy",
     compact: "",
   };
 
