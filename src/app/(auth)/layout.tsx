@@ -9,48 +9,7 @@ import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/themes/theme-toggle";
 import { useCurrent } from "@/features/auth/api/use-current";
 import { motion, AnimatePresence } from "framer-motion";
-
-const CheetahLogo = () => (
-  <motion.div
-    initial={{ scale: 0.9, opacity: 0 }}
-    animate={{ scale: 1, opacity: 1 }}
-    transition={{ duration: 0.5 }}
-    className="flex items-center gap-3"
-  >
-    <div className="relative h-10 w-10">
-      <motion.div
-        initial={{ rotate: -10 }}
-        animate={{ rotate: 0 }}
-        transition={{
-          type: "spring",
-          stiffness: 200,
-          damping: 10,
-        }}
-      >
-        <Image
-          src="/cheetah-logo.svg"
-          alt="Cheetah Logo"
-          width={40}
-          height={40}
-          className="object-contain"
-        />
-      </motion.div>
-    </div>
-    <motion.div
-      initial={{ x: -20, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ delay: 0.2 }}
-      className="flex flex-col gap-0.5"
-    >
-      <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-        Cheetah
-      </span>
-      <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">
-        Lightning-Fast Project Management
-      </span>
-    </motion.div>
-  </motion.div>
-);
+import { CheetahLogo } from "@/components/logo/cheetah-logo";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -83,7 +42,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
             className="flex-1 hidden xs:hidden sm:block md:block lg:block"
           >
             <Link href="/home">
-              <CheetahLogo />
+              <CheetahLogo variant="default" />
             </Link>
           </motion.div>
 

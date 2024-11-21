@@ -9,50 +9,11 @@ import { ThemeToggle } from "@/components/themes/theme-toggle";
 import { useCurrent } from "@/features/auth/api/use-current";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageList } from "../(auth)/page-list";
+import { CheetahLogo } from "@/components/logo/cheetah-logo";
 
 interface BlogLayoutProps {
   children: React.ReactNode;
 }
-
-const CheetahLogo = () => (
-  <motion.div
-    initial={{ scale: 0.9, opacity: 0 }}
-    animate={{ scale: 1, opacity: 1 }}
-    transition={{ duration: 0.5 }}
-    className="flex items-center gap-2"
-  >
-    <div className="relative h-10 w-10">
-      <motion.div
-        initial={{ rotate: -10 }}
-        animate={{ rotate: 0 }}
-        transition={{
-          type: "spring",
-          stiffness: 200,
-          damping: 10,
-        }}
-      >
-        <Image
-          src="/cheetah-logo.svg"
-          alt="Cheetah Logo"
-          width={40}
-          height={40}
-          className="object-contain"
-        />
-      </motion.div>
-    </div>
-    <motion.div
-      initial={{ x: -20, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ delay: 0.2 }}
-      className="flex flex-col"
-    >
-      <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-        Cheetah
-      </span>
-      <span className="text-xs text-muted-foreground">Blog & News</span>
-    </motion.div>
-  </motion.div>
-);
 
 const BlogLayout = ({ children }: BlogLayoutProps) => {
   const pathname = usePathname();
@@ -81,10 +42,10 @@ const BlogLayout = ({ children }: BlogLayoutProps) => {
             className="flex-1 hidden xs:hidden sm:block md:block lg:block"
           >
             <div className="hidden dark:block">
-              <CheetahLogo />
+              <CheetahLogo variant="blog" />
             </div>
             <div className="block dark:hidden">
-              <CheetahLogo />
+              <CheetahLogo variant="blog" />
             </div>
           </motion.div>
 
