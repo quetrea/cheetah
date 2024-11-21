@@ -49,67 +49,67 @@ const BlogLayout = ({ children }: BlogLayoutProps) => {
             </div>
           </motion.div>
 
-          {/* Desktop Navigation */}
-          <div className="flex items-center justify-end w-full lg:mr-5 min-w-[300px] sm:min-w-[100px]">
+          {/* Center Navigation */}
+          <div className="flex-1 flex justify-center">
             <PageList />
-            <div className="hidden md:flex items-center gap-4">
-              {!data?.user ? (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="flex items-center gap-2"
-                >
-                  <Button
-                    asChild
-                    variant={isSignIn ? "primary" : "outline"}
-                    size="sm"
-                    className={cn(
-                      isSignIn &&
-                        "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0",
-                      !isSignIn &&
-                        "hover:text-purple-600 hover:border-purple-600"
-                    )}
-                  >
-                    <Link href="/sign-in">Login</Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant={!isSignIn ? "primary" : "outline"}
-                    size="sm"
-                    className={cn(
-                      !isSignIn &&
-                        "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0",
-                      isSignIn &&
-                        "hover:text-purple-600 hover:border-purple-600"
-                    )}
-                  >
-                    <Link href="/sign-up">Sign Up</Link>
-                  </Button>
-                </motion.div>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 }}
-                >
-                  <Button
-                    asChild
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
-                    size="sm"
-                  >
-                    <Link href="/">Go to Dashboard</Link>
-                  </Button>
-                </motion.div>
-              )}
+          </div>
+
+          {/* Auth Buttons and Theme Toggle */}
+          <div className="flex-1 hidden md:flex items-center justify-end gap-4">
+            {!data?.user ? (
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
+                className="flex items-center gap-2"
               >
-                <ThemeToggle />
+                <Button
+                  asChild
+                  variant={isSignIn ? "primary" : "outline"}
+                  size="sm"
+                  className={cn(
+                    isSignIn &&
+                      "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0",
+                    !isSignIn && "hover:text-purple-600 hover:border-purple-600"
+                  )}
+                >
+                  <Link href="/sign-in">Login</Link>
+                </Button>
+                <Button
+                  asChild
+                  variant={!isSignIn ? "primary" : "outline"}
+                  size="sm"
+                  className={cn(
+                    !isSignIn &&
+                      "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0",
+                    isSignIn && "hover:text-purple-600 hover:border-purple-600"
+                  )}
+                >
+                  <Link href="/sign-up">Sign Up</Link>
+                </Button>
               </motion.div>
-            </div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                <Button
+                  asChild
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                  size="sm"
+                >
+                  <Link href="/">Go to Dashboard</Link>
+                </Button>
+              </motion.div>
+            )}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              <ThemeToggle />
+            </motion.div>
           </div>
         </motion.nav>
 
