@@ -45,7 +45,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="hidden xs:hidden sm:block md:block lg:block"
+            className="hidden  xs:hidden sm:hidden md:block lg:block"
           >
             <Link href="/home">
               <CheetahLogo variant={logoVariant} />
@@ -53,7 +53,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
           </motion.div>
 
           {/* Centered PageList */}
-          <div className="absolute left-1/2 transform -translate-x-1/2">
+          <div className="flex items-center justify-center flex-1">
             <PageList />
           </div>
 

@@ -34,7 +34,7 @@ export const PageList = () => {
       variants={container}
       initial="hidden"
       animate="show"
-      className="list-none flex items-center flex-col lg:flex-row justify-center gap-2 lg:gap-3"
+      className="list-none flex items-center flex-col md:flex-row lg:flex-row justify-center gap-2 lg:gap-3 w-full"
     >
       {links.map((link) => {
         const isActive = link.path === pathname;
@@ -45,13 +45,13 @@ export const PageList = () => {
             key={link.path}
             variants={item}
             whileHover={{ y: -2 }}
-            className="relative"
+            className="relative w-full md:w-auto"
           >
-            <Link href={link.path}>
+            <Link href={link.path} className="block w-full">
               <motion.span
                 className={cn(
-                  "relative py-2.5 px-4 text-[15px] font-medium transition-colors",
-                  "hover:text-foreground/80",
+                  "relative py-2.5 px-4 text-[15px] font-medium transition-colors block text-center",
+                  "hover:text-foreground/80 border w-full",
                   isActive
                     ? "text-foreground font-semibold"
                     : "text-muted-foreground hover:text-purple-600"
@@ -61,7 +61,7 @@ export const PageList = () => {
                 {isActive && (
                   <motion.div
                     layoutId="underline"
-                    className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-purple-600 to-pink-600 bottom-0"
+                    className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-purple-600 to-pink-600 bottom-0 w-full"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{
