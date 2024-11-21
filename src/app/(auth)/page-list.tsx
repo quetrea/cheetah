@@ -36,7 +36,7 @@ export const PageList = () => {
       animate="show"
       className="list-none flex items-center flex-col lg:flex-row justify-center gap-2 lg:gap-3"
     >
-      {links.map((link, index) => {
+      {links.map((link) => {
         const isActive = link.path === pathname;
         if (link.deActive) return null;
 

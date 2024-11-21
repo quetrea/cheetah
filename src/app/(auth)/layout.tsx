@@ -8,8 +8,8 @@ import { PageList } from "./page-list";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/themes/theme-toggle";
 import { useCurrent } from "@/features/auth/api/use-current";
-import { motion, AnimatePresence } from "framer-motion";
-import { CheetahLogo } from "@/components/logo/cheetah-logo";
+import { motion } from "framer-motion";
+import { CheetahLogo, LogoVariant } from "@/components/logo/cheetah-logo";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -18,6 +18,12 @@ interface AuthLayoutProps {
 const AuthLayout = ({ children }: AuthLayoutProps) => {
   const pathname = usePathname();
   const isSignIn = pathname === "/sign-in";
+
+  const currentPath = pathname.split("/").filter(Boolean).pop() || "default";
+  const logoVariant = currentPath as LogoVariant;
+
+  console.log(logoVariant);
+
   const { data, isPending } = useCurrent();
 
   return (
@@ -43,7 +49,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
               className="hidden xs:hidden sm:block md:block lg:block"
             >
               <Link href="/home">
-                <CheetahLogo variant="privacy" />
+                <CheetahLogo variant={logoVariant} />
               </Link>
             </motion.div>
 

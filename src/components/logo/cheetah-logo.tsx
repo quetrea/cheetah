@@ -3,24 +3,61 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
+
+export type LogoVariant =
+  | "default"
+  | "blog"
+  | "compact"
+  | "home"
+  | "privacy"
+  | "guide";
 
 interface CheetahLogoProps {
-  variant?: "default" | "blog" | "privacy" | "compact";
+  variant?: LogoVariant;
   className?: string;
   subtitleClassName?: string;
 }
 
 export const CheetahLogo = ({
-  variant = "default",
+  variant,
   className,
   subtitleClassName,
 }: CheetahLogoProps) => {
-  const subtitles = {
+  const pathname = usePathname();
+
+  // Determine variant based on pathname if not explicitly provided
+  const getVariantFromPath = (): LogoVariant => {
+    const pathSegments = pathname.split("/");
+    const lastSegment = pathSegments[pathSegments.length - 1];
+
+    switch (lastSegment) {
+      case "privacy":
+        return "privacy";
+      case "guides":
+        return "blog";
+      case "blogs":
+        return "blog";
+      case "home":
+        return "default";
+      default:
+        return "default";
+    }
+  };
+
+  const subtitles: Record<LogoVariant, string> = {
     default: "Lightning-Fast Project Management",
     blog: "Blog & News",
-    privacy: "Privacy Policy",
+    home: "Lightning-Fast Project Management",
     compact: "",
+    privacy: "Privacy Policy",
+    guide: "Guide & Documentation",
   };
+
+  const currentVariant = getVariantFromPath();
+  console.log("Path:", pathname);
+  console.log("Last segment:", pathname.split("/").pop());
+  console.log("Variant:", currentVariant);
 
   return (
     <motion.div
@@ -57,14 +94,14 @@ export const CheetahLogo = ({
         <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
           Cheetah
         </span>
-        {subtitles[variant] && (
+        {subtitles[currentVariant] && (
           <span
             className={cn(
               "text-xs font-medium text-muted-foreground whitespace-nowrap",
               subtitleClassName
             )}
           >
-            {subtitles[variant]}
+            {subtitles[currentVariant]}
           </span>
         )}
       </motion.div>
