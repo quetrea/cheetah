@@ -17,7 +17,16 @@ const badgeVariants = cva(
           "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
         outline: "text-foreground",
         overview:
-          "py-2 px-4 text-sm  hover:bg-accent/80 cursor-pointer bg-neutral-100 text-black dark:bg-neutral-800 dark:text-neutral-200",
+          "py-2 px-4 text-sm font-medium cursor-pointer border-border/50 " +
+          "bg-gradient-to-r from-background to-muted " +
+          "dark:from-card/40 dark:to-muted/30 " +
+          "hover:from-accent/20 hover:to-accent/30 " +
+          "dark:hover:from-accent/20 dark:hover:to-accent/10 " +
+          "text-foreground/90 dark:text-foreground/80 " +
+          "shadow-sm hover:shadow " +
+          "transition-all duration-200 ease-in-out " +
+          "hover:scale-[1.02] active:scale-[0.98] " +
+          "border dark:border-border/30",
         [TaskStatus.TODO]:
           "border-transparent bg-red-400 dark:text-neutral-900 text-primary hover:bg-red-400/80",
         [TaskStatus.IN_PROGRESS]:
