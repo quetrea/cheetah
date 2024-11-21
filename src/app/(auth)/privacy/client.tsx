@@ -134,10 +134,7 @@ export const PrivacyClient = () => {
               contact us:
             </p>
             <div className="bg-muted p-4 rounded-lg mt-2">
-              <p className="font-medium">Email: privacy@cheetah.com</p>
-              <p className="font-medium">
-                Address: 123 Privacy Street, Security City, 12345
-              </p>
+              <p className="font-medium">Email: codewithillusion@gmail.com</p>
             </div>
           </PolicySection>
         </CardContent>
