@@ -51,7 +51,7 @@ export const PageList = () => {
               <motion.span
                 className={cn(
                   "relative py-2.5 px-4 text-[15px] font-medium transition-colors block text-center",
-                  "hover:text-foreground/80 border w-full",
+                  "hover:text-foreground/80  w-full",
                   isActive
                     ? "text-foreground font-semibold"
                     : "text-muted-foreground hover:text-purple-600"
