@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 const links = [
   { label: "Home", path: "/home", deActive: false },
-  { label: "Blogs", path: "/blogs", deActive: false },
+  { label: "Guide", path: "/guides", deActive: false },
   { label: "Privacy Policy", path: "/privacy", deActive: false },
 ];
 

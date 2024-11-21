@@ -18,7 +18,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-const Page = () => {
+export const GuideClientPage = () => {
   return (
     <div className="flex h-full gap-x-4 w-full">
       <Tabs
@@ -28,10 +28,10 @@ const Page = () => {
         <Card className="w-full lg:1/3 xl:w-1/5 flex flex-col p-4 bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800">
           <CardHeader>
             <CardTitle className="text-3xl font-bold dark:text-white">
-              Blogs
+              Guides
             </CardTitle>
             <CardDescription className="text-lg dark:text-neutral-400">
-              Explore our latest blogs and insights on various topics.
+              Explore our latest guides and insights on various topics.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -530,5 +530,3 @@ const Page = () => {
     </div>
   );
 };
-
-export default Page;
