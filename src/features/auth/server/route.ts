@@ -130,34 +130,45 @@ const app = new Hono()
   )
   .post(
     "/current/password-recovery",
-    sessionMiddleware,
-    zValidator("form", passwordRecovery),
+    zValidator("json", passwordRecovery),
     async (c) => {
-      const account = c.get("account");
+      const { account } = await createAdminClient();
 
-      const { email } = c.req.valid("form");
+      const { email, url } = c.req.valid("json");
 
-      const url = `${process.env.NEXT_PUBLIC_APP_URL}/account/recovery/`;
+      try {
+        const recoveryUrl =
+          url || `${process.env.NEXT_PUBLIC_APP_URL}/account/recovery/`;
 
-      const result = await account.createRecovery(email, url);
-
-      return c.json({ data: result.secret });
+        const result = await account.createRecovery(email, recoveryUrl);
+        return c.json({ data: result.secret });
+      } catch (error) {
+        console.error("Password recovery error:", error);
+        return c.json({ error: "Failed to create recovery" }, 400);
+      }
     }
   )
   .put(
-    "/:userId/:secret/password-update-recovery",
-    sessionMiddleware,
-    zValidator("form", updatePasswordRecovery),
+    "/password-update-recovery/:secret",
+    zValidator("json", updatePasswordRecovery),
     async (c) => {
-      const account = c.get("account");
+      const { account } = await createAdminClient();
+      const { secret } = c.req.param();
+      const { userId, password } = c.req.valid("json");
 
-      const { userId, secret } = c.req.param();
-
-      const { password } = c.req.valid("form");
-
-      const result = await account.updateRecovery(userId, secret, password);
-
-      return c.json({ data: result.userId });
+      try {
+        const result = await account.updateRecovery(userId, secret, password);
+        return c.json({ data: result });
+      } catch (error) {
+        console.error("Password recovery error:", error);
+        return c.json(
+          {
+            error:
+              "Failed to update password. The recovery link may have expired.",
+          },
+          400
+        );
+      }
     }
   )
   .patch(

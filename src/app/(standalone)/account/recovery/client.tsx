@@ -7,7 +7,7 @@ import { EditRecoveryPassword } from "@/features/auth/components/recover-passwor
 import { useRecoverySecretId } from "@/features/auth/hooks/use-recovery-secret-id";
 
 export const AccountRecoveryClient = () => {
-  const { secretId } = useRecoverySecretId();
+  const { secret, userId } = useRecoverySecretId();
   const { data: user, isLoading: isLoadingUser } = useCurrent();
 
   if (isLoadingUser) {
@@ -18,14 +18,10 @@ export const AccountRecoveryClient = () => {
     return <PageError message="User not found" />;
   }
 
-
   return (
     <div className="dark:bg-neutral-900">
-      {secretId && (
-        <EditRecoveryPassword
-          secret={secretId}
-          initialValues={{ id: user.user.$id }}
-        />
+      {secret && userId && (
+        <EditRecoveryPassword secret={secret} initialValues={{ id: userId }} />
       )}
     </div>
   );

@@ -1,8 +1,7 @@
 import { getCurrent } from "@/features/auth/queries";
-import { redirect } from "next/navigation";
 import { AccountRecoveryClient } from "./client";
-import { useRecoverySecretId } from "@/features/auth/hooks/use-recovery-secret-id";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Account Password Recovery",
@@ -10,6 +9,8 @@ export const metadata: Metadata = {
 };
 
 const AccountRecoveryPage = async () => {
+  const user = await getCurrent();
+  if (!user) return redirect("/sign-in");
   return <AccountRecoveryClient />;
 };
 

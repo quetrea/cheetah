@@ -34,7 +34,7 @@ export const PageList = () => {
       variants={container}
       initial="hidden"
       animate="show"
-      className="list-none flex items-center flex-col lg:flex-row justify-center px-5 sm:px-2 lg:px-6 gap-4 sm:gap-6"
+      className="list-none flex items-center flex-col lg:flex-row justify-center gap-2 lg:gap-3"
     >
       {links.map((link, index) => {
         const isActive = link.path === pathname;
@@ -50,16 +50,18 @@ export const PageList = () => {
             <Link href={link.path}>
               <motion.span
                 className={cn(
-                  "relative py-2 px-3 text-sm font-medium transition-colors",
+                  "relative py-2.5 px-4 text-[15px] font-medium transition-colors",
                   "hover:text-foreground/80",
-                  isActive ? "text-foreground" : "text-muted-foreground"
+                  isActive
+                    ? "text-foreground font-semibold"
+                    : "text-muted-foreground hover:text-purple-600"
                 )}
               >
                 {link.label}
                 {isActive && (
                   <motion.div
                     layoutId="underline"
-                    className="absolute left-0 right-0 h-0.5 bg-foreground bottom-0"
+                    className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-purple-600 to-pink-600 bottom-0"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{

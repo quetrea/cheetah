@@ -1,9 +1,14 @@
 import { useQueryState, parseAsString } from "nuqs";
 
 export const useRecoverySecretId = () => {
-  const [secretId] = useQueryState("secret", parseAsString);
+  const [secret] = useQueryState("secret", parseAsString);
+  const [userId] = useQueryState("userId", parseAsString);
+  const [expire] = useQueryState("expire", parseAsString);
 
   return {
-    secretId,
+    secret,
+    userId,
+    expire,
+    isValid: Boolean(secret && userId && expire),
   };
 };

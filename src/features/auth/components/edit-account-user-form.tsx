@@ -140,7 +140,7 @@ export const EditAccountSettings = ({
 
   const onSubmitRecovery = () => {
     passwordCreate({
-      form: {
+      json: {
         email: initialValues.email,
       },
     });

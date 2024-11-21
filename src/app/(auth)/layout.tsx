@@ -10,6 +10,48 @@ import { ThemeToggle } from "@/components/themes/theme-toggle";
 import { useCurrent } from "@/features/auth/api/use-current";
 import { motion, AnimatePresence } from "framer-motion";
 
+const CheetahLogo = () => (
+  <motion.div
+    initial={{ scale: 0.9, opacity: 0 }}
+    animate={{ scale: 1, opacity: 1 }}
+    transition={{ duration: 0.5 }}
+    className="flex items-center gap-3"
+  >
+    <div className="relative h-10 w-10">
+      <motion.div
+        initial={{ rotate: -10 }}
+        animate={{ rotate: 0 }}
+        transition={{
+          type: "spring",
+          stiffness: 200,
+          damping: 10,
+        }}
+      >
+        <Image
+          src="/cheetah-logo.svg"
+          alt="Cheetah Logo"
+          width={40}
+          height={40}
+          className="object-contain"
+        />
+      </motion.div>
+    </div>
+    <motion.div
+      initial={{ x: -20, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ delay: 0.2 }}
+      className="flex flex-col gap-0.5"
+    >
+      <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+        Cheetah
+      </span>
+      <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">
+        Lightning-Fast Project Management
+      </span>
+    </motion.div>
+  </motion.div>
+);
+
 interface AuthLayoutProps {
   children: React.ReactNode;
 }
@@ -40,12 +82,9 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
             transition={{ delay: 0.2 }}
             className="flex-1 hidden xs:hidden sm:block md:block lg:block"
           >
-            <div className="hidden dark:block">
-              <Image src="/DarkLogo.svg" height={64} width={162} alt="Logo" />
-            </div>
-            <div className="block dark:hidden">
-              <Image src="/LightLogo.svg" height={64} width={162} alt="Logo" />
-            </div>
+            <Link href="/home">
+              <CheetahLogo />
+            </Link>
           </motion.div>
 
           {/* Navigation ve Auth Buttons Container */}
@@ -66,6 +105,12 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
                       asChild
                       variant={isSignIn ? "primary" : "outline"}
                       size="sm"
+                      className={cn(
+                        isSignIn &&
+                          "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0",
+                        !isSignIn &&
+                          "hover:text-purple-600 hover:border-purple-600"
+                      )}
                     >
                       <Link href="/sign-in">Login</Link>
                     </Button>
@@ -73,6 +118,12 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
                       asChild
                       variant={!isSignIn ? "primary" : "outline"}
                       size="sm"
+                      className={cn(
+                        !isSignIn &&
+                          "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0",
+                        isSignIn &&
+                          "hover:text-purple-600 hover:border-purple-600"
+                      )}
                     >
                       <Link href="/sign-up">Sign Up</Link>
                     </Button>
@@ -83,7 +134,11 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4 }}
                   >
-                    <Button asChild variant="primary" size="sm">
+                    <Button
+                      asChild
+                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                      size="sm"
+                    >
                       <Link href="/">Go to Dashboard</Link>
                     </Button>
                   </motion.div>
@@ -146,7 +201,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
                         }}
                       >
                         <motion.div
-                          className="bg-background h-full w-1/2 rounded-full shadow-sm"
+                          className="bg-gradient-to-r from-purple-600 to-pink-600 h-full w-1/2 rounded-full shadow-sm opacity-90"
                           layout
                           transition={{
                             type: "spring",

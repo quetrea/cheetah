@@ -5,22 +5,22 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { client } from "@/lib/rpc";
 
 type ResponseType = InferResponseType<
-  (typeof client.api.auth)[":userId"][":secret"]["password-update-recovery"]["$put"],
+  (typeof client.api.auth)["password-update-recovery"][":secret"]["$put"],
   200
 >;
 type RequestType = InferRequestType<
-  (typeof client.api.auth)[":userId"][":secret"]["password-update-recovery"]["$put"]
+  (typeof client.api.auth)["password-update-recovery"][":secret"]["$put"]
 >;
 
 export const useUpdateRecoveryPassword = () => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ResponseType, Error, RequestType>({
-    mutationFn: async ({ form, param }) => {
-      const response = await client.api.auth[":userId"][":secret"][
-        "password-update-recovery"
+    mutationFn: async ({ json, param }) => {
+      const response = await client.api.auth["password-update-recovery"][
+        ":secret"
       ]["$put"]({
-        form,
+        json,
         param,
       });
 
@@ -36,7 +36,7 @@ export const useUpdateRecoveryPassword = () => {
       queryClient.invalidateQueries({ queryKey: ["current"] });
     },
     onError: () => {
-      toast.error("Failed to create recovery");
+      toast.error("Failed to update recovery");
     },
   });
 

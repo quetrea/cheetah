@@ -8,6 +8,49 @@ import { Navigation } from "./navigation";
 import { WorkspaceSwitcher } from "./workspace-switcher";
 import { Projects } from "./projects";
 
+const CheetahLogo = () => (
+  <motion.div
+    initial={{ scale: 0.9, opacity: 0 }}
+    animate={{ scale: 1, opacity: 1 }}
+    transition={{ duration: 0.5 }}
+    className="flex flex-col items-center gap-0.5"
+  >
+    <div className="relative h-10 w-10">
+      <motion.div
+        initial={{ rotate: -10 }}
+        animate={{ rotate: 0 }}
+        transition={{
+          type: "spring",
+          stiffness: 200,
+          damping: 10,
+        }}
+      >
+        <Image
+          src="/cheetah-logo.svg"
+          alt="Cheetah Logo"
+          width={40}
+          height={40}
+          className="object-contain"
+        />
+      </motion.div>
+    </div>
+
+    <motion.div
+      initial={{ y: -10, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ delay: 0.2 }}
+      className="flex flex-col items-center gap-0.5"
+    >
+      <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+        Cheetah
+      </span>
+      <span className="text-xs font-medium text-muted-foreground text-center whitespace-nowrap">
+        Lightning-Fast Project Management
+      </span>
+    </motion.div>
+  </motion.div>
+);
+
 export const Sidebar = () => {
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -39,13 +82,8 @@ export const Sidebar = () => {
       variants={containerVariants}
     >
       <motion.div variants={itemVariants}>
-        <Link href={"/"} className="flex justify-center items-center">
-          <div className="hidden dark:block">
-            <Image src="/DarkLogo.svg" height={48} width={200} alt="Logo" />
-          </div>
-          <div className="block dark:hidden">
-            <Image src="/LightLogo.svg" height={48} width={200} alt="Logo" />
-          </div>
+        <Link href={"/"} className="block">
+          <CheetahLogo />
         </Link>
       </motion.div>
 
