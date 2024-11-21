@@ -40,24 +40,25 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
           transition={{ duration: 0.3 }}
           className="flex justify-between border-b p-4 items-center relative"
         >
-          {/* Logo ve PageList Container */}
-          <div className="flex items-center gap-x-8 flex-1">
-            <motion.div
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="hidden xs:hidden sm:block md:block lg:block"
-            >
-              <Link href="/home">
-                <CheetahLogo variant={logoVariant} />
-              </Link>
-            </motion.div>
+          {/* Logo Container */}
+          <motion.div
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="hidden xs:hidden sm:block md:block lg:block"
+          >
+            <Link href="/home">
+              <CheetahLogo variant={logoVariant} />
+            </Link>
+          </motion.div>
 
+          {/* Centered PageList */}
+          <div className="absolute left-1/2 transform -translate-x-1/2">
             <PageList />
           </div>
 
           {/* Desktop Auth Buttons ve Theme Toggle Container */}
-          <div className="hidden md:flex items-center gap-3 ml-4">
+          <div className="hidden md:flex items-center gap-3">
             <div className="flex items-center gap-4">
               {!data?.user ? (
                 <motion.div
