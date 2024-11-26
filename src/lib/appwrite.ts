@@ -39,8 +39,5 @@ export async function createAdminClient() {
     get users() {
       return new Users(client);
     },
-    get messaging() {
-      return new Messaging(client);
-    },
   };
 }

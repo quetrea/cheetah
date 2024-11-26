@@ -22,8 +22,6 @@ export const useGetMembers = ({ workspaceId }: useGetMemberProps) => {
 
       return data;
     },
-    refetchInterval: 100,
-    refetchOnWindowFocus: true,
   });
 
   return query;

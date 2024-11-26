@@ -279,7 +279,7 @@ const app = new Hono()
     }
 
     const tasks = await databases.listDocuments<Task>(DATABASE_ID, TASKS_ID, [
-      Query.equal("workspaceId", existingProject.workspaceId),
+      Query.equal("projectId", existingProject.$id),
     ]);
 
     for (const task of tasks.documents) {
