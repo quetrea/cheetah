@@ -12,6 +12,7 @@ import {
   DATABASE_ID,
   IMAGES_BUCKET_ID,
   PROJECTS_ID,
+  SUBTASKS_ID,
   TASKS_ID,
   WEBHOOKS_ID,
 } from "@/config";
@@ -21,6 +22,7 @@ import { Project } from "../types";
 import { Task, TaskStatus } from "@/features/tasks/types";
 import { Webhook, WebhookEvent } from "@/features/webhooks/types";
 import { sendDiscordWebhook } from "@/lib/webhook";
+import { SubTask } from "@/features/subtasks/types";
 
 const app = new Hono()
   .post(
@@ -283,6 +285,16 @@ const app = new Hono()
     ]);
 
     for (const task of tasks.documents) {
+      const subtasks = await databases.listDocuments<SubTask>(
+        DATABASE_ID,
+        SUBTASKS_ID,
+        [Query.equal("taskId", task.$id)]
+      );
+
+      for (const subtask of subtasks.documents) {
+        await databases.deleteDocument(DATABASE_ID, SUBTASKS_ID, subtask.$id);
+      }
+
       await databases.deleteDocument(DATABASE_ID, TASKS_ID, task.$id);
     }
 
