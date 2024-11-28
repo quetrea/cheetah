@@ -127,7 +127,7 @@ const app = new Hono()
     const user = c.get("user");
     const databases = c.get("databases");
 
-    const { taskId } = c.req.query();
+    const { taskId } = c.req.param();
 
     const subtasks = await databases.listDocuments<SubTask>(
       DATABASE_ID,

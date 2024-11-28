@@ -10,6 +10,7 @@ import { DottedSeparator } from "@/components/dotted-separator";
 import { TaskOverview } from "@/features/tasks/components/task-overview";
 import { TaskDescription } from "@/features/tasks/components/task-description";
 import { SubTasks } from "@/features/subtasks/components/sub-tasks";
+import { NodeGraphTasks } from "@/components/nodegraphs/NodeGraphTasks";
 
 export const TaskIdClient = () => {
   const taskId = useTaskId();
@@ -61,6 +62,9 @@ export const TaskIdClient = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <motion.div variants={itemVariants} className="w-full">
             <TaskOverview task={data} />
+          </motion.div>
+          <motion.div variants={itemVariants}>
+            <NodeGraphTasks task={data} taskId={taskId} />
           </motion.div>
           <motion.div variants={itemVariants}>
             <TaskDescription task={data} />
