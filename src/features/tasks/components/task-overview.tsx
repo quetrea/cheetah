@@ -148,13 +148,13 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
             </motion.div>
           </motion.div>
 
-          <DottedSeparator className="py-7 hidden sm:block xs:block md:block lg:block xl:hidden opacity-50" />
+          {/* <DottedSeparator className="py-7 hidden sm:block xs:block md:block lg:block xl:hidden opacity-50" />
           <DottedSeparator
             direction="vertical"
             className="px-7 hidden sm:hidden xs:hidden md:hidden lg:hidden xl:block opacity-50"
-          />
+          /> */}
 
-          <AnimatePresence mode="wait">
+          {/* <AnimatePresence mode="wait">
             {data && data?.labels.total !== 0 ? (
               <motion.div className="flex flex-col flex-1 space-y-4">
                 <div className="flex items-center gap-2">
@@ -214,7 +214,7 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
                 </motion.div>
               </motion.div>
             )}
-          </AnimatePresence>
+          </AnimatePresence> */}
         </div>
       </motion.div>
     </motion.div>
