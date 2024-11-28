@@ -66,7 +66,7 @@ export const TaskOverviewSkeleton = () => {
           </div>
 
           {/* Labels Section */}
-          <div className="flex flex-col flex-1">
+          {/* <div className="flex flex-col flex-1">
             <div className="p-1 px-4 pb-2 flex items-center gap-x-2">
               <Skeleton className="h-6 w-20" />
               <Skeleton className="h-6 w-24" />
@@ -79,7 +79,7 @@ export const TaskOverviewSkeleton = () => {
                 <Skeleton className="h-6 w-6 rounded-full" />
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
