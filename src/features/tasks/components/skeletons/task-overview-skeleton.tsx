@@ -55,7 +55,7 @@ export const TaskOverviewSkeleton = () => {
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <DottedSeparator className="py-7 hidden sm:block xs:block md:block lg:block xl:hidden" />
           </div>
           <div>
@@ -63,7 +63,7 @@ export const TaskOverviewSkeleton = () => {
               direction="vertical"
               className="px-7 hidden sm:hidden xs:hidden md:hidden lg:hidden xl:block"
             />
-          </div>
+          </div> */}
 
           {/* Labels Section */}
           {/* <div className="flex flex-col flex-1">
