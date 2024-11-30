@@ -130,7 +130,7 @@ const CompletionModal = ({
                   exit={{ y: -20, opacity: 0 }}
                   transition={{ delay: 0.2, duration: 0.5 }}
                 >
-                  🎉 Tebrikler!
+                  🎉 Congratulations
                 </motion.h2>
                 <motion.p
                   className="text-lg text-white/90 mt-4"
@@ -139,7 +139,7 @@ const CompletionModal = ({
                   exit={{ y: -20, opacity: 0 }}
                   transition={{ delay: 0.3, duration: 0.5 }}
                 >
-                  Görev tamamlandı!
+                  All subtasks are finished!
                 </motion.p>
               </motion.div>
             )}
