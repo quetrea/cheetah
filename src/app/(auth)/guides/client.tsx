@@ -125,12 +125,6 @@ export const GuideClientPage = () => {
         </Card>
         <Card className="w-full p-4 flex flex-col bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800">
           <CardContent className="transition h-full">
-            <AdBanner
-              dataAdFormat="fluid"
-              dataFullWidthResponsive
-              dataAdSlot="3712205875"
-              pId="5888317157317698"
-            />
             <TabsContent value="how-to-use">
               <CardHeader className="p-2">
                 <CardTitle className="text-3xl font-bold dark:text-white">
@@ -418,13 +412,6 @@ export const GuideClientPage = () => {
                   </AccordionContent>
                 </AccordionItem>
 
-                <AdBanner
-                  dataAdFormat="fluid"
-                  dataFullWidthResponsive
-                  dataAdSlot="3712205876"
-                  pId="5888317157317698"
-                />
-
                 <AccordionItem value="custom-workflows">
                   <AccordionTrigger className="text-lg font-semibold dark:text-neutral-200">
                     2. Custom Workflows
@@ -518,12 +505,6 @@ export const GuideClientPage = () => {
                 </AccordionItem>
               </Accordion>
             </TabsContent>
-            <AdBanner
-              dataAdFormat="fluid"
-              dataFullWidthResponsive
-              dataAdSlot="3712205877"
-              pId="5888317157317698"
-            />
           </CardContent>
         </Card>
       </Tabs>

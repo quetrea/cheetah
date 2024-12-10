@@ -14,16 +14,8 @@ export const metadata: Metadata = {
 
 const Home = () => {
   return (
-    <div className="w-full">
+    <div className="w-full h-full">
       <Header />
-      <div>
-        <AdBanner
-          pId={"5888317157317698"}
-          dataAdFormat={"auto"}
-          dataAdSlot={"5880964403"}
-          dataFullWidthResponsive
-        />
-      </div>
       <Content />
     </div>
   );
