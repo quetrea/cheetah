@@ -15,35 +15,13 @@ const CheetahLogo = () => (
     transition={{ duration: 0.5 }}
     className="flex flex-col items-center gap-0.5"
   >
-    <div className="relative h-10 w-10">
-      <motion.div
-        initial={{ rotate: -10 }}
-        animate={{ rotate: 0 }}
-        transition={{
-          type: "spring",
-          stiffness: 200,
-          damping: 10,
-        }}
-      >
-        <Image
-          src="/cheetah-logo.svg"
-          alt="Cheetah Logo"
-          width={40}
-          height={40}
-          className="object-contain"
-        />
-      </motion.div>
-    </div>
-
     <motion.div
       initial={{ y: -10, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.2 }}
-      className="flex flex-col items-center gap-0.5"
+      className="flex flex-col  gap-0.5"
     >
-      <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-        Cheetah
-      </span>
+      <span className="text-xl font-bold ">Cheetah</span>
       <span className="text-xs font-medium text-muted-foreground text-center whitespace-nowrap">
         Lightning-Fast Project Management
       </span>
@@ -76,7 +54,7 @@ export const Sidebar = () => {
 
   return (
     <motion.aside
-      className="h-full bg-neutral-100 dark:bg-neutral-900 p-4 w-full"
+      className="h-full bg-gray-100 dark:bg-neutral-900 p-4 w-full"
       initial="hidden"
       animate="visible"
       variants={containerVariants}

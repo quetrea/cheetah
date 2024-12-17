@@ -171,7 +171,6 @@ export const GuideClientPage = () => {
                     <ul className="list-disc ml-4 space-y-2">
                       <li>Create and manage multiple workspaces</li>
                       <li>Customize your profile and preferences</li>
-                      <li>Set notification preferences</li>
                       <li>Access personal dashboard</li>
                       <li>Track your activities and contributions</li>
                     </ul>

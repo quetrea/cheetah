@@ -295,14 +295,14 @@ export const WorkspaceIdClient = () => {
     <>
       <LeaveDialog />
       <div className="h-full flex flex-col space-y-4 scroll-smooth">
-        <Analytics data={analytics} />
-        <div className="rounded-lg shadow-lg w-full flex items-center  dark:shadow-neutral-700/50 transition dark:shadow-md justify-center">
+        {/* <Analytics data={analytics} /> */}
+        <div className="rounded-lg  w-full flex items-center   transition  justify-center">
           <div className="grid grid-cols-1 lg:grid-cols-2 max-h-xl w-full gap-4  ">
             <div className="flex flex-col h-full lg:flex-row">
               <TaskAnalytics analytics={analytics} />
             </div>
 
-            <div className="rounded-md border-transparent transition duration-300 border-2 hover:border-neutral-500 cursor-pointer items-center w-full  flex justify-center">
+            <div className="rounded-md  border-transparent transition duration-300 border-2 hover:border-neutral-500 cursor-pointer  w-full  flex  ">
               <MembersPieChart
                 totalMembers={workspaceMembers?.total ?? 0}
                 adminCount={

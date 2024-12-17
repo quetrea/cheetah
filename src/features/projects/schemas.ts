@@ -1,10 +1,13 @@
 import { z } from "zod";
 
+// Tarayıcı ortamında olup olmadığını kontrol et
+const isBrowser = typeof window !== "undefined";
+
 export const createProjectSchema = z.object({
   name: z.string().trim().min(1, "Required"),
   image: z
     .union([
-      z.instanceof(File),
+      isBrowser ? z.instanceof(File) : z.never(),  // Sadece tarayıcıda geçerli
       z.string().transform((value) => (value === "" ? undefined : value)),
     ])
     .optional(),
@@ -15,7 +18,7 @@ export const updateProjectSchema = z.object({
   name: z.string().trim().min(1, "Required").optional(),
   image: z
     .union([
-      z.instanceof(File),
+      isBrowser ? z.instanceof(File) : z.never(),  // Sadece tarayıcıda geçerli
       z.string().transform((value) => (value === "" ? undefined : value)),
     ])
     .optional(),

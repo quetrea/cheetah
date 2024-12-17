@@ -65,87 +65,89 @@ const MembersPieChart: React.FC<MembersPieChartProps> = ({
 
   return (
     <motion.div
-      className="w-full max-w-lg mx-auto p-4"
+      className="w-full h-full flex  flex-col justify-between  mx-auto "
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       <motion.h2
-        className="text-2xl bg-gradient-to-r text-center from-foreground to-foreground/70 bg-clip-text text-transparent mb-8"
+        className="text-2xl bg-gradient-to-r p-8   from-foreground to-foreground/70 bg-clip-text text-transparent "
         variants={itemVariants}
       >
         Members Analytics
       </motion.h2>
 
-      <div className="flex flex-col md:flex-row items-center gap-8">
-        <motion.div
-          variants={chartVariants}
-          whileHover={{
-            scale: 1.02,
-            transition: { duration: 0.2 },
-          }}
-          className="w-[250px] md:w-[300px]"
-        >
-          <Pie
-            data={data}
-            options={{
-              plugins: {
-                legend: {
-                  display: false,
-                },
-              },
-              responsive: true,
-              maintainAspectRatio: true,
+      <div className="p-6 w-full h-full  justify-center flex items-center">
+        <div className=" flex max-w-lg lg:max-w-2xl  sm:w-full  md:flex-row justify-center items-center p-4">
+          <motion.div
+            variants={chartVariants}
+            whileHover={{
+              scale: 1.02,
+              transition: { duration: 0.2 },
             }}
-          />
-        </motion.div>
-
-        <motion.div
-          className="flex flex-col gap-3 w-full md:flex-1 px-2 md:px-0"
-          variants={itemVariants}
-        >
-          <motion.div
-            className="flex items-center gap-x-2 p-3 md:p-2 rounded-lg bg-[rgba(75,192,192,0.1)]"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="w-[500px] md:w-[300px] lg:w-[400px]  hidden md:flex"
           >
-            <div className="w-3 h-3 rounded-full bg-[rgb(75,192,192)]" />
-            <div className="flex justify-between flex-row w-full">
-              <div className="font-medium text-sm md:text-base">Admin</div>
-              <div className="font-bold text-[rgb(75,192,192)] px-2">
-                {adminCount}
-              </div>
-            </div>
+            <Pie
+              data={data}
+              options={{
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
+                },
+                responsive: true,
+                maintainAspectRatio: true,
+              }}
+            />
           </motion.div>
 
           <motion.div
-            className="flex items-center gap-x-2 p-3 md:p-2 rounded-lg bg-[rgba(255,99,132,0.1)]"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="flex flex-col gap-3  w-full md:flex-1 px-2 md:px-0"
+            variants={itemVariants}
           >
-            <div className="w-3 h-3 rounded-full bg-[rgb(255,99,132)]" />
-            <div className="flex justify-between flex-row w-full">
-              <div className="font-medium text-sm md:text-base">Member</div>
-              <div className="font-bold text-[rgb(255,99,132)] px-2">
-                {memberCount}
+            <motion.div
+              className="flex items-center gap-x-2 p-3 md:p-2 rounded-lg bg-[rgba(75,192,192,0.1)]"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <div className="w-3 h-3 rounded-full bg-[rgb(75,192,192)]" />
+              <div className="flex justify-between flex-row w-full">
+                <div className="font-medium text-sm md:text-base">Admin</div>
+                <div className="font-bold text-[rgb(75,192,192)] px-2">
+                  {adminCount}
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
 
-          <motion.div
-            className="flex items-center gap-x-2 p-3 md:p-2 rounded-lg bg-[rgba(255,206,86,0.1)]"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <div className="w-3 h-3 rounded-full bg-[rgb(255,206,86)]" />
-            <div className="flex justify-between flex-row w-full">
-              <div className="font-medium text-sm md:text-base">Other</div>
-              <div className="font-bold text-[rgb(255,206,86)] px-2">
-                {totalMembers - (adminCount + memberCount)}
+            <motion.div
+              className="flex items-center gap-x-2 p-3 md:p-2 rounded-lg bg-[rgba(255,99,132,0.1)]"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <div className="w-3 h-3 rounded-full bg-[rgb(255,99,132)]" />
+              <div className="flex justify-between flex-row w-full">
+                <div className="font-medium text-sm md:text-base">Member</div>
+                <div className="font-bold text-[rgb(255,99,132)] px-2">
+                  {memberCount}
+                </div>
               </div>
-            </div>
+            </motion.div>
+
+            <motion.div
+              className="flex items-center gap-x-2 p-3 md:p-2 rounded-lg bg-[rgba(255,206,86,0.1)]"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <div className="w-3 h-3 rounded-full bg-[rgb(255,206,86)]" />
+              <div className="flex justify-between flex-row w-full">
+                <div className="font-medium text-sm md:text-base">Other</div>
+                <div className="font-bold text-[rgb(255,206,86)] px-2">
+                  {totalMembers - (adminCount + memberCount)}
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
     </motion.div>
   );

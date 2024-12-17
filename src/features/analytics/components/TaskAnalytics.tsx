@@ -121,7 +121,7 @@ const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ analytics }) => {
   const data = {
     labels: [
       "Total Tasks",
-      "Assigned Tasks",
+
       "Completed Tasks",
       "Incomplete Tasks",
       "Overdue Tasks",
@@ -130,7 +130,7 @@ const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ analytics }) => {
       {
         data: [
           filteredAnalytics.TaskCount,
-          filteredAnalytics.AssignedTaskCount,
+
           filteredAnalytics.CompletedTaskCount,
           filteredAnalytics.InCompleteTaskCount,
           filteredAnalytics.OverdueTaskCount,
@@ -198,19 +198,19 @@ const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ analytics }) => {
       animate="visible"
     >
       <motion.div
-        className="w-full gap-y-6 p-6 border-2 rounded-lg border-transparent transition-all duration-300 hover:border-neutral-500 hover:shadow-lg bg-card"
-        whileHover={{ scale: 1.01 }}
+        className="w-full gap-y-6 p-6 border-2 rounded-lg border-transparent transition-all duration-300 hover:border-neutral-500  bg-card"
+        whileHover={{ scale: 1.0 }}
         transition={{ duration: 0.2 }}
       >
         <div className="flex items-center justify-between mb-8">
           <motion.h2
-            className="text-2xl md:text-2xl  bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent"
+            className="text-2xl md:text-2xl xs:text-lg  bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent"
             variants={itemVariants}
           >
             Task Analytics
           </motion.h2>
 
-          <motion.div variants={itemVariants}>
+          {/* <motion.div variants={itemVariants}>
             <Select
               value={timeFilter}
               onValueChange={(value) =>
@@ -232,7 +232,7 @@ const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ analytics }) => {
                 ))}
               </SelectContent>
             </Select>
-          </motion.div>
+          </motion.div> */}
         </div>
 
         <AnimatePresence mode="wait">
@@ -249,7 +249,7 @@ const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ analytics }) => {
         </AnimatePresence>
 
         <motion.div
-          className="grid grid-cols-5 gap-4 mt-6"
+          className="grid grid-cols-4 gap-4 mt-6"
           variants={itemVariants}
         >
           {data.labels.map((label, index) => (
