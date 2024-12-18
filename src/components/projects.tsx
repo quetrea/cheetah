@@ -9,8 +9,9 @@ import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { RiAddCircleFill, RiArrowDownSLine } from "react-icons/ri";
+import { RiAddCircleFill, RiArrowDownSLine, RiCloseLine } from "react-icons/ri";
 import { useRecentProjects } from "@/features/projects/hooks/use-recent-projects";
+import { DottedSeparator } from "./dotted-separator";
 
 export const Projects = () => {
   const pathname = usePathname();
@@ -23,7 +24,8 @@ export const Projects = () => {
 
   const { data, isPending } = useGetProjects({ workspaceId });
 
-  const { recentProjects, addRecentProject } = useRecentProjects();
+  const { recentProjects, addRecentProject, clearRecentProjects } =
+    useRecentProjects();
 
   return (
     <>
@@ -35,8 +37,12 @@ export const Projects = () => {
                 RECENT
               </p>
             </div>
+            <RiCloseLine
+              onClick={() => clearRecentProjects()}
+              className="size-5 text-neutral-500 cursor-pointer hover:opacity-75 transition"
+            />
           </div>
-          <div className="px-1 flex flex-col">
+          <div className="px-1 flex flex-col border-b-2 rounded-b-md">
             <AnimatePresence initial={false}>
               {recentProjects.map((project) => (
                 <motion.div
@@ -73,6 +79,11 @@ export const Projects = () => {
           </div>
         </div>
       )}
+
+      <div className={cn("my-4 hidden", recentProjects.length > 0 && "block")}>
+        <DottedSeparator />
+      </div>
+
       <div className="flex flex-col gap-y-2 select-none">
         <div className="flex items-center justify-between border-2 border-b-0 rounded-b-none rounded-lg p-2">
           <div

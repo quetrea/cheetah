@@ -34,8 +34,14 @@ export const useRecentProjects = () => {
     });
   };
 
+  const clearRecentProjects = () => {
+    setRecentProjects([]);
+    localStorage.removeItem(RECENT_PROJECTS_KEY);
+  };
+
   return {
     recentProjects,
     addRecentProject,
+    clearRecentProjects,
   };
 };
