@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+
 import { Analytics } from "@/components/analytics";
 import { PageError } from "@/components/page-error";
 import { PageLoader } from "@/components/page-loader";
@@ -12,6 +13,7 @@ import { useProjectId } from "@/features/projects/hooks/use-task-id";
 import { TaskViewSwitcher } from "@/features/tasks/components/task-view-switcher";
 import { PencilIcon } from "lucide-react";
 import Link from "next/link";
+
 
 export const ProjectIdClient = () => {
   const projectId = useProjectId();

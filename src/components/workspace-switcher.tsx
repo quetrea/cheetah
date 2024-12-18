@@ -26,7 +26,7 @@ export const WorkspaceSwitcher = () => {
   };
   return (
     <div className="flex flex-col gap-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between border-2 rounded-md p-2">
         <p className="text-xs uppercase text-neutral-500 font-bold">
           Workspaces
         </p>

@@ -21,8 +21,7 @@ import { useCreateTaskModal } from "@/features/tasks/hooks/use-create-task-modal
 import { useGetWorkspaceAnalytics } from "@/features/workspaces/api/use-get-workspace-analytics";
 
 import { Button } from "@/components/ui/button";
-import { PageError } from "@/components/page-error";
-import { PageLoader } from "@/components/page-loader";
+
 import { Analytics } from "@/components/analytics";
 import { Card, CardContent } from "@/components/ui/card";
 import { DottedSeparator } from "@/components/dotted-separator";
@@ -53,6 +52,9 @@ import MembersPieChart from "@/features/analytics/components/MembersPieChart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { motion, useAnimation, useInView } from "framer-motion";
+
+
+
 
 // Ana container animasyonu
 const containerVariants = {

@@ -21,7 +21,7 @@ export const ProjectAvatar = ({
     return (
       <div
         className={cn(
-          "size-5 relative bg-white rounded-md overflow-hidden",
+          "size-5 relative bg-white rounded-md overflow-hidden group-hover:opacity-75 transition",
           className
         )}
       >
@@ -34,7 +34,7 @@ export const ProjectAvatar = ({
     <Avatar className={cn("size-5 rounded-md", className)}>
       <AvatarFallback
         className={cn(
-          "text-white bg-blue-600 font-semibold text-sm uppercase rounded-md",
+          "text-white bg-blue-600 font-semibold text-sm uppercase rounded-md group-hover:opacity-75 transition",
           fallbackClassname
         )}
       >

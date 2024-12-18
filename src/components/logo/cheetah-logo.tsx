@@ -55,9 +55,6 @@ export const CheetahLogo = ({
   };
 
   const currentVariant = getVariantFromPath();
-  console.log("Path:", pathname);
-  console.log("Last segment:", pathname.split("/").pop());
-  console.log("Variant:", currentVariant);
 
   return (
     <motion.div

@@ -71,7 +71,7 @@ const MembersPieChart: React.FC<MembersPieChartProps> = ({
       animate="visible"
     >
       <motion.h2
-        className="text-2xl bg-gradient-to-r p-8   from-foreground to-foreground/70 bg-clip-text text-transparent "
+        className="text-2xl bg-gradient-to-r p-6   from-foreground to-foreground/70 bg-clip-text text-transparent "
         variants={itemVariants}
       >
         Members Analytics
