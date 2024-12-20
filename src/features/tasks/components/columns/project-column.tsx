@@ -16,9 +16,7 @@ export const ProjectColumn = ({ project, taskId }: ProjectColumnProps) => {
         image={project.imageUrl}
         name={project.name}
       />
-      <p className="line-clamp-1 hover:underline cursor-pointer">
-        {project.name}
-      </p>
+      <p className="line-clamp-1 ">{project.name}</p>
     </div>
   );
 };

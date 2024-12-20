@@ -63,7 +63,6 @@ export function DataTable<TData, TValue>({
     onRowSelectionChange: setRowSelection,
   });
 
-  // Seçili satırlar değiştiğinde onRowSelect'i çağır
   React.useEffect(() => {
     if (onRowSelect) {
       const selectedRows = table

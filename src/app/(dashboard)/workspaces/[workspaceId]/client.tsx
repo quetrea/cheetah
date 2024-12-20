@@ -51,10 +51,13 @@ import TaskAnalytics from "@/features/analytics/components/TaskAnalytics";
 import MembersPieChart from "@/features/analytics/components/MembersPieChart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { motion, useAnimation, useInView } from "framer-motion";
-
-
-
+import {
+  motion,
+  useAnimation,
+  useInView,
+  AnimatePresence,
+} from "framer-motion";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 
 // Ana container animasyonu
 const containerVariants = {
@@ -533,9 +536,23 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
         <Button
           variant="muted"
           className="mt-4 w-full dark:bg-neutral-950 border dark:border-neutral-950"
-          onClick={handleShowMore}
+          onClick={() => {
+            if (slice >= data.length) {
+              setSlice(3);
+            } else {
+              handleShowMore();
+            }
+          }}
         >
-          Show more
+          <div className="flex items-center gap-x-2">
+            {slice >= data.length ? "Show less" : "Show more"}
+            <motion.div
+              initial={false}
+              animate={{ rotate: slice >= data.length ? 180 : 0 }}
+            >
+              <ChevronDownIcon className="size-4" />
+            </motion.div>
+          </div>
         </Button>
       </span>
     </motion.div>

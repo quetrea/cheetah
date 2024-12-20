@@ -174,26 +174,26 @@ export const columns: ColumnDef<Task>[] = [
       return <Badge variant={status}>{snakeCaseToTitleCase(status)}</Badge>;
     },
   },
-  {
-    accessorKey: "label",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Labels
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const id = row.original.$id;
+  // {
+  //   accessorKey: "label",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Labels
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  //   cell: ({ row }) => {
+  //     const id = row.original.$id;
 
-      if (!id) return <BadgeCellSkeleton />;
-      return <LabelsColumn taskId={id} />;
-    },
-  },
+  //     if (!id) return <BadgeCellSkeleton />;
+  //     return <LabelsColumn taskId={id} />;
+  //   },
+  // },
   {
     accessorKey: "priority",
     header: ({ column }) => {

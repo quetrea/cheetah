@@ -18,16 +18,9 @@ export const NameColumn = ({ name, taskId }: NameColumnProps) => {
   return (
     <div
       onClick={() => handleOpen("name")}
-      className="line-clamp-1 flex items-center gap-x-4 hover:underline cursor-pointer group"
+      className="line-clamp-1 inline-flex  pl-2 items-center gap-x-4 hover:underline cursor-pointer group"
     >
       {name}{" "}
-      <Button
-        variant={"muted"}
-        size={"smIcon"}
-        className="rounded-full border shadow-lg dark:bg-neutral-600 border-neutral-500 invisible bg-neutral-500 group-hover:visible"
-      >
-        <PencilIcon className="size-4 text-neutral-100 dark:text-neutral-950" />
-      </Button>
     </div>
   );
 };
