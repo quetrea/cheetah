@@ -54,7 +54,7 @@ export const Sidebar = () => {
 
   return (
     <motion.aside
-      className="h-full bg-gray-100 dark:bg-neutral-900 p-4 w-full"
+      className="h-screen bg-gray-100 dark:bg-neutral-900 p-4 w-full flex flex-col"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -85,7 +85,10 @@ export const Sidebar = () => {
         <DottedSeparator className="my-4" />
       </motion.div>
 
-      <motion.div variants={itemVariants}>
+      <motion.div
+        variants={itemVariants}
+        className="flex-1 min-h-0 overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-400 dark:scrollbar-thumb-neutral-700 scrollbar-track-transparent"
+      >
         <Projects />
       </motion.div>
     </motion.aside>
