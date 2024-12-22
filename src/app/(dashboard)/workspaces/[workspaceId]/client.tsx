@@ -102,16 +102,16 @@ const AnalyticsSkeleton = () => (
     variants={skeletonVariants}
     initial="hidden"
     animate="visible"
-    className="rounded-lg shadow-lg w-full"
+    className="rounded-lg shadow-lg w-full dark:bg-neutral-900/50 dark:backdrop-blur-sm"
   >
     <div className="grid grid-cols-1 lg:grid-cols-2 max-h-xl w-full gap-4">
       {/* Task Analytics Skeleton */}
       <div className="flex flex-col h-full lg:flex-row">
-        <Skeleton className="w-full h-[300px] rounded-lg" />
+        <Skeleton className="w-full h-[300px] rounded-lg dark:bg-neutral-800/50" />
       </div>
       {/* Members Pie Chart Skeleton */}
       <div className="rounded-md border-transparent transition duration-300 border-2">
-        <Skeleton className="w-full h-[300px] rounded-lg" />
+        <Skeleton className="w-full h-[300px] rounded-lg dark:bg-neutral-800/50" />
       </div>
     </div>
   </motion.div>
@@ -491,11 +491,14 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
                       <DropdownMenuContent
                         align="end"
                         side="bottom"
-                        className="w-40 "
+                        className="w-40 dark:bg-neutral-900 dark:border-neutral-800 dark:shadow-lg dark:shadow-black/20"
                         sideOffset={10}
                       >
                         <div className="flex flex-col">
-                          <DropdownMenuItem className="gap-x-4" asChild>
+                          <DropdownMenuItem
+                            className="gap-x-4 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 transition-colors duration-200"
+                            asChild
+                          >
                             <Link
                               href={`/workspaces/${workspaceId}/tasks/${task.$id}`}
                             >
@@ -533,27 +536,31 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
             No tasks found
           </li>
         </motion.ul>
-        <Button
-          variant="muted"
-          className="mt-4 w-full dark:bg-neutral-950 border dark:border-neutral-950"
-          onClick={() => {
-            if (slice >= data.length) {
-              setSlice(3);
-            } else {
-              handleShowMore();
-            }
-          }}
-        >
-          <div className="flex items-center gap-x-2">
-            {slice >= data.length ? "Show less" : "Show more"}
-            <motion.div
-              initial={false}
-              animate={{ rotate: slice >= data.length ? 180 : 0 }}
-            >
-              <ChevronDownIcon className="size-4" />
-            </motion.div>
-          </div>
-        </Button>
+
+        {/* Show more/less button only if there are tasks */}
+        {data.length > 0 && (
+          <Button
+            variant="muted"
+            className="mt-4 w-full dark:bg-neutral-950 border dark:border-neutral-950"
+            onClick={() => {
+              if (slice >= data.length) {
+                setSlice(3);
+              } else {
+                handleShowMore();
+              }
+            }}
+          >
+            <div className="flex items-center gap-x-2">
+              {slice >= data.length ? "Show less" : "Show more"}
+              <motion.div
+                initial={false}
+                animate={{ rotate: slice >= data.length ? 180 : 0 }}
+              >
+                <ChevronDownIcon className="size-4" />
+              </motion.div>
+            </div>
+          </Button>
+        )}
       </span>
     </motion.div>
   );

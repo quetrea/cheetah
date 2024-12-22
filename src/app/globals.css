@@ -43,6 +43,16 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --dark-background: 240 10% 4%;
+    --dark-card: 240 10% 8%;
+    --dark-border: 240 10% 12%;
+    --dark-hover: 240 10% 14%;
+    --dark-active: 240 10% 16%;
+    --dark-muted: 240 10% 20%;
+    --dark-text-primary: 240 10% 95%;
+    --dark-text-secondary: 240 10% 80%;
+    --dark-text-muted: 240 10% 65%;
+    --dark-shadow: 240 20% 2% / 0.5;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -62,8 +72,10 @@ body {
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+    --input: 0 0% 89.8%;
+    --ring: 0 72.2% 50.6%;
+    --radius: 0.75rem;
+
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
