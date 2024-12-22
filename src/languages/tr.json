@@ -1,0 +1,190 @@
+{
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "notFound": "Bulunamadı",
+    "goBack": "Geri Dön",
+    "save": "Kaydet",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "cancel": "İptal",
+    "create": "Oluştur",
+    "settings": "Ayarlar"
+  },
+  "guides": {
+    "title": "Rehberler",
+    "description": "Çeşitli konularda en son rehberlerimizi ve içgörülerimizi keşfedin.",
+    "sections": {
+      "gettingStarted": "Başlarken",
+      "features": "Özellikler",
+      "advanced": "Gelişmiş"
+    },
+    "howToUse": {
+      "title": "Nasıl Kullanılır?",
+      "description": "Platformumuzdan en iyi şekilde yararlanmak için kapsamlı bir rehber."
+    }
+  },
+
+  "navigation": {
+    "home": "Ana Sayfa",
+    "guide": "Rehber",
+    "privacy": "Gizlilik"
+  },
+  "workspace": {
+    "title": "Çalışma Alanı",
+    "projects": "Projeler",
+    "tasks": "Görevler",
+    "members": "Üyeler",
+    "settings": "Ayarlar",
+    "notFound": "Çalışma alanı bulunamadı",
+    "leave": "Çalışma Alanından Ayrıl"
+  },
+  "projects": {
+    "title": "Projeler",
+    "create": "Yeni Proje",
+    "edit": "Projeyi Düzenle",
+    "notFound": "Proje bulunamadı",
+    "total": "Toplam Proje"
+  },
+  "tasks": {
+    "title": "Görevler",
+    "create": "Yeni Görev",
+    "edit": "Görevi Düzenle",
+    "delete": "Görevi Sil",
+    "status": {
+      "completed": "Tamamlandı",
+      "inProgress": "Devam Ediyor",
+      "pending": "Beklemede"
+    }
+  },
+  "auth": {
+    "signIn": {
+      "title": "Giriş Yap",
+      "description": "Hikayene Cheetah ile devam etmek için giriş yap.",
+      "formField": {
+        "email": "E-posta adresini buraya girin",
+        "password": "Şifrenizi buraya girin"
+      }
+    },
+    "signUp": {
+      "title": "Cheetah'ya katıl",
+      "description": "Hikayene Cheetah ile başlamak için kayıt ol.",
+      "formField": {
+        "name": "İsminizi buraya giriniz",
+        "email": "E-posta adresini buraya girin",
+        "password": "Şifrenizi buraya girin"
+      },
+      "get-started": "Kayıt ol",
+      "privacy-info": "Kaydolduğunuzda, şunları kabul etmiş olursunuz:"
+    },
+    "alt-info": "Ya da bununla devam et",
+    "warning-info": "Hesabın yok mu?",
+    "already": "Zaten hesabın varsa?",
+    "google": "Google hesabın ile devam et",
+    "forgotPassword": {
+      "alt": "Şifreni mi unuttun?",
+      "title": "Şifremi Unuttum",
+      "description": "E-posta adresinizi girin, size şifre sıfırlama bağlantısı gönderelim",
+      "sendLink": "Sıfırlama Bağlantısı Gönder",
+      "backToLogin": "Girişe Dön"
+    }
+  },
+
+  "privacy": {
+    "alt": "Gizlilik Politikası",
+    "title": "Gizlilik",
+    "description": "Cheetah olarak gizliliğinizi ciddiye alıyoruz. Bu politika, hangi kişisel bilgileri topladığımızı ve bunları nasıl kullandığımızı açıklar.",
+    "lastUpdated": "Son güncelleme",
+    "sections": {
+      "dataCollection": {
+        "title": "1. Topladığımız Bilgiler",
+        "description": "Hizmetlerimizi sağlamak ve geliştirmek için çeşitli türde bilgiler topluyoruz:",
+        "items": {
+          "personal": {
+            "title": "Kişisel Bilgiler",
+            "description": "İsim, e-posta adresi ve iletişim bilgileri"
+          },
+          "usage": {
+            "title": "Kullanım Verileri",
+            "description": "Platformumuzla etkileşim, kullanılan özellikler ve tercihler"
+          },
+          "technical": {
+            "title": "Teknik Veriler",
+            "description": "IP adresi, tarayıcı türü, cihaz bilgileri"
+          }
+        }
+      },
+      "dataUsage": {
+        "title": "2. Bilgilerinizi Nasıl Kullanıyoruz",
+        "description": "Bilgileriniz şu amaçlarla kullanılır:",
+        "items": [
+          "Deneyiminizi ve içeriği kişiselleştirmek",
+          "İşlemlerinizi işlemek ve hesabınızı yönetmek",
+          "Önemli bildirimleri ve güncellemeleri göndermek",
+          "Platformumuzu geliştirmek için kullanım modellerini analiz etmek"
+        ]
+      },
+      "dataProtection": {
+        "title": "3. Verilerinizi nasıl koruyoruz?",
+        "description": "Verilerinizi korumak için güçlü güvenlik önlemleri uyguluyoruz:",
+        "items": [
+          "Hassas bilgilerin şifrelenmesi",
+          "Düzenli güvenlik değerlendirmeleri ve güncellemeleri",
+          "Sıkı erişim kontrolleri ve kimlik doğrulama",
+          "Endüstri güvenlik standartlarına uyum"
+        ]
+      },
+      "yourRights": {
+        "title": "4. Haklarınız",
+        "description": "Kişisel verilerinizle ilgili olarak çeşitli haklara sahipsiniz:",
+        "items": [
+          "Kişisel bilgilerinize erişim",
+          "Düzeltme veya silme talebinde bulunun",
+          "Verilerinizin işlenmesine itiraz edin",
+          "Verilerinizin bir kopyasını indirin"
+        ]
+      },
+      "contactUs": {
+        "title": "5. Bizimle iletişime geçin",
+        "description": "Bu Gizlilik Politikası hakkında herhangi bir sorunuz varsa lütfen bizimle iletişime geçin:",
+        "contact": {
+          "email": "E-posta: codewithillusion@gmail.com",
+          "phone": ""
+        }
+      }
+    }
+  },
+
+  "home": {
+    "card": {
+      "title": "İş akışınızı ve görevlerinizi kolayca yönetin. Projelerinizi somutlaştırın.",
+      "description": "Bu kart @Cheetah tarafından oluşturuldu",
+      "author": {
+        "label": "Yazar",
+        "name": "Illusion Celestia"
+      }
+    },
+    "sections": {
+      "workspace": {
+        "title": "Çalışma Alanı",
+        "myWorkspace": "Çalışma Alanım"
+      },
+      "projects": {
+        "title": "Projeler",
+        "myProject": "Projem"
+      },
+      "tasks": {
+        "title": "Görevlerim",
+        "subtitle": "Görevler",
+        "task1": "Görev 1",
+        "task2": "Görev 2",
+        "task3": "Görev 3"
+      }
+    },
+    "header": {
+      "title": "Cheetah'ya Hoş Geldiniz",
+      "subtitle": "Tek tıkla özelleştirilebilir çalışma alanları oluşturabilirsiniz!",
+      "createdAt": "Oluşturulma tarihi: {{date}}"
+    }
+  }
+}

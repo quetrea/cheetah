@@ -28,6 +28,8 @@ import Link from "next/link";
 import { signUpSchema } from "../schemas";
 import { useRegister } from "../api/use-register";
 import { signUpWithGoogle } from "@/lib/oauth";
+import { useTransition } from "react";
+import { useTranslation } from "react-i18next";
 
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -50,6 +52,7 @@ const itemVariants = {
 };
 
 export const SignUpCard = () => {
+  const { t } = useTranslation();
   const { mutate, isPending } = useRegister();
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
@@ -71,27 +74,27 @@ export const SignUpCard = () => {
       variants={containerVariants}
       className="w-full flex items-start justify-center py-4 md:py-8"
     >
-      <Card className="w-full md:w-[487px] overflow-hidden backdrop-blur-sm bg-white/80 dark:bg-neutral-900/80 border border-neutral-200/50 dark:border-neutral-800/50 mb-20 md:mb-0">
-        <CardHeader className="space-y-6 p-8">
+      <Card className="w-full md:w-[487px] overflow-hidden backdrop-blur-sm bg-white/80 dark:bg-neutral-900/80 border border-neutral-200/50 dark:border-neutral-800/50 mb-20 md:mb-0 p-6">
+        <CardHeader className="space-y-6 pb-0">
           <motion.div variants={itemVariants}>
             <CardTitle className="text-3xl font-bold text-center bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              Join Cheetah
+              {t("auth.signUp.title")}
             </CardTitle>
           </motion.div>
           <motion.div variants={itemVariants}>
             <CardDescription className="text-center text-base">
-              Start your journey with the fastest project management tool
+              {t("auth.signUp.description")}
             </CardDescription>
           </motion.div>
         </CardHeader>
 
-        <CardContent className="p-6 md:p-8 space-y-6">
+        <CardContent className="p-6  space-y-6">
           <Form {...form}>
             <form
               className="space-y-4 md:space-y-6"
               onSubmit={form.handleSubmit(onSubmit)}
             >
-              <motion.div variants={itemVariants} className="space-y-6">
+              <motion.div variants={itemVariants} className="space-y-4">
                 <FormField
                   name="name"
                   control={form.control}
@@ -104,7 +107,7 @@ export const SignUpCard = () => {
                             {...field}
                             disabled={isPending}
                             className="pl-10 h-10"
-                            placeholder="Your name"
+                            placeholder={t("auth.signUp.formField.name")}
                           />
                         </div>
                       </FormControl>
@@ -125,7 +128,7 @@ export const SignUpCard = () => {
                             {...field}
                             disabled={isPending}
                             className="pl-10 h-10"
-                            placeholder="Email address"
+                            placeholder={t("auth.signUp.formField.email")}
                           />
                         </div>
                       </FormControl>
@@ -147,7 +150,7 @@ export const SignUpCard = () => {
                             disabled={isPending}
                             type="password"
                             className="pl-10 h-10"
-                            placeholder="Create password"
+                            placeholder={t("auth.signUp.formField.password")}
                           />
                         </div>
                       </FormControl>
@@ -169,7 +172,7 @@ export const SignUpCard = () => {
                       <Loader2 className="h-5 w-5 animate-spin" />
                     ) : (
                       <>
-                        Get Started
+                        {t("auth.signUp.get-started")}
                         <ArrowRight className="ml-2 h-5 w-5" />
                       </>
                     )}
@@ -182,7 +185,7 @@ export const SignUpCard = () => {
           <div className="relative">
             <DottedSeparator />
             <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-2 text-muted-foreground text-sm">
-              or continue with
+              {t("auth.alt-info")}
             </span>
           </div>
 
@@ -198,7 +201,7 @@ export const SignUpCard = () => {
               className="w-full h-10 hover:bg-neutral-100 dark:hover:bg-neutral-800"
             >
               <FcGoogle className="mr-2 h-5 w-5" />
-              Google Account
+              {t("auth.google")}
             </Button>
           </motion.div>
 
@@ -206,12 +209,12 @@ export const SignUpCard = () => {
             variants={itemVariants}
             className="text-center text-sm text-muted-foreground hidden md:block"
           >
-            Already have an account?{" "}
+            {t("auth.already")}{" "}
             <Link
               href="/sign-in"
               className="text-purple-600 hover:text-purple-700 hover:underline font-medium"
             >
-              Sign in
+              {t("auth.signIn.title")}
             </Link>
           </motion.div>
 
@@ -219,12 +222,12 @@ export const SignUpCard = () => {
             variants={itemVariants}
             className="text-center text-xs text-muted-foreground"
           >
-            By signing up, you agree to our{" "}
+            {t("auth.signUp.privacy-info")}{" "}
             <Link
               href="/privacy"
               className="hover:text-foreground underline underline-offset-4"
             >
-              Privacy Policy
+              {t("privacy.alt")}
             </Link>
           </motion.div>
         </CardContent>

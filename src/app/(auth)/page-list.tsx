@@ -3,11 +3,13 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { useState, useEffect } from "react";
 
 const links = [
-  { label: "Home", path: "/home", deActive: false },
-  { label: "Guide", path: "/guides", deActive: false },
-  { label: "Privacy Policy", path: "/privacy", deActive: false },
+  { labelKey: "navigation.home", path: "/home", deActive: false },
+
+  { labelKey: "navigation.privacy", path: "/privacy", deActive: false },
 ];
 
 const container = {
@@ -28,6 +30,14 @@ const item = {
 
 export const PageList = () => {
   const pathname = usePathname();
+  const { t } = useTranslation();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <motion.div
@@ -57,7 +67,7 @@ export const PageList = () => {
                     : "text-muted-foreground hover:text-purple-600"
                 )}
               >
-                {link.label}
+                {t(link.labelKey)}
                 {isActive && (
                   <motion.div
                     layoutId="underline"

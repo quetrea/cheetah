@@ -1,3 +1,7 @@
+"use client";
+
+import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
 import AdBanner from "@/components/adsense/AdBanner";
 import { DottedSeparator } from "@/components/dotted-separator";
 import {
@@ -19,19 +23,28 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 export const GuideClientPage = () => {
+  const { t } = useTranslation();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <div className="flex h-full gap-x-4 w-full">
       <Tabs
         className="flex w-full flex-col lg:flex-row gap-4 overflow-y-auto"
         defaultValue="how-to-use"
       >
-        <Card className="w-full lg:1/3 xl:w-1/5 flex flex-col p-4 bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800">
+        <Card className="w-full lg:1/3 xl:w-1/5 flex flex-col p-4">
           <CardHeader>
-            <CardTitle className="text-3xl font-bold dark:text-white">
-              Guides
+            <CardTitle className="text-3xl font-bold">
+              {t("guides.title")}
             </CardTitle>
-            <CardDescription className="text-lg dark:text-neutral-400">
-              Explore our latest guides and insights on various topics.
+            <CardDescription className="text-lg">
+              {t("guides.description")}
             </CardDescription>
           </CardHeader>
           <CardContent>

@@ -10,12 +10,15 @@ import { ThemeToggle } from "@/components/themes/theme-toggle";
 import { useCurrent } from "@/features/auth/api/use-current";
 import { motion } from "framer-motion";
 import { CheetahLogo, LogoVariant } from "@/components/logo/cheetah-logo";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { useTranslation } from "react-i18next";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
 }
 
 const AuthLayout = ({ children }: AuthLayoutProps) => {
+  const { t } = useTranslation();
   const pathname = usePathname();
   const isSignIn = pathname === "/sign-in";
 
@@ -78,7 +81,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
                         "hover:text-purple-600 hover:border-purple-600"
                     )}
                   >
-                    <Link href="/sign-in">Login</Link>
+                    <Link href="/sign-in">{t("auth.signIn.title")}</Link>
                   </Button>
                   <Button
                     asChild
@@ -91,7 +94,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
                         "hover:text-purple-600 hover:border-purple-600"
                     )}
                   >
-                    <Link href="/sign-up">Sign Up</Link>
+                    <Link href="/sign-up">{t("auth.signUp.title")}</Link>
                   </Button>
                 </motion.div>
               ) : (
@@ -109,6 +112,10 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
                   </Button>
                 </motion.div>
               )}
+
+              <div>
+                <LanguageSwitcher />
+              </div>
 
               {/* Desktop Theme Toggle - Yeni pozisyon */}
               <motion.div

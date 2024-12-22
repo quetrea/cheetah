@@ -1,0 +1,188 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "notFound": "Not Found",
+    "goBack": "Go Back",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "create": "Create",
+    "settings": "Settings"
+  },
+  "guides": {
+    "title": "Guides",
+    "description": "Explore our latest guides and insights on various topics.",
+    "sections": {
+      "gettingStarted": "Getting Started",
+      "features": "Features",
+      "advanced": "Advanced"
+    },
+    "howToUse": {
+      "title": "How to Use?",
+      "description": "A comprehensive guide to get the most out of our platform."
+    }
+  },
+  "workspace": {
+    "title": "Workspace",
+    "projects": "Projects",
+    "tasks": "Tasks",
+    "members": "Members",
+    "settings": "Settings",
+    "notFound": "Workspace not found",
+    "leave": "Leave Workspace"
+  },
+  "projects": {
+    "title": "Projects",
+    "create": "New Project",
+    "edit": "Edit Project",
+    "notFound": "Project not found",
+    "total": "Total Projects"
+  },
+  "tasks": {
+    "title": "Tasks",
+    "create": "New Task",
+    "edit": "Edit Task",
+    "delete": "Delete Task",
+    "status": {
+      "completed": "Completed",
+      "inProgress": "In Progress",
+      "pending": "Pending"
+    }
+  },
+  "navigation": {
+    "home": "Home",
+    "guide": "Guide",
+    "privacy": "Privacy Policy"
+  },
+  "auth": {
+    "signIn": {
+      "title": "Sign In",
+      "description": "Continue your journey with Cheetah",
+      "formField": {
+        "email": "Email address",
+        "password": "Enter password"
+      }
+    },
+
+    "signUp": {
+      "title": "Join Cheetah",
+      "description": "Start your journey with Cheetah",
+      "formField": {
+        "name": "Your name",
+        "email": "Email address",
+        "password": "Enter password"
+      },
+      "privacy-info": "By signing up, you agree to our"
+    },
+    "alt-info": "or continue with",
+    "warning-info": "Dont have an account?",
+    "google": "Continue with Google",
+    "already": "Already have an account?",
+    "forgotPassword": {
+      "alt": "Do you forgot your password?",
+      "title": "Forgot Password",
+      "description": "Enter your email address and we'll send you a link to reset your password",
+      "sendLink": "Send Reset Link",
+      "backToLogin": "Back to Login"
+    }
+  },
+
+  "privacy": {
+    "alt": "Privacy",
+    "title": "Privacy Policy",
+    "description": "At Cheetah, we take your privacy seriously. This policy describes what personal information we collect and how we use it.",
+    "lastUpdated": "Last updated",
+    "sections": {
+      "dataCollection": {
+        "title": "1. Information We Collect",
+        "description": "We collect various types of information to provide and improve our services:",
+        "items": {
+          "personal": {
+            "title": "Personal Information",
+            "description": "Name, email address, and contact details"
+          },
+          "usage": {
+            "title": "Usage Data",
+            "description": "Interaction with our platform, features used, and preferences"
+          },
+          "technical": {
+            "title": "Technical Data",
+            "description": "IP address, browser type, device information"
+          }
+        }
+      },
+      "dataUsage": {
+        "title": "2. How We Use Your Information",
+        "description": "Your information helps us:",
+        "items": [
+          "Personalize your experience and content",
+          "Process your transactions and maintain your account",
+          "Send important notifications and updates",
+          "Analyze usage patterns to improve our platform"
+        ]
+      },
+      "dataProtection": {
+        "title": "3. Data Protection",
+        "description": "We implement robust security measures to protect your data:",
+        "items": [
+          "Encryption of sensitive information",
+          "Regular security assessments and updates",
+          "Strict access controls and authentication",
+          "Compliance with industry security standards"
+        ]
+      },
+      "yourRights": {
+        "title": "4. Your Rights",
+        "description": "You have several rights regarding your personal data:",
+        "items": [
+          "Access your personal information",
+          "Request corrections or deletions",
+          "Object to processing of your data",
+          "Download a copy of your data"
+        ]
+      },
+      "contactUs": {
+        "title": "5. Contact Us",
+        "description": " If you have any questions about this Privacy Policy, please contact us:",
+        "contact": {
+          "email": "Email: codewithillusion@gmail.com",
+          "phone": ""
+        }
+      }
+    }
+  },
+  "home": {
+    "card": {
+      "title": "Easily manage your workflow and tasks. Make your projects tangible.",
+      "description": "This card created by @Cheetah",
+      "author": {
+        "label": "Author",
+        "name": "Illusion Celestia"
+      }
+    },
+    "sections": {
+      "workspace": {
+        "title": "Workspace",
+        "myWorkspace": "My workspace"
+      },
+      "projects": {
+        "title": "Projects",
+        "myProject": "My project"
+      },
+      "tasks": {
+        "title": "My tasks",
+        "subtitle": "Tasks",
+        "task1": "Task 1",
+        "task2": "Task 2",
+        "task3": "Task 3"
+      }
+    },
+    "header": {
+      "title": "Welcome to Cheetah",
+      "subtitle": "You can create customizable workspaces, with one click!",
+      "createdAt": "Created at {{date}}"
+    }
+  }
+}

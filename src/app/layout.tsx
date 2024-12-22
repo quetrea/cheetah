@@ -8,6 +8,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/themes/theme-provider";
 import { AdSense } from "@/components/adsense/AdSense";
 import Script from "next/script";
+import { I18nProvider } from "@/components/i18n-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -42,18 +43,20 @@ export default function RootLayout({
         />
       </head>
       <body className={cn(inter.className, "antialiased min-h-screen")}>
-        <QueryProvider>
-          <Toaster />
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-            <AdSense pId="5888317157317698" />
-          </ThemeProvider>
-        </QueryProvider>
+        <I18nProvider>
+          <QueryProvider>
+            <Toaster />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+              <AdSense pId="5888317157317698" />
+            </ThemeProvider>
+          </QueryProvider>
+        </I18nProvider>
       </body>
     </html>
   );
