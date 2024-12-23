@@ -8,6 +8,7 @@ import { createWorkspaceSchema } from "../schemas";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,14 @@ import { cn } from "@/lib/utils";
 interface CreateWorkspaceFormProps {
   onCancel?: () => void;
 }
+
+const ALLOWED_FILE_TYPES = [
+  "image/png",
+  "image/jpeg",
+  "image/jpg",
+  "image/svg+xml",
+];
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
   const router = useRouter();
@@ -61,7 +70,28 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (file) {
+      // Dosya tipi kontrolü
+      if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+        toast.error(
+          "Invalid file type. Only PNG, JPEG, JPG and SVG files are allowed."
+        );
+        if (inputRef.current) {
+          inputRef.current.value = "";
+        }
+        return;
+      }
+
+      // Dosya boyutu kontrolü
+      if (file.size > MAX_FILE_SIZE) {
+        toast.error("File size cannot be larger than 5MB.");
+        if (inputRef.current) {
+          inputRef.current.value = "";
+        }
+        return;
+      }
+
       form.setValue("image", file);
     }
   };
@@ -194,7 +224,7 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                           >
                             <p className="text-sm">Workspace Icon</p>
                             <p className="text-sm text-muted-foreground">
-                              JPG,PNG,SVG or JPEG, max 2mb
+                              JPG, PNG, SVG or JPEG, max 5mb
                             </p>
                             <input
                               className="hidden"

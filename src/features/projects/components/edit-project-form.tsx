@@ -93,9 +93,38 @@ export const EditProjectForm = ({
     mutate({ form: finalValues, param: { projectId: initialValues.$id } });
   };
 
+  const ALLOWED_FILE_TYPES = [
+    "image/png",
+    "image/jpeg",
+    "image/jpg",
+    "image/svg+xml",
+  ];
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (file) {
+      // Dosya tipi kontrolü
+      if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+        toast.error(
+          "Invalid file type. Only PNG, JPEG, JPG and SVG files are allowed."
+        );
+        if (inputRef.current) {
+          inputRef.current.value = "";
+        }
+        return;
+      }
+
+      // Dosya boyutu kontrolü
+      if (file.size > MAX_FILE_SIZE) {
+        toast.error("File size cannot be larger than 5MB.");
+        if (inputRef.current) {
+          inputRef.current.value = "";
+        }
+        return;
+      }
+
       form.setValue("image", file);
     }
   };
@@ -254,7 +283,7 @@ export const EditProjectForm = ({
                               >
                                 <p className="text-sm">Project Icon</p>
                                 <p className="text-sm text-muted-foreground">
-                                  JPG,PNG,SVG or JPEG, max 2mb
+                                  JPG, PNG, SVG or JPEG, max 5mb
                                 </p>
                                 <input
                                   className="hidden"

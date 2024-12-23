@@ -24,6 +24,14 @@ import { Webhook, WebhookEvent } from "@/features/webhooks/types";
 import { sendDiscordWebhook } from "@/lib/webhook";
 import { SubTask } from "@/features/subtasks/types";
 
+const ALLOWED_FILE_TYPES = [
+  "image/png",
+  "image/jpeg",
+  "image/jpg",
+  "image/svg+xml",
+];
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
 const app = new Hono()
   .post(
     "/",
@@ -49,20 +57,49 @@ const app = new Hono()
       let uploadedImageUrl: string | undefined;
 
       if (image instanceof File) {
-        const file = await storage.createFile(
-          IMAGES_BUCKET_ID,
-          ID.unique(),
-          image
-        );
+        if (!ALLOWED_FILE_TYPES.includes(image.type)) {
+          return c.json(
+            {
+              error:
+                "Geçersiz dosya türü. Sadece PNG, JPEG, JPG ve SVG dosyaları kabul edilir.",
+            },
+            400
+          );
+        }
 
-        const arrayBuffer = await storage.getFilePreview(
-          IMAGES_BUCKET_ID,
-          file.$id
-        );
+        if (image.size > MAX_FILE_SIZE) {
+          return c.json(
+            {
+              error: "Dosya boyutu 5MB'dan büyük olamaz.",
+            },
+            400
+          );
+        }
 
-        uploadedImageUrl = `data:image/png;base64,${Buffer.from(
-          arrayBuffer
-        ).toString("base64")}`;
+        try {
+          const file = await storage.createFile(
+            IMAGES_BUCKET_ID,
+            ID.unique(),
+            image
+          );
+
+          const arrayBuffer = await storage.getFilePreview(
+            IMAGES_BUCKET_ID,
+            file.$id
+          );
+
+          uploadedImageUrl = `data:image/png;base64,${Buffer.from(
+            arrayBuffer
+          ).toString("base64")}`;
+        } catch (error) {
+          console.error("Dosya yükleme hatası:", error);
+          return c.json(
+            {
+              error: "Dosya yüklenirken bir hata oluştu.",
+            },
+            500
+          );
+        }
       }
 
       const project = await databases.createDocument(
@@ -197,20 +234,49 @@ const app = new Hono()
       let uploadedImageUrl: string | undefined;
 
       if (image instanceof File) {
-        const file = await storage.createFile(
-          IMAGES_BUCKET_ID,
-          ID.unique(),
-          image
-        );
+        if (!ALLOWED_FILE_TYPES.includes(image.type)) {
+          return c.json(
+            {
+              error:
+                "Geçersiz dosya türü. Sadece PNG, JPEG, JPG ve SVG dosyaları kabul edilir.",
+            },
+            400
+          );
+        }
 
-        const arrayBuffer = await storage.getFilePreview(
-          IMAGES_BUCKET_ID,
-          file.$id
-        );
+        if (image.size > MAX_FILE_SIZE) {
+          return c.json(
+            {
+              error: "Dosya boyutu 5MB'dan büyük olamaz.",
+            },
+            400
+          );
+        }
 
-        uploadedImageUrl = `data:image/png;base64,${Buffer.from(
-          arrayBuffer
-        ).toString("base64")}`;
+        try {
+          const file = await storage.createFile(
+            IMAGES_BUCKET_ID,
+            ID.unique(),
+            image
+          );
+
+          const arrayBuffer = await storage.getFilePreview(
+            IMAGES_BUCKET_ID,
+            file.$id
+          );
+
+          uploadedImageUrl = `data:image/png;base64,${Buffer.from(
+            arrayBuffer
+          ).toString("base64")}`;
+        } catch (error) {
+          console.error("Dosya yükleme hatası:", error);
+          return c.json(
+            {
+              error: "Dosya yüklenirken bir hata oluştu.",
+            },
+            500
+          );
+        }
       } else {
         uploadedImageUrl = image;
       }

@@ -21,6 +21,10 @@ import { endOfMonth, startOfMonth, subMonths } from "date-fns";
 import { Task, TaskStatus } from "@/features/tasks/types";
 import { Project } from "@/features/projects/types";
 
+// Dosya doğrulama sabitleri
+const ALLOWED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'];
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
 const app = new Hono()
   .get("/", sessionMiddleware, async (c) => {
     const user = c.get("user");
@@ -98,20 +102,68 @@ const app = new Hono()
       let uploadedImageUrl: string | undefined;
 
       if (image instanceof File) {
-        const file = await storage.createFile(
-          IMAGES_BUCKET_ID,
-          ID.unique(),
-          image
-        );
+        // File type check
+        if (!ALLOWED_FILE_TYPES.includes(image.type)) {
+          return c.json({ 
+            error: "Invalid file type. Only PNG, JPEG, JPG and SVG files are allowed." 
+          }, 400);
+        }
 
-        const arrayBuffer = await storage.getFilePreview(
-          IMAGES_BUCKET_ID,
-          file.$id
-        );
+        // File size check
+        if (image.size > MAX_FILE_SIZE) {
+          return c.json({ 
+            error: "File size cannot be larger than 5MB." 
+          }, 400);
+        }
 
-        uploadedImageUrl = `data:image/png;base64,${Buffer.from(
-          arrayBuffer
-        ).toString("base64")}`;
+        try {
+          // Check if the file is actually an image
+          const imageBuffer = await image.arrayBuffer();
+          const fileHeader = new Uint8Array(imageBuffer.slice(0, 4));
+          
+          // Magic number check for valid image formats
+          const isPNG = fileHeader[0] === 0x89 && fileHeader[1] === 0x50 && fileHeader[2] === 0x4E && fileHeader[3] === 0x47;
+          const isJPEG = fileHeader[0] === 0xFF && fileHeader[1] === 0xD8;
+          
+          if (!isPNG && !isJPEG && image.type !== 'image/svg+xml') {
+            return c.json({ 
+              error: "Invalid image file format" 
+            }, 400);
+          }
+
+          const file = await storage.createFile(
+            IMAGES_BUCKET_ID,
+            ID.unique(),
+            image
+          ).catch(error => {
+            // Catch Appwrite specific errors
+            if (error.code === 413) {
+              throw new Error("File size exceeds Appwrite limit");
+            }
+            if (error.code === 415) {
+              throw new Error("Unsupported file format");
+            }
+            
+            throw error;
+          });
+
+          const arrayBuffer = await storage.getFilePreview(
+            IMAGES_BUCKET_ID,
+            file.$id
+          ).catch(error => {
+            if (error.code === 404) {
+              throw new Error("Failed to generate file preview");
+            }
+            throw error;
+          });
+
+          uploadedImageUrl = `data:image/png;base64,${Buffer.from(arrayBuffer).toString("base64")}`;
+        } catch (error) {
+          console.error("File upload error:", error);
+          return c.json({ 
+            error: error instanceof Error ? error.message : "An unexpected error occurred while uploading the file" 
+          }, 500);
+        }
       }
       const generatedCode = generateInviteCode(6);
 
@@ -161,20 +213,67 @@ const app = new Hono()
       let uploadedImageUrl: string | undefined;
 
       if (image instanceof File) {
-        const file = await storage.createFile(
-          IMAGES_BUCKET_ID,
-          ID.unique(),
-          image
-        );
+        // File type check
+        if (!ALLOWED_FILE_TYPES.includes(image.type)) {
+          return c.json({ 
+            error: "Invalid file type. Only PNG, JPEG, JPG and SVG files are allowed." 
+          }, 400);
+        }
 
-        const arrayBuffer = await storage.getFilePreview(
-          IMAGES_BUCKET_ID,
-          file.$id
-        );
+        // File size check
+        if (image.size > MAX_FILE_SIZE) {
+          return c.json({ 
+            error: "File size cannot be larger than 5MB." 
+          }, 400);
+        }
 
-        uploadedImageUrl = `data:image/png;base64,${Buffer.from(
-          arrayBuffer
-        ).toString("base64")}`;
+        try {
+          // Check if the file is actually an image
+          const imageBuffer = await image.arrayBuffer();
+          const fileHeader = new Uint8Array(imageBuffer.slice(0, 4));
+          
+          // Magic number check for valid image formats
+          const isPNG = fileHeader[0] === 0x89 && fileHeader[1] === 0x50 && fileHeader[2] === 0x4E && fileHeader[3] === 0x47;
+          const isJPEG = fileHeader[0] === 0xFF && fileHeader[1] === 0xD8;
+          
+          if (!isPNG && !isJPEG && image.type !== 'image/svg+xml') {
+            return c.json({ 
+              error: "Invalid image file format" 
+            }, 400);
+          }
+
+          const file = await storage.createFile(
+            IMAGES_BUCKET_ID,
+            ID.unique(),
+            image
+          ).catch(error => {
+            // Catch Appwrite specific errors
+            if (error.code === 413) {
+              throw new Error("File size exceeds Appwrite limit");
+            }
+            if (error.code === 415) {
+              throw new Error("Unsupported file format");
+            }
+            throw error;
+          });
+
+          const arrayBuffer = await storage.getFilePreview(
+            IMAGES_BUCKET_ID,
+            file.$id
+          ).catch(error => {
+            if (error.code === 404) {
+              throw new Error("Failed to generate file preview");
+            }
+            throw error;
+          });
+
+          uploadedImageUrl = `data:image/png;base64,${Buffer.from(arrayBuffer).toString("base64")}`;
+        } catch (error) {
+          console.error("File upload error:", error);
+          return c.json({ 
+            error: error instanceof Error ? error.message : "An unexpected error occurred while uploading the file" 
+          }, 500);
+        }
       } else {
         uploadedImageUrl = image;
       }
