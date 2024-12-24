@@ -72,26 +72,6 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
     const file = e.target.files?.[0];
 
     if (file) {
-      // Dosya tipi kontrolü
-      if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-        toast.error(
-          "Invalid file type. Only PNG, JPEG, JPG and SVG files are allowed."
-        );
-        if (inputRef.current) {
-          inputRef.current.value = "";
-        }
-        return;
-      }
-
-      // Dosya boyutu kontrolü
-      if (file.size > MAX_FILE_SIZE) {
-        toast.error("File size cannot be larger than 5MB.");
-        if (inputRef.current) {
-          inputRef.current.value = "";
-        }
-        return;
-      }
-
       form.setValue("image", file);
     }
   };
