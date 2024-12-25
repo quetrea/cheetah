@@ -7,34 +7,38 @@ import { ThemeToggle } from "./themes/theme-toggle";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { LanguageSwitcher } from "./language-switcher";
-
-const pathnameMap = {
-  tasks: {
-    title: "My Tasks",
-    description: "View all of your tasks here.",
-  },
-  "tasks/[taskId]": {
-    title: "Task Overview",
-    description: "Manage your task details, subtasks, and progress",
-  },
-  projects: {
-    title: "My Projects",
-    description: "View all of your projects here.",
-  },
-  "projects/[projectId]": {
-    title: "Project Overview",
-    description: "Manage your project details, tasks, and team members",
-  },
-};
-
-const defaultMap = {
-  title: "Home",
-  description: "Monitor all of your projects and tasks here",
-};
+import { useTranslation } from "react-i18next";
 
 export const Navbar = () => {
   const pathname = usePathname();
   const pathnameParts = pathname.split("/");
+
+  const { t } = useTranslation();
+
+  const pathnameMap = {
+    tasks: {
+      title: `${t("navbar.navigations.myTasks.title")}`,
+      description: `${t("navbar.navigations.myTasks.description")}`,
+    },
+    "tasks/[taskId]": {
+      title: `${t("navbar.navigations.taskId.title")}`,
+      description: `${t("navbar.navigations.taskId.description")}`,
+    },
+    projects: {
+      title: `${t("navbar.navigations.projects.title")}`,
+      description: `${t("navbar.navigations.projects.description")}`,
+    },
+    "projects/[projectId]": {
+      title: `${t("navbar.navigations.projectId.title")}`,
+      description: `${t("navbar.navigations.projectId.description")}`,
+    },
+  };
+
+  const defaultMap = {
+    title: `${t("navbar.navigations.Home.title")}`,
+    description: `${t("navbar.navigations.Home.description")}`,
+  };
+
   let pathnameKey = pathnameParts[3] as keyof typeof pathnameMap;
 
   if (pathnameParts[3] === "tasks" && pathnameParts.length > 4) {

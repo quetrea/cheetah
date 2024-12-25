@@ -55,9 +55,10 @@ import {
   motion,
   useAnimation,
   useInView,
-  AnimatePresence,
+
 } from "framer-motion";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { useTranslation } from "react-i18next";
 
 // Ana container animasyonu
 const containerVariants = {
@@ -223,6 +224,7 @@ const MembersListSkeleton = () => (
 );
 
 export const WorkspaceIdClient = () => {
+  const { t } = useTranslation();
   const workspaceId = useWorkspaceId();
   const router = useRouter();
 
@@ -238,8 +240,8 @@ export const WorkspaceIdClient = () => {
     useGetMembers({ workspaceId });
 
   const [LeaveDialog, confirmLeave] = useConfirm(
-    "Leave Workspace",
-    "This action cannot be undone.",
+    `${t("workspace.dialogs.LeaveDialog.title")}`,
+    `${t("workspace.dialogs.LeaveDialog.description")}`,
     "destructive"
   );
 

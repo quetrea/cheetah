@@ -2,6 +2,7 @@ import React from "react";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -16,11 +17,16 @@ const MembersPieChart: React.FC<MembersPieChartProps> = ({
   adminCount,
   memberCount,
 }) => {
+  const { t } = useTranslation();
   const data = {
-    labels: ["Admin", "Member", "Other"],
+    labels: [
+      `${t("analytics.membersAnalytics.Admin.title")}`,
+      `${t("analytics.membersAnalytics.Member.title")}`,
+      `${t("analytics.membersAnalytics.Other.title")}`,
+    ],
     datasets: [
       {
-        label: "Member Count",
+        label: `${t("analytics.membersAnalytics.memberCount")}`,
         data: [
           adminCount,
           memberCount,
@@ -74,7 +80,7 @@ const MembersPieChart: React.FC<MembersPieChartProps> = ({
         className="text-2xl bg-gradient-to-r p-6   from-foreground to-foreground/70 bg-clip-text text-transparent "
         variants={itemVariants}
       >
-        Members Analytics
+        {t("analytics.membersAnalytics.title")}
       </motion.h2>
 
       <div className="p-6 w-full h-full  justify-center flex items-center">
@@ -112,7 +118,9 @@ const MembersPieChart: React.FC<MembersPieChartProps> = ({
             >
               <div className="w-3 h-3 rounded-full bg-[rgb(75,192,192)]" />
               <div className="flex justify-between flex-row w-full">
-                <div className="font-medium text-sm md:text-base">Admin</div>
+                <div className="font-medium text-sm md:text-base">
+                  {t("analytics.membersAnalytics.Admin.title")}
+                </div>
                 <div className="font-bold text-[rgb(75,192,192)] px-2">
                   {adminCount}
                 </div>
@@ -126,7 +134,9 @@ const MembersPieChart: React.FC<MembersPieChartProps> = ({
             >
               <div className="w-3 h-3 rounded-full bg-[rgb(255,99,132)]" />
               <div className="flex justify-between flex-row w-full">
-                <div className="font-medium text-sm md:text-base">Member</div>
+                <div className="font-medium text-sm md:text-base">
+                  {t("analytics.membersAnalytics.Member.title")}
+                </div>
                 <div className="font-bold text-[rgb(255,99,132)] px-2">
                   {memberCount}
                 </div>
@@ -140,7 +150,9 @@ const MembersPieChart: React.FC<MembersPieChartProps> = ({
             >
               <div className="w-3 h-3 rounded-full bg-[rgb(255,206,86)]" />
               <div className="flex justify-between flex-row w-full">
-                <div className="font-medium text-sm md:text-base">Other</div>
+                <div className="font-medium text-sm md:text-base">
+                  {t("analytics.membersAnalytics.Other.title")}
+                </div>
                 <div className="font-bold text-[rgb(255,206,86)] px-2">
                   {totalMembers - (adminCount + memberCount)}
                 </div>

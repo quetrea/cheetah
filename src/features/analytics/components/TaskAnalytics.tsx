@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -17,6 +11,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(
   CategoryScale,
@@ -48,6 +43,7 @@ const TIME_FILTERS = [
 ] as const;
 
 const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ analytics }) => {
+  const { t } = useTranslation();
   const [timeFilter, setTimeFilter] =
     useState<(typeof TIME_FILTERS)[number]["value"]>("week");
 
@@ -95,19 +91,14 @@ const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ analytics }) => {
 
     switch (timeFilter) {
       case "today":
-        // Bugünün verisi
         break;
       case "last3days":
-        // Son 3 günün verisi
         break;
       case "week":
-        // Bu haftanın verisi
         break;
       case "month":
-        // Bu ayın verisi
         break;
       case "year":
-        // Bu yılın verisi
         break;
       default:
         return analytics;
@@ -120,17 +111,15 @@ const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ analytics }) => {
 
   const data = {
     labels: [
-      "Total Tasks",
-
-      "Completed Tasks",
-      "Incomplete Tasks",
-      "Overdue Tasks",
+      `${t("analytics.taskAnalytics.totalTask.title")}`,
+      `${t("analytics.taskAnalytics.completedTask.title")}`,
+      `${t("analytics.taskAnalytics.inCompleteTask.title")}`,
+      `${t("analytics.taskAnalytics.overDueTask.title")}`,
     ],
     datasets: [
       {
         data: [
           filteredAnalytics.TaskCount,
-
           filteredAnalytics.CompletedTaskCount,
           filteredAnalytics.InCompleteTaskCount,
           filteredAnalytics.OverdueTaskCount,
@@ -207,7 +196,7 @@ const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ analytics }) => {
             className="text-2xl md:text-2xl xs:text-lg  bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent"
             variants={itemVariants}
           >
-            Task Analytics
+            {t("analytics.taskAnalytics.title")}
           </motion.h2>
 
           {/* <motion.div variants={itemVariants}>

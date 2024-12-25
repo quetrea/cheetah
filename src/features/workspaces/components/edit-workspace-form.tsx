@@ -1,25 +1,23 @@
 "use client";
 
-import { z } from "zod"; // Zod kütüphanesi
-import { useRef } from "react"; // React hookları
-import Image from "next/image"; // Next.js Image bileşeni
-import { useForm } from "react-hook-form"; // React Hook Form
-import { zodResolver } from "@hookform/resolvers/zod"; // Zod ile form doğrulama
-import { cn } from "@/lib/utils"; // Yardımcı fonksiyonlar
+import { z } from "zod";
+import { useRef } from "react";
+import Image from "next/image";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { useRouter } from "next/navigation";
 
 import { updateWorkspaceSchema } from "../schemas";
 
-// UI bileşenleri
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DottedSeparator } from "@/components/dotted-separator";
 
-// Form bileşenleri
 import {
   Form,
   FormControl,
@@ -29,11 +27,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-// Tipler
 import { Workspace } from "../types";
 import { MemberRole } from "@/features/members/types";
 
-// İkonlar
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -41,30 +37,26 @@ import {
   ImageIcon,
 } from "lucide-react";
 
-// API çağrıları
 import { useUpdateWorkspace } from "../api/use-update-workspace";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useDeleteWorkspace } from "../api/use-delete-workspace";
 import { useResetInviteCode } from "../api/use-reset-invite-code";
 import { useGetMembers } from "@/features/members/api/use-get-members";
 import { useWorkspaceId } from "../hooks/use-workspace-id";
-import { toast } from "sonner"; // Toast bildirimleri
+import { toast } from "sonner";
 import { useLeaveWorkspace } from "../api/use-leave-workspace";
-import { WebhookManager } from "@/features/webhooks/components/webhook-manager";
+import { useTranslation } from "react-i18next";
 
 interface EditWorkspaceFormProps {
   onCancel?: () => void;
   initialValues: Workspace;
 }
 
-// Dosya sabitleri ekleyelim
-const ALLOWED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'];
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-
 export const EditWorkspaceForm = ({
   onCancel,
   initialValues,
 }: EditWorkspaceFormProps) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const workspaceId = useWorkspaceId();
   const { data } = useGetMembers({ workspaceId });
@@ -80,19 +72,19 @@ export const EditWorkspaceForm = ({
     useLeaveWorkspace();
 
   const [DeleteDialog, confirmDelete] = useConfirm(
-    "Delete Workspace",
-    "This action cannot be undone.",
+    `${t("modals.dialogs.delete.workspace.title")}`,
+    `${t("modals.dialogs.delete.workspace.description")}`,
     "destructive"
   );
   const [LeaveDialog, confirmLeave] = useConfirm(
-    "Leave Workspace",
-    "This action cannot be undone.",
+    `${t("modals.dialogs.leave.workspace.title")}`,
+    `${t("modals.dialogs.leave.workspace.description")}`,
     "destructive"
   );
 
   const [ResetInviteCodeDialog, confirmReset] = useConfirm(
-    "Resetting invite link",
-    "This action cannot be undone.",
+    `${t("modals.dialogs.reset.inviteCode.title")}`,
+    `${t("modals.dialogs.reset.inviteCode.description")}`,
     "destructive"
   );
 
@@ -218,7 +210,7 @@ export const EditWorkspaceForm = ({
                     }
                   >
                     <ArrowLeftIcon className="size-4 mr-2" />
-                    Back
+                    {t("modals.edit.back")}
                   </Button>
                 </motion.div>
                 <CardTitle className="text-xl flex-1 font-bold">
@@ -273,7 +265,9 @@ export const EditWorkspaceForm = ({
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.3 }}
                               >
-                                Workspace name
+                                {t(
+                                  "modals.edit.workspace.formFields.titles.name"
+                                )}
                               </motion.span>
                             </FormLabel>
                             <FormControl>
@@ -281,7 +275,9 @@ export const EditWorkspaceForm = ({
                                 <Input
                                   {...field}
                                   disabled={isPending}
-                                  placeholder="Enter workspace name"
+                                  placeholder={t(
+                                    "modals.edit.workspace.formFields.placeholders.name"
+                                  )}
                                 />
                               </motion.div>
                             </FormControl>
@@ -331,9 +327,19 @@ export const EditWorkspaceForm = ({
                                 )}
                               </AnimatePresence>
                               <div className="flex flex-col">
-                                <p className="text-sm">Workspace Icon</p>
+                                <p className="text-sm">
+                                  {t(
+                                    "modals.edit.workspace.formFields.titles.icon"
+                                  )}
+                                </p>
                                 <p className="text-sm text-muted-foreground">
-                                  JPG, PNG, SVG or JPEG, max 5mb
+                                  JPG, PNG, SVG{" "}
+                                  {t("modals.edit.workspace.formFields.or")}{" "}
+                                  JPEG,{" "}
+                                  {t(
+                                    "modals.edit.workspace.formFields.values.max"
+                                  )}{" "}
+                                  5mb
                                 </p>
                                 <input
                                   className="hidden"
@@ -357,7 +363,9 @@ export const EditWorkspaceForm = ({
                                       }
                                     }}
                                   >
-                                    Remove Image
+                                    {t(
+                                      "modals.edit.workspace.formFields.options.removeIcon"
+                                    )}
                                   </Button>
                                 ) : (
                                   <Button
@@ -367,7 +375,9 @@ export const EditWorkspaceForm = ({
                                     className="w-fit mt-2"
                                     onClick={() => inputRef.current?.click()}
                                   >
-                                    Upload Image
+                                    {t(
+                                      "modals.edit.workspace.formFields.options.uploadIcon"
+                                    )}
                                   </Button>
                                 )}
                               </div>
@@ -397,7 +407,7 @@ export const EditWorkspaceForm = ({
                           onClick={onCancel}
                           className={cn(!onCancel && "invisible")}
                         >
-                          Cancel
+                          {t("modals.edit.workspace.formFields.options.cancel")}
                         </Button>
                       </motion.div>
 
@@ -406,7 +416,11 @@ export const EditWorkspaceForm = ({
                         whileTap={{ scale: 0.98 }}
                       >
                         <Button type="submit" disabled={isPending} size={"lg"}>
-                          {isPending ? "Saving..." : "Save Changes"}
+                          {isPending
+                            ? "Saving..."
+                            : ` ${t(
+                                "modals.edit.workspace.formFields.options.save"
+                              )}`}
                         </Button>
                       </motion.div>
                     </motion.div>
@@ -420,12 +434,11 @@ export const EditWorkspaceForm = ({
         <Card className="w-full h-full shadow-none border border-gray-500">
           <CardContent className="p-7">
             <div className="flex flex-col">
-              <h3 className="font-bold">Invite Members</h3>
+              <h3 className="font-bold">
+                {t("settingsSections.workspace.invite.title")}
+              </h3>
               <p className="text-sm text-muted-foreground">
-                Share the invite link to add members to
-                <span className="text-black dark:text-white font-bold ml-1">
-                  {initialValues.name}
-                </span>
+                {t("settingsSections.workspace.invite.description")}
               </p>
               <div className="mt-4">
                 <div className="flex items-center gap-x-2">
@@ -443,14 +456,14 @@ export const EditWorkspaceForm = ({
                 <>
                   <DottedSeparator className="py-7" />
                   <Button
-                    className="mt-6 w-fit ml-auto"
+                    className="mt-0 w-fit ml-auto"
                     size={"sm"}
                     variant={"destructive"}
                     type="button"
                     disabled={isPending || isResettingInviteCode}
                     onClick={handleResetInviteCode}
                   >
-                    Reset invite link
+                    {t("settingsSections.workspace.invite.button")}
                   </Button>
                 </>
               )}
@@ -461,21 +474,22 @@ export const EditWorkspaceForm = ({
           <Card className="w-full h-full shadow-none border border-amber-500">
             <CardContent className="p-7">
               <div className="flex flex-col ">
-                <h3 className="font-bold">Danger Zone</h3>
+                <h3 className="font-bold">
+                  {t("settingsSections.workspace.delete.title")}
+                </h3>
                 <p className="text-sm text-muted-foreground">
-                  Deleting a workspace is a irreversible and will remove all
-                  associated data!
+                  {t("settingsSections.workspace.delete.description")}
                 </p>
                 <DottedSeparator className="py-7" />
                 <Button
-                  className="mt-6 w-fit ml-auto"
+                  className="mt-0 w-fit ml-auto"
                   size={"sm"}
                   variant={"destructive"}
                   type="button"
                   disabled={isPending || isDeletingWorkspace}
                   onClick={handleDelete}
                 >
-                  Delete Workspace
+                  {t("settingsSections.workspace.delete.button")}
                 </Button>
               </div>
             </CardContent>
@@ -486,7 +500,7 @@ export const EditWorkspaceForm = ({
           <Card className="w-full h-full shadow-none border border-amber-500">
             <CardContent className="p-7">
               <div className="flex flex-col ">
-                <h3 className="font-bold">Danger Zone</h3>
+                <h3 className="font-bold">Leave Workspace</h3>
                 <p className="text-sm text-muted-foreground">
                   Leaving a workspace is a irreversible and will remove all your
                   data in the workspace!

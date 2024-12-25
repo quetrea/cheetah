@@ -31,7 +31,43 @@
     "members": "Members",
     "settings": "Settings",
     "notFound": "Workspace not found",
-    "leave": "Leave Workspace"
+    "leave": "Leave Workspace",
+    "dialogs": {
+      "LeaveDialog": {
+        "title": "Leave Workspace",
+        "description": "This action cannot be undone."
+      }
+    }
+  },
+  "analytics": {
+    "taskAnalytics": {
+      "title": "Task Analytics",
+      "totalTask": {
+        "title": "Total Tasks"
+      },
+      "completedTask": {
+        "title": "Completed Tasks"
+      },
+      "inCompleteTask": {
+        "title": "InComplete Tasks"
+      },
+      "overDueTask": {
+        "title": "Overdue Tasks"
+      }
+    },
+    "membersAnalytics": {
+      "title": "Members Analytics",
+      "memberCount": "Member Count",
+      "Admin": {
+        "title": "Admin"
+      },
+      "Member": {
+        "title": "Member"
+      },
+      "Other": {
+        "title": "Other"
+      }
+    }
   },
   "projects": {
     "title": "Projects",
@@ -55,6 +91,62 @@
     "home": "Home",
     "guide": "Guide",
     "privacy": "Privacy Policy"
+  },
+  "sidebar": {
+    "workspaceSwitcher": {
+      "title": "Workspaces"
+    },
+    "navigations": {
+      "Home": {
+        "title": "Home"
+      },
+      "MyTasks": {
+        "title": "My Tasks"
+      },
+      "Settings": {
+        "title": "Settings"
+      },
+      "Members": {
+        "title": "Members"
+      }
+    },
+    "projects": {
+      "recent": {
+        "title": "RECENT"
+      },
+      "titles": {
+        "current": {
+          "title": "Current Project"
+        },
+        "all": {
+          "title": "All Projects"
+        }
+      }
+    }
+  },
+  "navbar": {
+    "navigations": {
+      "Home": {
+        "title": "Home",
+        "description": "Monitor all of your projects and tasks here"
+      },
+      "myTasks": {
+        "title": "My Tasks",
+        "description": "View all of your tasks here."
+      },
+      "taskId": {
+        "title": "Task Overview",
+        "description": "Manage your task details, subtasks, and progress"
+      },
+      "projects": {
+        "title": "My Projects",
+        "description": "View all of your projects here."
+      },
+      "projectId": {
+        "title": "Project Overview",
+        "description": "Manage your project details, tasks, and team members"
+      }
+    }
   },
   "auth": {
     "signIn": {
@@ -183,6 +275,145 @@
       "title": "Welcome to Cheetah",
       "subtitle": "You can create customizable workspaces, with one click!",
       "createdAt": "Created at {{date}}"
+    }
+  },
+
+  "modals": {
+    "create": {
+      "workspace": {
+        "title": "Create a new Workspace",
+        "description": "Fill in the boxes below to create a new workspace.",
+        "formFields": {
+          "titles": {
+            "name": "Workspace Name",
+            "icon": "Workspace Icon"
+          },
+          "or": " or ",
+          "values": {
+            "max": " Max: "
+          },
+          "placeholders": {
+            "name": "Enter workspace name",
+            "icon": "Upload a image"
+          },
+          "options": {
+            "removeIcon": "Remove Image",
+            "uploadIcon": "Upload Image",
+            "create": "Create",
+            "cancel": "Cancel"
+          }
+        }
+      },
+      "project": {
+        "title": "Create a New Project",
+        "description": "Fill in the boxes below to create a new project.",
+        "formFields": {
+          "titles": {
+            "name": "Project Name",
+            "icon": "Project Icon"
+          },
+          "or": " or ",
+          "values": {
+            "max": " Max: "
+          },
+          "placeholders": {
+            "name": "Enter project name",
+            "icon": "Upload project icon"
+          },
+          "options": {
+            "removeIcon": "Remove Image",
+            "uploadIcon": "Upload Image",
+            "create": "Create",
+            "cancel": "Cancel"
+          }
+        }
+      }
+    },
+    "edit": {
+      "back": "Back",
+      "workspace": {
+        "title": "Create a new Workspace",
+        "description": "Fill in the boxes below to create a new workspace.",
+        "formFields": {
+          "titles": {
+            "name": "Workspace Name",
+            "icon": "Workspace Icon"
+          },
+          "or": " or ",
+          "values": {
+            "max": " Max: "
+          },
+          "placeholders": {
+            "name": "Enter workspace name",
+            "icon": "Upload a image"
+          },
+          "options": {
+            "removeIcon": "Remove Image",
+            "uploadIcon": "Upload Image",
+            "save": "Save Changes",
+            "cancel": "Cancel"
+          }
+        }
+      },
+      "project": {
+        "title": "Create a New Project",
+        "description": "Fill in the boxes below to create a new project.",
+        "formFields": {
+          "titles": {
+            "name": "Project Name",
+            "icon": "Project Icon"
+          },
+          "or": " or ",
+          "values": {
+            "max": " Max: "
+          },
+          "placeholders": {
+            "name": "Enter project name",
+            "icon": "Upload project icon"
+          },
+          "options": {
+            "removeIcon": "Remove Image",
+            "uploadIcon": "Upload Image",
+            "create": "Create",
+            "cancel": "Cancel"
+          }
+        }
+      }
+    },
+    "dialogs": {
+      "leave": {
+        "workspace": {
+          "title": "Leave Workspace",
+          "description": "This action cannot be undone."
+        }
+      },
+      "reset": {
+        "inviteCode": {
+          "title": "Resetting invite link",
+          "description": "This action cannot be undone."
+        }
+      },
+      "delete": {
+        "workspace": {
+          "title": "Delete Workspace",
+          "description": "This action cannot be undone."
+        }
+      }
+    }
+  },
+  "settingsSections": {
+    "project": {},
+    "workspace": {
+      "invite": {
+        "title": "Invite Members",
+        "description": "Share the invite link to add members to",
+        "button": "Reset invite link"
+      },
+      "delete": {
+        "title": "Danger Zone",
+        "description": "Deleting a workspace is a irreversible and will remove allassociated data!",
+        "button": "Delete Workspace"
+      }
     }
   }
 }

@@ -13,7 +13,13 @@ import { toast } from "sonner";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { DottedSeparator } from "@/components/dotted-separator";
 import {
   Form,
@@ -26,6 +32,7 @@ import {
 import { ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { useTranslation } from "react-i18next";
 
 interface CreateProjectFormProps {
   onCancel?: () => void;
@@ -40,6 +47,7 @@ const ALLOWED_FILE_TYPES = [
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
+  const { t } = useTranslation();
   const workspaceId = useWorkspaceId();
   const router = useRouter();
   const { mutate, isPending } = useCreateProject();
@@ -123,18 +131,21 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
     <motion.div initial="hidden" animate="visible" variants={containerVariants}>
       <Card className="w-full h-full border-none shadow-none">
         <motion.div variants={itemVariants}>
-          <CardHeader className="flex p-7">
-            <CardTitle className="text-xl font-bold">
-              Create a new project
+          <CardHeader className="flex p-8 pb-4 items-start">
+            <CardTitle className="text-3xl font-bold">
+              {t("modals.create.project.title")}
             </CardTitle>
+            <CardDescription>
+              {t("modals.create.project.description")}
+            </CardDescription>
           </CardHeader>
         </motion.div>
 
-        <div className="px-7">
+        <div className="px-6">
           <DottedSeparator />
         </div>
 
-        <CardContent className="p-7">
+        <CardContent className="p-8 pt-4">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <motion.div
@@ -146,13 +157,18 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Project name</FormLabel>
+                      <FormLabel>
+                        {" "}
+                        {t("modals.create.project.formFields.titles.name")}
+                      </FormLabel>
 
                       <FormControl>
                         <Input
                           {...field}
                           disabled={isPending}
-                          placeholder="Enter project name"
+                          placeholder={t(
+                            "modals.create.project.formFields.placeholders.name"
+                          )}
                         />
                       </FormControl>
                       <FormMessage />
@@ -186,9 +202,15 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
                           </Avatar>
                         )}
                         <div className="flex flex-col">
-                          <p className="text-sm">Project Icon</p>
+                          <p className="text-sm">
+                            {" "}
+                            {t("modals.create.project.formFields.titles.icon")}
+                          </p>
                           <p className="text-sm text-muted-foreground">
-                            JPG, PNG, SVG or JPEG, max 5mb
+                            JPG, PNG, SVG
+                            {t("modals.create.project.formFields.or")} JPEG,
+                            {t("modals.create.project.formFields.values.max")}
+                            5MB
                           </p>
                           <input
                             className="hidden"
@@ -212,7 +234,9 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
                                 }
                               }}
                             >
-                              Remove Image
+                              {t(
+                                "modals.create.project.formFields.options.removeIcon"
+                              )}
                             </Button>
                           ) : (
                             <Button
@@ -222,7 +246,9 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
                               className="w-fit mt-2"
                               onClick={() => inputRef.current?.click()}
                             >
-                              Upload Image
+                              {t(
+                                "modals.create.project.formFields.options.uploadIcon"
+                              )}
                             </Button>
                           )}
                         </div>
@@ -250,7 +276,7 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
                     onClick={onCancel}
                     className={cn(!onCancel && "invisible")}
                   >
-                    Cancel
+                    {t("modals.create.project.formFields.options.cancel")}
                   </Button>
                 </motion.div>
                 <motion.div
@@ -258,7 +284,7 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
                   whileTap={{ scale: 0.98 }}
                 >
                   <Button type="submit" disabled={isPending} size={"lg"}>
-                    Create Project
+                    {t("modals.create.project.formFields.options.create")}
                   </Button>
                 </motion.div>
               </motion.div>

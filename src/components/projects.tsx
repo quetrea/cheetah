@@ -12,8 +12,10 @@ import { usePathname } from "next/navigation";
 import { RiAddCircleFill, RiArrowDownSLine, RiCloseLine } from "react-icons/ri";
 import { useRecentProjects } from "@/features/projects/hooks/use-recent-projects";
 import { DottedSeparator } from "./dotted-separator";
+import { useTranslation } from "react-i18next";
 
 export const Projects = () => {
+  const { t } = useTranslation();
   const pathname = usePathname();
 
   const { open } = useCreateProjectModal();
@@ -34,7 +36,7 @@ export const Projects = () => {
           <div className="flex items-center justify-between border-2 border-b-0 rounded-b-none rounded-md p-2">
             <div className="flex items-center gap-2">
               <p className="text-xs uppercase text-neutral-500 font-bold">
-                RECENT
+                {t("sidebar.projects.recent.title")}
               </p>
             </div>
             <RiCloseLine
@@ -91,7 +93,9 @@ export const Projects = () => {
             onClick={() => setIsExpanded(!isExpanded)}
           >
             <p className="text-xs uppercase text-neutral-500 font-bold">
-              {!isExpanded ? "Current Project" : "All Projects"}
+              {!isExpanded
+                ? `${t("sidebar.projects.titles.current.title")}`
+                : `${t("sidebar.projects.titles.all.title")}`}
             </p>
             <div className="flex items-center gap-1.5">
               <RiArrowDownSLine

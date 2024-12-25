@@ -13,7 +13,13 @@ import { toast } from "sonner";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { DottedSeparator } from "@/components/dotted-separator";
 import {
   Form,
@@ -25,6 +31,7 @@ import {
 } from "@/components/ui/form";
 import { ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 interface CreateWorkspaceFormProps {
   onCancel?: () => void;
@@ -39,6 +46,7 @@ const ALLOWED_FILE_TYPES = [
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const { mutate, isPending } = useCreateWorkspace();
 
@@ -101,24 +109,33 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
     <motion.div initial="hidden" animate="visible" variants={containerVariants}>
       <Card className="w-full h-full border-none shadow-none">
         <motion.div variants={itemVariants}>
-          <CardHeader className="flex p-7">
-            <CardTitle className="text-xl font-bold">
+          <CardHeader className="flex p-8 pb-4">
+            <CardTitle className="text-3xl font-bold">
               <motion.span
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
               >
-                Create a new workspace
+                {t("modals.create.workspace.title")}
               </motion.span>
             </CardTitle>
+            <CardDescription>
+              <motion.span
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+              >
+                {t("modals.create.workspace.description")}
+              </motion.span>
+            </CardDescription>
           </CardHeader>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="px-7">
+        <motion.div variants={itemVariants} className="px-6">
           <DottedSeparator />
         </motion.div>
 
-        <CardContent className="p-7">
+        <CardContent className="p-8 pt-4">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <motion.div
@@ -137,7 +154,9 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.4 }}
                           >
-                            Workspace name
+                            {t(
+                              "modals.create.workspace.formFields.titles.name"
+                            )}
                           </motion.span>
                         </FormLabel>
                         <FormControl>
@@ -145,7 +164,9 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                             <Input
                               {...field}
                               disabled={isPending}
-                              placeholder="Enter workspace name"
+                              placeholder={t(
+                                "modals.create.workspace.formFields.placeholders.name"
+                              )}
                             />
                           </motion.div>
                         </FormControl>
@@ -202,9 +223,18 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                             className="flex flex-col"
                             variants={itemVariants}
                           >
-                            <p className="text-sm">Workspace Icon</p>
+                            <p className="text-sm">
+                              {t(
+                                "modals.create.workspace.formFields.titles.icon"
+                              )}
+                            </p>
                             <p className="text-sm text-muted-foreground">
-                              JPG, PNG, SVG or JPEG, max 5mb
+                              JPG, PNG, SVG{" "}
+                              {t("modals.create.workspace.formFields.or")} JPEG,
+                              {t(
+                                "modals.create.workspace.formFields.values.max"
+                              )}{" "}
+                              5mb
                             </p>
                             <input
                               className="hidden"
@@ -232,7 +262,9 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                                     }
                                   }}
                                 >
-                                  Remove Image
+                                  {t(
+                                    "modals.create.workspace.formFields.options.removeIcon"
+                                  )}
                                 </Button>
                               ) : (
                                 <Button
@@ -242,7 +274,9 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                                   className="w-fit mt-2"
                                   onClick={() => inputRef.current?.click()}
                                 >
-                                  Upload Image
+                                  {t(
+                                    "modals.create.workspace.formFields.options.uploadIcon"
+                                  )}
                                 </Button>
                               )}
                             </motion.div>
@@ -274,7 +308,7 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                     onClick={onCancel}
                     className={cn(!onCancel && "invisible")}
                   >
-                    Cancel
+                    {t("modals.create.workspace.formFields.options.cancel")}
                   </Button>
                 </motion.div>
 
@@ -291,7 +325,9 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                         Creating...
                       </motion.span>
                     ) : (
-                      "Create Workspace"
+                      `${t(
+                        "modals.create.workspace.formFields.options.create"
+                      )}`
                     )}
                   </Button>
                 </motion.div>

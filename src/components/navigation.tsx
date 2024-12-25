@@ -12,37 +12,39 @@ import {
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 
 import { cn } from "@/lib/utils";
-const routes = [
-  {
-    label: "Home",
-    href: "",
-    icon: GoHome,
-    activeIcon: GoHomeFill,
-  },
-  {
-    label: "My Tasks",
-    href: "/tasks",
-    icon: GoCheckCircle,
-    activeIcon: GoCheckCircleFill,
-  },
-  {
-    label: "Settings",
-    href: "/settings",
-    icon: SettingsIcon,
-    activeIcon: SettingsIcon,
-  },
-  {
-    label: "Members",
-    href: "/members",
-    icon: UsersIcon,
-    activeIcon: UsersIcon,
-  },
-];
+import { useTranslation } from "react-i18next";
 
 export const Navigation = () => {
+  const { t } = useTranslation();
   const workspaceId = useWorkspaceId();
   const pathname = usePathname();
 
+  const routes = [
+    {
+      label: `${t("sidebar.navigations.Home.title")}`,
+      href: "",
+      icon: GoHome,
+      activeIcon: GoHomeFill,
+    },
+    {
+      label: `${t("sidebar.navigations.MyTasks.title")}`,
+      href: "/tasks",
+      icon: GoCheckCircle,
+      activeIcon: GoCheckCircleFill,
+    },
+    {
+      label: `${t("sidebar.navigations.Settings.title")}`,
+      href: "/settings",
+      icon: SettingsIcon,
+      activeIcon: SettingsIcon,
+    },
+    {
+      label: `${t("sidebar.navigations.Members.title")}`,
+      href: "/members",
+      icon: UsersIcon,
+      activeIcon: UsersIcon,
+    },
+  ];
   return (
     <ul className="flex flex-col">
       {routes.map((item) => {

@@ -15,7 +15,10 @@ import { useRouter } from "next/navigation";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useCreateWorkspaceModal } from "@/features/workspaces/hooks/use-create-workspace-modal";
 
+import { useTranslation } from "react-i18next";
+
 export const WorkspaceSwitcher = () => {
+  const { t } = useTranslation();
   const workspaceId = useWorkspaceId();
   const router = useRouter();
   const { data: workspaces } = useGetWorkspaces();
@@ -28,7 +31,7 @@ export const WorkspaceSwitcher = () => {
     <div className="flex flex-col gap-y-4">
       <div className="flex items-center justify-between border-2 rounded-md p-2">
         <p className="text-xs uppercase text-neutral-500 font-bold">
-          Workspaces
+          {t("sidebar.workspaceSwitcher.title")}
         </p>
         <RiAddCircleFill
           onClick={open}

@@ -30,14 +30,102 @@
     "guide": "Rehber",
     "privacy": "Gizlilik"
   },
+  "sidebar": {
+    "workspaceSwitcher": {
+      "title": "Çalışma Alanları"
+    },
+    "navigations": {
+      "Home": {
+        "title": "Ana Sayfa"
+      },
+      "MyTasks": {
+        "title": "Görevlerim"
+      },
+      "Settings": {
+        "title": "Ayarlar"
+      },
+      "Members": {
+        "title": "Üyeler"
+      }
+    },
+    "projects": {
+      "recent": {
+        "title": "Son Zİyaret Edİlen"
+      },
+      "titles": {
+        "current": {
+          "title": "Şuan kİ Proje"
+        },
+        "all": {
+          "title": "Bütün Projeler"
+        }
+      }
+    }
+  },
+  "navbar": {
+    "navigations": {
+      "Home": {
+        "title": "Ana Sayfa",
+        "description": "Bütün projeleri, görevleri ve takım üyelerini tek bir yerden kontrol edin."
+      },
+      "myTasks": {
+        "title": "Görevlerim",
+        "description": "Bütün projelerinizin görevlerini tek bir yerden görüntüleyin."
+      },
+      "taskId": {
+        "title": "Görev Görünümü",
+        "description": "Görev detayları, alt görevleriniz ve ilerlemenizi kontrol edin."
+      },
+      "projects": {
+        "title": "Projelerim",
+        "description": "Bütün projelerinizi tek bir yerden yönetin."
+      },
+      "projectId": {
+        "title": "Proje Görünümü",
+        "description": "Projenizi, projenizdeki görevleri yönetin."
+      }
+    }
+  },
   "workspace": {
     "title": "Çalışma Alanı",
-    "projects": "Projeler",
-    "tasks": "Görevler",
-    "members": "Üyeler",
-    "settings": "Ayarlar",
     "notFound": "Çalışma alanı bulunamadı",
-    "leave": "Çalışma Alanından Ayrıl"
+    "leave": "Çalışma Alanından Ayrıl",
+    "dialogs": {
+      "LeaveDialog": {
+        "title": "Çalışma Alanından ayrıl.",
+        "description": "Bu işlem geri döndürülemez."
+      }
+    }
+  },
+  "analytics": {
+    "taskAnalytics": {
+      "title": "Görev Analizleri",
+      "totalTask": {
+        "title": "Toplam Görevler"
+      },
+      "completedTask": {
+        "title": "Tamamlanmış Görevler"
+      },
+      "inCompleteTask": {
+        "title": "Tamamlanmamış Görevler"
+      },
+      "overDueTask": {
+        "title": "Geçmiş Görevler"
+      }
+    },
+    "membersAnalytics": {
+      "title": "Toplam Üye Analizleri",
+      "memberCount": "Kullanıcı Sayısı",
+      "Admin": {
+        "title": "Yönetici"
+      },
+      "Member": {
+        "title": "Üye"
+      },
+      "Other": {
+        "title": "Diğer"
+      }
+    }
   },
   "projects": {
     "title": "Projeler",
@@ -89,7 +177,6 @@
       "backToLogin": "Girişe Dön"
     }
   },
-
   "privacy": {
     "alt": "Gizlilik Politikası",
     "title": "Gizlilik",
@@ -154,7 +241,6 @@
       }
     }
   },
-
   "home": {
     "card": {
       "title": "İş akışınızı ve görevlerinizi kolayca yönetin. Projelerinizi somutlaştırın.",
@@ -185,6 +271,150 @@
       "title": "Cheetah'ya Hoş Geldiniz",
       "subtitle": "Tek tıkla özelleştirilebilir çalışma alanları oluşturabilirsiniz!",
       "createdAt": "Oluşturulma tarihi: {{date}}"
+    }
+  },
+
+  "modals": {
+    "create": {
+      "workspace": {
+        "title": "Yeni bir çalışma alanı oluştur",
+        "description": "Yeni bir çalışma alanı oluşturmak için aşağıdaki kutucukları doldurun.",
+        "formFields": {
+          "titles": {
+            "name": "Çalışma Alanınızın Adı",
+            "icon": "Çalışma Alanınızın Görseli"
+          },
+          "or": " ya da ",
+          "values": {
+            "max": " En yüksek boyut: "
+          },
+          "placeholders": {
+            "name": "Çalışma Alanınızın adını girin",
+            "icon": "Çalışma Alanınızın görselini yükleyin"
+          },
+          "options": {
+            "removeIcon": "Yüklenen Görseli Kaldır",
+            "uploadIcon": "Görsel Yükle",
+            "create": "Oluştur",
+            "cancel": "İptal"
+          }
+        }
+      },
+      "project": {
+        "title": "Yeni bir proje oluştur",
+        "description": "Yeni bir proje oluşturmak için aşağıdaki kutucukları doldurun.",
+        "formFields": {
+          "titles": {
+            "name": "Proje İsmi",
+            "icon": "Proje Görseli"
+          },
+          "or": " ya da ",
+          "values": {
+            "max": " En yüksek boyut: "
+          },
+          "placeholders": {
+            "name": "Proje ismini girin",
+            "icon": "Proje görseli yükleyin"
+          },
+          "options": {
+            "removeIcon": "Yüklenen Görseli Kaldır",
+            "uploadIcon": "Görsel Yükle",
+            "create": "Oluştur",
+            "cancel": "İptal"
+          }
+        }
+      }
+    },
+    "edit": {
+      "back": "Geri dön",
+      "workspace": {
+        "title": "Çalışma alanını düzenle",
+        "description": "Aşağıdaki değerleri değiştirerek çalışma alanınızı güncelleyebilirsiniz.",
+        "formFields": {
+          "titles": {
+            "name": "Çalışma Alanınızın Adı",
+            "icon": "Çalışma Alanınızın Görseli"
+          },
+          "or": " ya da ",
+          "values": {
+            "max": " En yüksek boyut: "
+          },
+          "placeholders": {
+            "name": "Çalışma Alanınızın adını girin",
+            "icon": "Çalışma Alanınızın görselini yükleyin"
+          },
+          "options": {
+            "removeIcon": "Yüklenen Görseli Kaldır",
+            "uploadIcon": "Görsel Yükle",
+            "save": "Değişiklikleri kaydet",
+            "cancel": "Değişiklikleri iptal et"
+          }
+        }
+      },
+      "project": {
+        "title": "Projeyi düzenle",
+        "description": "Projeyi aşağıdaki belirli yerlerde değişiklik yaparak güncelleyebilirsiniz.",
+        "formFields": {
+          "titles": {
+            "name": "Proje İsmi",
+            "icon": "Proje Görseli"
+          },
+          "or": " ya da ",
+          "values": {
+            "max": " En yüksek boyut: "
+          },
+          "placeholders": {
+            "name": "Proje ismini girin",
+            "icon": "Proje görseli yükleyin"
+          },
+          "options": {
+            "removeIcon": "Yüklenen Görseli Kaldır",
+            "uploadIcon": "Görsel Yükle",
+            "save": "Değişiklikleri kaydet",
+            "cancel": "Değişiklikleri iptal et"
+          }
+        }
+      }
+    },
+    "dialogs": {
+      "leave": {
+        "workspace": {
+          "title": "Çalışma Alanından Ayrıl",
+          "description": "Bu işlem geri döndürülemez."
+        }
+      },
+      "reset": {
+        "inviteCode": {
+          "title": "Davet linki sıfırlama",
+          "description": "Bu işlem geri döndürülemez."
+        }
+      },
+      "delete": {
+        "workspace": {
+          "title": "Çalışma alanını kaldır.",
+          "description": "Bu işlem geri döndürülemez."
+        }
+      }
+    }
+  },
+  "settingsSections": {
+    "project": {},
+    "workspace": {
+      "invite": {
+        "title": "Üyeleri Davet Et",
+        "description": "Üyeleri eklemek için davet bağlantısını paylaşın",
+        "button": "Davet bağlantısını sıfırla"
+      },
+      "delete": {
+        "title": "Tehlike Bölgesi",
+        "description": "Bir çalışma alanını silmek geri döndürülemez bir işlemdir ve ilişkili tüm verileri silecektir!",
+        "button": "Çalışma alanını kaldır"
+      },
+      "leave": {
+        "title": "Çalışma Alanından Ayrıl",
+        "description": "Bir çalışma alanından ayrılmak verilerinizi tamamiylen silmeyebilir",
+        "button": "Çalışma alanını kaldır"
+      }
     }
   }
 }
