@@ -134,17 +134,7 @@
     "notFound": "Proje bulunamadı",
     "total": "Toplam Proje"
   },
-  "tasks": {
-    "title": "Görevler",
-    "create": "Yeni Görev",
-    "edit": "Görevi Düzenle",
-    "delete": "Görevi Sil",
-    "status": {
-      "completed": "Tamamlandı",
-      "inProgress": "Devam Ediyor",
-      "pending": "Beklemede"
-    }
-  },
+
   "auth": {
     "signIn": {
       "title": "Giriş Yap",
@@ -273,7 +263,45 @@
       "createdAt": "Oluşturulma tarihi: {{date}}"
     }
   },
-
+  "tasks": {
+    "task-switcher": {
+      "tabs": {
+        "table": "Tablo",
+        "kanban": "Kanban",
+        "calendar": "Takvim"
+      },
+      "new": "Yeni",
+      "data-filter": {
+        "status": {
+          "placeholder": "Tüm durumlar",
+          "list": {
+            "BACKLOG": "Ayarlanıyor",
+            "TODO": "Yapılacaklar",
+            "IN_PROGRESS": "Yapılıyor",
+            "IN_REVIEW": "İnceleniyor",
+            "DONE": "Tamamlandı"
+          }
+        },
+        "priority": {
+          "placeholder": "Tüm öncelikler",
+          "list": {
+            "high": "Yüksek",
+            "medium": "Orta",
+            "low": "Az"
+          }
+        },
+        "assignee": {
+          "placeholder": "Tüm atananlar"
+        },
+        "projects": {
+          "placeholder": "Tüm projeler"
+        },
+        "duedate": {
+          "placeholder": "Bitiş Zamanı"
+        }
+      }
+    }
+  },
   "modals": {
     "create": {
       "workspace": {
@@ -397,8 +425,81 @@
       }
     }
   },
+
+  "sections": {
+    "tasks": {
+      "title": "Görevler",
+      "view-all-tasks": "Tüm görevleri görüntüle",
+      "add-button-hint": "Yeni görev oluştur",
+      "created-at": "Oluşturulduğu zaman:",
+      "dueDate": "Bitirlecek tarih:",
+      "reset-more": "Sıralamayı sıfırla",
+      "no-task-found": "Görünüşe göre sıralanacak görevin yok.",
+      "options": {
+        "open-task": "Projeyi aç",
+        "edit-task": "Projeyi düzenle",
+        "delete-task": "Projeyi Sil",
+        "show-more": "Daha fazla göster",
+        "show-less": "Daha az göster"
+      },
+      "tables": {}
+    },
+    "projects": {
+      "title": "Projeler",
+      "add-button-hint": "Yeni proje oluştur",
+      "no-project-found": "Yeteri kadar proje bulunamadı."
+    },
+    "members": {
+      "title": "Üyeler",
+      "view-all-members": "Bütün üyeleri görüntüle"
+    }
+  },
+  "userButton": {
+    "user": "Kullanıcı",
+    "tabs": {
+      "account": "Hesap Ayarları",
+      "upgrade": "Hesabı yükselt",
+      "help-center": "Yardım Merkezi",
+      "log-out": "Çıkış yap"
+    }
+  },
   "settingsSections": {
-    "project": {},
+    "project": {
+      "edit": {
+        "back": "Geri dön",
+        "formFields": {
+          "titles": {
+            "name": "Proje Adı",
+            "icon": "Proje Görseli"
+          },
+          "placeholders": {
+            "name": "Proje ismini giriniz",
+            "icon": "Proje görselinizi yükleyin"
+          },
+          "or": " ya da ",
+          "values": {
+            "max": " En yüksek boyut: "
+          },
+          "options": {
+            "removeIcon": "Yüklenen Görseli Kaldır",
+            "uploadIcon": "Görsel Yükle",
+            "cancel": "Değişiklikleri iptal et",
+            "save": "Değişiklikleri kaydet"
+          }
+        }
+      },
+      "delete": {
+        "formFields": {
+          "options": {
+            "delete": {
+              "title": "Projeyi Sil",
+              "alt-description": "Bir projeyi silmek geri döndürülemez bir işlemdir ve ilişkili tüm verileri silecektir!",
+              "description": "Bu işlem geri döndürülemez!"
+            }
+          }
+        }
+      }
+    },
     "workspace": {
       "invite": {
         "title": "Üyeleri Davet Et",
@@ -414,6 +515,78 @@
         "title": "Çalışma Alanından Ayrıl",
         "description": "Bir çalışma alanından ayrılmak verilerinizi tamamiylen silmeyebilir",
         "button": "Çalışma alanından ayrıl"
+      }
+    },
+    "members": {
+      "back": "Geri dön",
+      "title": "Üye Listesi"
+    },
+    "account": {
+      "back": "Geri dön",
+      "title": "",
+      "dialogs": {
+        "update": {
+          "title": "Hesap adını değiştir",
+          "description": "Bu işlem durdurulamayabilir fakat sonradan ismini değiştirebilirsin."
+        }
+      },
+      "sections": {
+        "update": {
+          "title": "Hesap adını değiştir",
+          "description": "Bu işlem durdurulamayabilir fakat sonradan ismini değiştirebilirsin.",
+          "formFields": {
+            "titles": {
+              "name": "Kullanıcı adı"
+            },
+            "placeholders": {
+              "name": "Kullanıcı adınızı girin"
+            },
+            "options": {
+              "cancel": "Değişiklikleri iptal et",
+              "save": "Değişiklikleri kaydet"
+            }
+          }
+        },
+        "change-email": {
+          "title": "Epostanı değiştir",
+          "description": "",
+          "formFields": {
+            "titles": {
+              "email": "Eposta",
+              "password": "Şifre"
+            },
+            "placeholders": {
+              "email": "E-posta adresinizi girin",
+              "password": "Şifrenizi girin"
+            },
+            "doesnt-work": "Şifresiz giriş yapıyorsanız bu işe yaramayacaktır.",
+            "recovery-span": "Kurtarma Şifresi E-postayla Gönderme",
+            "options": {
+              "cancel": "Değişiklikleri iptal et",
+              "save": "Değişiklikleri kaydet"
+            }
+          }
+        },
+        "change-password": {
+          "title": "Şifreni değiştir",
+          "description": "",
+          "formFields": {
+            "titles": {
+              "old-password": "Eski şifreniz",
+              "password": "Yeni Şifreniz"
+            },
+            "placeholders": {
+              "old-password": "Eski şifrenizi girin",
+              "password": "Yeni şifrenizi girin"
+            },
+            "doesnt-work": "Şifresiz giriş yapıyorsanız bu işe yaramayacaktır.",
+            "recovery-span": "Kurtarma Şifresi E-postayla Gönderme",
+            "options": {
+              "cancel": "Değişiklikleri iptal et",
+              "save": "Değişiklikleri kaydet"
+            }
+          }
+        }
       }
     }
   }

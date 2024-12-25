@@ -365,6 +365,7 @@ interface TaskListProps {
   total: number;
 }
 export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const { open: createTask } = useCreateTaskModal();
   const { open: editTask } = useEditTaskModal();
@@ -402,17 +403,17 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
     >
       <span className="bg-white hover:bg-muted duration-300 transition-all rounded-lg p-4 dark:bg-neutral-900">
         <div className="flex items-center justify-between">
-          <Hint label="View all tasks" side="right">
+          <Hint label={t("sections.tasks.view-all-tasks")} side="right">
             <Link
               className="text-lg transition-all duration-300 px-2 py-1 rounded-lg hover:bg-white dark:hover:bg-neutral-950 cursor-pointer font-semibold"
               href={`/workspaces/${workspaceId}/tasks`}
             >
-              Tasks ({total})
+              {t("sections.tasks.title")} ({total})
             </Link>
           </Hint>
           <div className="flex gap-x-4 ">
             {slice > 3 && (
-              <Hint label="Reset show more" side="bottom">
+              <Hint label={t("sections.tasks.reset-more")} side="bottom">
                 <Button
                   className="dark:bg-neutral-950 border dark:border-neutral-950"
                   variant={"muted"}
@@ -424,7 +425,7 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
               </Hint>
             )}
 
-            <Hint label="Create a new task" side="bottom">
+            <Hint label={t("sections.tasks.add-button-hint")} side="bottom">
               <Button
                 className="dark:bg-neutral-950 border  dark:border-neutral-950"
                 variant={"muted"}
@@ -437,7 +438,7 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
           </div>
         </div>
         <DottedSeparator className="my-4" />
-        <motion.ul className="space-y-4">
+        <motion.ul className="space-y-2.5">
           {data.slice(0, slice).map((task) => (
             <motion.li
               key={task.$id}
@@ -459,7 +460,9 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
                           <CalendarIcon className="size-3 mr-1" />
 
                           <span className="truncate flex text-xs items-center">
-                            <p className="mr-1">Created at</p>
+                            <p className="mr-1">
+                              {t("sections.tasks.created-at")}
+                            </p>
                             {format(
                               new Date(task.$createdAt),
                               "MM/dd/yyyy hh:mm a"
@@ -471,7 +474,10 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
                           <CalendarIcon className="size-3 mr-1" />
 
                           <span className="truncate flex text-xs items-center">
-                            <p className="mr-1">Due date</p>
+                            <p className="mr-1">
+                              {" "}
+                              {t("sections.tasks.dueDate")}
+                            </p>
                             {format(
                               new Date(task.dueDate),
                               "MM/dd/yyyy hh:mm a"
@@ -505,7 +511,7 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
                               href={`/workspaces/${workspaceId}/tasks/${task.$id}`}
                             >
                               <ExternalLinkIcon className="size-4" />
-                              Open Task{" "}
+                              {t("sections.tasks.options.open-task")}
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem
@@ -513,7 +519,7 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
                             onClick={() => editTask(task.$id)}
                           >
                             <Pencil className="size-4" />
-                            Edit Task
+                            {t("sections.tasks.options.edit-task")}
                           </DropdownMenuItem>
                           {currentMember.role === MemberRole.ADMIN && (
                             <>
@@ -522,7 +528,7 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
                                 onClick={() => onDelete(task.$id)}
                               >
                                 <Trash className="size-4" />
-                                Delete Task
+                                {t("sections.tasks.options.delete-task")}
                               </DropdownMenuItem>
                             </>
                           )}
@@ -535,7 +541,7 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
             </motion.li>
           ))}
           <li className="text-sm text-muted-foreground text-center hidden first-of-type:block">
-            No tasks found
+            {t("sections.tasks.no-task-found")}
           </li>
         </motion.ul>
 
@@ -553,7 +559,9 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
             }}
           >
             <div className="flex items-center gap-x-2">
-              {slice >= data.length ? "Show less" : "Show more"}
+              {slice >= data.length
+                ? `${t("sections.tasks.options.show-less")}`
+                : `${t("sections.tasks.options.show-more")}`}
               <motion.div
                 initial={false}
                 animate={{ rotate: slice >= data.length ? 180 : 0 }}
@@ -580,7 +588,7 @@ export const ProjectList = ({
   currentMember,
 }: ProjectListProps) => {
   const { open: createProject } = useCreateProjectModal();
-
+  const { t } = useTranslation();
   const workspaceId = useWorkspaceId();
 
   if (!data) return <ProjectListSkeleton />;
@@ -596,10 +604,10 @@ export const ProjectList = ({
         <div className="flex items-center justify-between">
           <Hint label="Your projects total" side="right">
             <p className="text-lg font-semibold cursor-pointer">
-              Projects ({total})
+              {t("sections.projects.title")} ({total})
             </p>
           </Hint>
-          <Hint label="Create a new project" side="left">
+          <Hint label={t("sections.projects.add-button-hint")} side="left">
             <Button
               className="dark:bg-neutral-900 "
               variant={"secondary"}
@@ -653,7 +661,7 @@ export const ProjectList = ({
             </motion.li>
           ))}
           <li className="text-sm text-muted-foreground text-center hidden first-of-type:block">
-            No projects found
+            {t("sections.projects.no-project-found")}
           </li>
         </motion.ul>
       </div>
@@ -672,6 +680,7 @@ export const MembersList = ({
   total,
   currentMember,
 }: MembersListProps) => {
+  const { t } = useTranslation();
   const workspaceId = useWorkspaceId();
   const { mutate: kickMember, isPending: kickingMember } = useDeleteMember();
   const onDelete = (id: string) => {
@@ -701,10 +710,10 @@ export const MembersList = ({
               href={`/workspaces/${workspaceId}/members`}
               className="text-lg transition-all dark:hover:bg-neutral-900 duration-300 px-2 py-1 rounded-lg hover:bg-white cursor-pointer font-semibold"
             >
-              Members ({total})
+              {t("sections.members.title")} ({total})
             </Link>
           </Hint>
-          <Hint label="View member list" side="left">
+          <Hint label={t("sections.members.view-all-members")} side="left">
             <Button
               className="dark:bg-neutral-900"
               asChild

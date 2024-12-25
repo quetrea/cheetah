@@ -12,6 +12,7 @@ import { TaskStatus } from "../types";
 import { Button } from "@/components/ui/button";
 import { useCreateTaskModal } from "../hooks/use-create-task-modal";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 interface KanbanColumnHeaderProps {
   board: TaskStatus;
@@ -38,6 +39,7 @@ export const KanbanColumnHeader = ({
   board,
   taskCount,
 }: KanbanColumnHeaderProps) => {
+  const { t } = useTranslation();
   const { openWithStatus } = useCreateTaskModal();
 
   const handleOpen = (status: TaskStatus) => {
@@ -49,7 +51,9 @@ export const KanbanColumnHeader = ({
     <div className="px-2 py-1.5 flex items-center dark:bg-neutral-900 rounded-md justify-between">
       <div className="flex items-center gap-x-2">
         {icon}
-        <h2 className="text-sm font-medium">{snakeCaseToTitleCase(board)}</h2>
+        <h2 className="text-sm font-medium">
+          {t(`tasks.task-switcher.data-filter.status.list.${board}`)}
+        </h2>
         <div className="size-6 flex items-center justify-center rounded-md bg-neutral-200 dark:bg-neutral-900 border dark:text-neutral-500 text-xs text-neutral-700 font-medium">
           {taskCount}
         </div>

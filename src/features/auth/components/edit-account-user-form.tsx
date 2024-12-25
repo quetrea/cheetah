@@ -35,6 +35,7 @@ import { User } from "../types";
 import { useUpdateAccountEmail } from "../api/use-update-email";
 import { useCreatePasswordRecovery } from "../api/use-create-recovery-password";
 import { useUpdatePassword } from "../api/use-update-password";
+import { useTranslation } from "react-i18next";
 
 interface EditAccountSettingsProps {
   onCancel?: () => void;
@@ -49,6 +50,7 @@ export const EditAccountSettings = ({
   onCancel,
   initialValues,
 }: EditAccountSettingsProps) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const { mutate: nameUpdate, isPending } = useUpdateAccountName();
   const { mutate: emailUpdate, isPending: isUpdatingEmail } =
@@ -59,8 +61,8 @@ export const EditAccountSettings = ({
     useUpdatePassword();
 
   const [UpdateDialog, confirmUpdate] = useConfirm(
-    "Update Account Name",
-    "This action cannot be undone but you can rechange after.",
+    `${t("account.dialogs.update.title")}`,
+    `${t("account.dialogs.update.description")}`,
     "primary"
   );
 
@@ -189,7 +191,7 @@ export const EditAccountSettings = ({
                 onClick={onCancel ? onCancel : () => router.push(`/`)}
               >
                 <ArrowLeftIcon className="size-4 mr-2" />
-                Back
+                {t("settingsSections.account.back")}
               </Button>
               <CardTitle className="text-xl font-bold">
                 {initialValues.name}
@@ -208,13 +210,20 @@ export const EditAccountSettings = ({
                         name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>User name</FormLabel>
+                            <FormLabel>
+                              {" "}
+                              {t(
+                                "settingsSections.account.sections.update.formFields.titles.name"
+                              )}
+                            </FormLabel>
 
                             <FormControl>
                               <Input
                                 {...field}
                                 disabled={isPending}
-                                placeholder="Enter user name"
+                                placeholder={t(
+                                  "settingsSections.account.sections.update.formFields.placeholders.name"
+                                )}
                               />
                             </FormControl>
                             <FormMessage />
@@ -232,14 +241,18 @@ export const EditAccountSettings = ({
                         onClick={onCancel}
                         className={cn(!onCancel && "invisible")}
                       >
-                        Cancel
+                        {t(
+                          "settingsSections.account.sections.update.formFields.options.cancel"
+                        )}
                       </Button>
                       <Button
                         type="submit"
                         className="px-3.5"
                         disabled={isPending}
                       >
-                        Save Name
+                        {t(
+                          "settingsSections.account.sections.update.formFields.options.save"
+                        )}
                       </Button>
                     </div>
                   </form>
@@ -253,7 +266,7 @@ export const EditAccountSettings = ({
           <Card className="w-full h-full shadow-none border select-none border-sky-500">
             <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
               <CardTitle className="text-xl font-bold">
-                Change your email
+                {t("settingsSections.account.sections.change-email.title")}
               </CardTitle>
             </CardHeader>
             <div className="px-7">
@@ -271,13 +284,20 @@ export const EditAccountSettings = ({
                         name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel>
+                              {" "}
+                              {t(
+                                "settingsSections.account.sections.change-email.formFields.titles.email"
+                              )}
+                            </FormLabel>
 
                             <FormControl>
                               <Input
                                 {...field}
                                 disabled={isUpdatingEmail}
-                                placeholder="Enter email"
+                                placeholder={t(
+                                  "settingsSections.account.sections.change-email.formFields.placeholders.email"
+                                )}
                               />
                             </FormControl>
                             <FormMessage />
@@ -289,7 +309,12 @@ export const EditAccountSettings = ({
                         name="password"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Current Password</FormLabel>
+                            <FormLabel>
+                              {" "}
+                              {t(
+                                "settingsSections.account.sections.change-email.formFields.titles.password"
+                              )}
+                            </FormLabel>
 
                             <FormControl>
                               <Input
@@ -298,7 +323,9 @@ export const EditAccountSettings = ({
                                 aria-autocomplete="none"
                                 type={"password"}
                                 disabled={isUpdatingEmail}
-                                placeholder="Enter your current password"
+                                placeholder={t(
+                                  "settingsSections.account.sections.change-email.formFields.placeholders.password"
+                                )}
                               />
                             </FormControl>
                             <FormMessage />
@@ -310,14 +337,17 @@ export const EditAccountSettings = ({
                     <div className="flex-col  flex items-start gap-y-2  w-full rounded-md">
                       <p className="flex text-xs items-center gap-x-2">
                         <AlertCircle className="size-4" />
-                        If you are logging in without a password, this will not
-                        work.{" "}
+                        {t(
+                          "settingsSections.account.sections.change-email.formFields.doesnt-work"
+                        )}
                       </p>
                       <span
                         onClick={() => onSubmitRecovery()}
                         className="text-xs flex justify-end hover:underline text-sky-700 cursor-pointer"
                       >
-                        Recovery Password with Email Sent
+                        {t(
+                          "settingsSections.account.sections.change-email.formFields.recovery-span"
+                        )}
                       </span>
                     </div>
                   </div>
@@ -331,15 +361,19 @@ export const EditAccountSettings = ({
                       onClick={onCancel}
                       className={cn(!onCancel && "invisible")}
                     >
-                      Cancel
+                      {t(
+                        "settingsSections.account.sections.change-email.formFields.options.cancel"
+                      )}
                     </Button>
                     <Button
-                      variant={"destructive"}
+                      variant={"primary"}
                       type="submit"
                       disabled={isPending}
                       className="px-3.5 py-2"
                     >
-                      Save Changes
+                      {t(
+                        "settingsSections.account.sections.change-email.formFields.options.save"
+                      )}
                     </Button>
                   </div>
                 </form>
@@ -352,7 +386,7 @@ export const EditAccountSettings = ({
           <Card className="w-full h-full shadow-none border select-none border-sky-500">
             <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
               <CardTitle className="text-xl font-bold">
-                Change your password
+                {t("settingsSections.account.sections.change-password.title")}
               </CardTitle>
             </CardHeader>
             <div className="px-7">
@@ -372,14 +406,21 @@ export const EditAccountSettings = ({
                         name="oldPassword"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Old password</FormLabel>
+                            <FormLabel>
+                              {" "}
+                              {t(
+                                "settingsSections.account.sections.change-password.formFields.titles.old-password"
+                              )}
+                            </FormLabel>
 
                             <FormControl>
                               <Input
                                 {...field}
                                 type={"password"}
                                 disabled={isLoadingChangePassword}
-                                placeholder="Enter current password"
+                                placeholder={t(
+                                  "settingsSections.account.sections.change-password.formFields.placeholders.old-password"
+                                )}
                               />
                             </FormControl>
                             <FormMessage />
@@ -391,7 +432,11 @@ export const EditAccountSettings = ({
                         name="password"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>New Password</FormLabel>
+                            <FormLabel>
+                              {t(
+                                "settingsSections.account.sections.change-password.formFields.titles.password"
+                              )}
+                            </FormLabel>
 
                             <FormControl>
                               <Input
@@ -399,7 +444,9 @@ export const EditAccountSettings = ({
                                 aria-autocomplete="none"
                                 type={"password"}
                                 disabled={isLoadingChangePassword}
-                                placeholder="Enter your new password"
+                                placeholder={t(
+                                  "settingsSections.account.sections.change-password.formFields.placeholders.password"
+                                )}
                               />
                             </FormControl>
                             <FormMessage />
@@ -411,14 +458,17 @@ export const EditAccountSettings = ({
                     <div className="flex-col  flex items-start gap-y-2  w-full rounded-md">
                       <p className="flex text-xs items-center gap-x-2">
                         <AlertCircle className="size-4" />
-                        If you are logging in without a password, this will not
-                        work.{" "}
+                        {t(
+                          "settingsSections.account.sections.change-password.formFields.doesnt-work"
+                        )}
                       </p>
                       <span
                         onClick={() => onSubmitRecovery()}
                         className="text-xs flex justify-end hover:underline text-sky-700 cursor-pointer"
                       >
-                        Recovery Password with Email Sent
+                        {t(
+                          "settingsSections.account.sections.change-password.formFields.doesnt-work"
+                        )}
                       </span>
                     </div>
                   </div>
@@ -432,15 +482,19 @@ export const EditAccountSettings = ({
                       onClick={onCancel}
                       className={cn(!onCancel && "invisible")}
                     >
-                      Cancel
+                      {t(
+                        "settingsSections.account.sections.change-password.formFields.options.cancel"
+                      )}
                     </Button>
                     <Button
-                      variant={"destructive"}
+                      variant={"primary"}
                       type="submit"
                       disabled={isPending}
                       className="px-3.5 py-2"
                     >
-                      Save Changes
+                      {t(
+                        "settingsSections.account.sections.change-password.formFields.options.save"
+                      )}
                     </Button>
                   </div>
                 </form>

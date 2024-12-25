@@ -37,6 +37,7 @@ import { updateProjectSchema } from "../schemas";
 import { useUpdateProject } from "../api/use-update-project";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useDeleteProject } from "../api/use-delete-project";
+import { useTranslation } from "react-i18next";
 
 interface EditProjectFormProps {
   onCancel?: () => void;
@@ -48,10 +49,12 @@ export const EditProjectForm = ({
   initialValues,
 }: EditProjectFormProps) => {
   const router = useRouter();
-
+  const { t } = useTranslation();
   const [DeleteDialog, confirmDelete] = useConfirm(
-    "Delete Project",
-    "This action cannot be undone.",
+    `${t("settingsSections.project.delete.formFields.options.delete.title")}`,
+    `${t(
+      "settingsSections.project.delete.formFields.options.delete.description"
+    )}`,
     "destructive"
   );
 
@@ -93,38 +96,10 @@ export const EditProjectForm = ({
     mutate({ form: finalValues, param: { projectId: initialValues.$id } });
   };
 
-  const ALLOWED_FILE_TYPES = [
-    "image/png",
-    "image/jpeg",
-    "image/jpg",
-    "image/svg+xml",
-  ];
-  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (file) {
-      // Dosya tipi kontrolü
-      if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-        toast.error(
-          "Invalid file type. Only PNG, JPEG, JPG and SVG files are allowed."
-        );
-        if (inputRef.current) {
-          inputRef.current.value = "";
-        }
-        return;
-      }
-
-      // Dosya boyutu kontrolü
-      if (file.size > MAX_FILE_SIZE) {
-        toast.error("File size cannot be larger than 5MB.");
-        if (inputRef.current) {
-          inputRef.current.value = "";
-        }
-        return;
-      }
-
       form.setValue("image", file);
     }
   };
@@ -178,7 +153,7 @@ export const EditProjectForm = ({
                   }
                 >
                   <ArrowLeftIcon className="size-4 mr-2" />
-                  Back
+                  {t("settingsSections.project.edit.back")}
                 </Button>
               </motion.div>
 
@@ -216,7 +191,9 @@ export const EditProjectForm = ({
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.3 }}
                               >
-                                Project name
+                                {t(
+                                  "settingsSections.project.edit.formFields.titles.name"
+                                )}
                               </motion.span>
                             </FormLabel>
                             <FormControl>
@@ -224,7 +201,9 @@ export const EditProjectForm = ({
                                 <Input
                                   {...field}
                                   disabled={isPending}
-                                  placeholder="Enter project name"
+                                  placeholder={t(
+                                    "settingsSections.project.edit.formFields.placeholders.name"
+                                  )}
                                 />
                               </motion.div>
                             </FormControl>
@@ -281,9 +260,21 @@ export const EditProjectForm = ({
                                 className="flex flex-col"
                                 variants={itemVariants}
                               >
-                                <p className="text-sm">Project Icon</p>
+                                <p className="text-sm">
+                                  {t(
+                                    "settingsSections.project.edit.formFields.titles.icon"
+                                  )}
+                                </p>
                                 <p className="text-sm text-muted-foreground">
-                                  JPG, PNG, SVG or JPEG, max 5mb
+                                  JPG, PNG, SVG{" "}
+                                  {t(
+                                    "settingsSections.project.edit.formFields.or"
+                                  )}{" "}
+                                  JPEG,{" "}
+                                  {t(
+                                    "settingsSections.project.edit.formFields.values.max"
+                                  )}{" "}
+                                  5mb
                                 </p>
                                 <input
                                   className="hidden"
@@ -311,7 +302,9 @@ export const EditProjectForm = ({
                                         }
                                       }}
                                     >
-                                      Remove Image
+                                      {t(
+                                        "settingsSections.project.edit.formFields.options.removeIcon"
+                                      )}
                                     </Button>
                                   ) : (
                                     <Button
@@ -321,7 +314,9 @@ export const EditProjectForm = ({
                                       className="w-fit mt-2"
                                       onClick={() => inputRef.current?.click()}
                                     >
-                                      Upload Image
+                                      {t(
+                                        "settingsSections.project.edit.formFields.options.uploadIcon"
+                                      )}
                                     </Button>
                                   )}
                                 </motion.div>
@@ -353,7 +348,9 @@ export const EditProjectForm = ({
                         onClick={onCancel}
                         className={cn(!onCancel && "invisible")}
                       >
-                        Cancel
+                        {t(
+                          "settingsSections.project.edit.formFields.options.cancel"
+                        )}
                       </Button>
                     </motion.div>
 
@@ -370,7 +367,9 @@ export const EditProjectForm = ({
                             Saving...
                           </motion.span>
                         ) : (
-                          "Save Changes"
+                          ` ${t(
+                            "settingsSections.project.edit.formFields.options.save"
+                          )}`
                         )}
                       </Button>
                     </motion.div>
@@ -391,7 +390,9 @@ export const EditProjectForm = ({
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.2 }}
                 >
-                  Danger Zone
+                  {t(
+                    "settingsSections.project.delete.formFields.options.delete.title"
+                  )}
                 </motion.h3>
                 <motion.p
                   className="text-sm text-muted-foreground"
@@ -399,8 +400,9 @@ export const EditProjectForm = ({
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
                 >
-                  Deleting a project is a irreversible and will remove all
-                  associated data!
+                  {t(
+                    "settingsSections.project.delete.formFields.options.delete.alt-description"
+                  )}
                 </motion.p>
                 <motion.div variants={itemVariants}>
                   <DottedSeparator className="py-7" />
@@ -417,7 +419,13 @@ export const EditProjectForm = ({
                     disabled={isPending || deletingProject}
                     onClick={handleDelete}
                   >
-                    {deletingProject ? "Deleting..." : "Delete Project"}
+                    {deletingProject
+                      ? `${t(
+                          "settingsSections.project.delete.formFields.options.delete.loading-text"
+                        )}`
+                      : `${t(
+                          "settingsSections.project.delete.formFields.options.delete.title"
+                        )}`}
                   </Button>
                 </motion.div>
               </motion.div>

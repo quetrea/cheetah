@@ -23,6 +23,7 @@ import { MemberAvatar } from "@/features/members/components/member-avatar";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { DatePicker } from "@/components/date-picker";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslation } from "react-i18next";
 
 interface DataFilterProps {
   hideProjectFilter?: boolean;
@@ -60,6 +61,7 @@ const FilterSkeleton = () => {
 };
 
 export const DataFilter = ({ hideProjectFilter }: DataFilterProps) => {
+  const { t } = useTranslation();
   const workspaceId = useWorkspaceId();
 
   const { data: projects, isLoading: isProjectsLoading } = useGetProjects({
@@ -111,40 +113,46 @@ export const DataFilter = ({ hideProjectFilter }: DataFilterProps) => {
         <SelectTrigger className="w-full lg:w-auto h-8">
           <div className="flex items-center pr-2">
             <ListCheckIcon className="size-4 mr-2" />
-            <SelectValue placeholder={"All statuses"} />
+            <SelectValue
+              placeholder={t(
+                "tasks.task-switcher.data-filter.status.placeholder"
+              )}
+            />
           </div>
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All statuses</SelectItem>
+          <SelectItem value="all">
+            {t("tasks.task-switcher.data-filter.status.placeholder")}
+          </SelectItem>
           <SelectSeparator />
           <SelectItem value={TaskStatus.BACKLOG}>
             <div className="flex w-full items-center gap-x-4">
               <Circle className="size-4 rounded-full bg-pink-400 p-2" />
-              Backlog
+              {t("tasks.task-switcher.data-filter.status.list.BACKLOG")}
             </div>
           </SelectItem>
           <SelectItem value={TaskStatus.TODO}>
             <div className="flex w-full items-center gap-x-4">
               <Circle className="size-4 rounded-full bg-red-400 p-2" />
-              Todo
+              {t("tasks.task-switcher.data-filter.status.list.TODO")}
             </div>
           </SelectItem>
           <SelectItem value={TaskStatus.IN_PROGRESS}>
             <div className="flex w-full items-center gap-x-4">
               <Circle className="size-4 rounded-full bg-yellow-400 p-2" />
-              In Progress
+              {t("tasks.task-switcher.data-filter.status.list.IN_PROGRESS")}
             </div>
           </SelectItem>
           <SelectItem value={TaskStatus.IN_REVIEW}>
             <div className="flex w-full items-center gap-x-4">
               <Circle className="size-4 rounded-full bg-blue-400 p-2" />
-              In Review
+              {t("tasks.task-switcher.data-filter.status.list.IN_REVIEW")}
             </div>
           </SelectItem>
           <SelectItem value={TaskStatus.DONE}>
             <div className="flex w-full items-center gap-x-4">
               <Circle className="size-4 rounded-full bg-emerald-400 p-2" />
-              Done
+              {t("tasks.task-switcher.data-filter.status.list.DONE")}
             </div>
           </SelectItem>
         </SelectContent>
@@ -156,28 +164,34 @@ export const DataFilter = ({ hideProjectFilter }: DataFilterProps) => {
         <SelectTrigger className="w-full lg:w-auto h-8">
           <div className="flex items-center pr-2">
             <Clock className="size-4 mr-2" />
-            <SelectValue placeholder={"All priorities"} />
+            <SelectValue
+              placeholder={t(
+                "tasks.task-switcher.data-filter.priority.placeholder"
+              )}
+            />
           </div>
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All priorities</SelectItem>
+          <SelectItem value="all">
+            {t("tasks.task-switcher.data-filter.priority.placeholder")}
+          </SelectItem>
           <SelectSeparator />
           <SelectItem value={Priority.HIGH}>
             <div className="flex w-full items-center gap-x-4">
               <Circle className="size-4 rounded-full bg-red-600 p-2" />
-              High
+              {t("tasks.task-switcher.data-filter.priority.list.high")}
             </div>
           </SelectItem>
           <SelectItem value={Priority.MEDIUM}>
             <div className="flex w-full items-center gap-x-4">
               <Circle className="size-4 rounded-full bg-green-600 p-2" />
-              Medium
+              {t("tasks.task-switcher.data-filter.priority.list.medium")}
             </div>
           </SelectItem>
           <SelectItem value={Priority.LOW}>
             <div className="flex w-full items-center gap-x-4">
               <Circle className="size-4 rounded-full bg-yellow-700 p-2" />
-              Low
+              {t("tasks.task-switcher.data-filter.priority.list.low")}
             </div>
           </SelectItem>
         </SelectContent>
@@ -189,11 +203,17 @@ export const DataFilter = ({ hideProjectFilter }: DataFilterProps) => {
         <SelectTrigger className="w-full lg:w-auto h-8">
           <div className="flex items-center pr-2">
             <UserIcon className="size-4 mr-2" />
-            <SelectValue placeholder={"All assignees"} />
+            <SelectValue
+              placeholder={t(
+                "tasks.task-switcher.data-filter.assignee.placeholder"
+              )}
+            />
           </div>
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All assignees</SelectItem>
+          <SelectItem value="all">
+            {t("tasks.task-switcher.data-filter.assignee.placeholder")}
+          </SelectItem>
           <SelectSeparator />
           {memberOptions?.map((member) => (
             <SelectItem key={member.value} value={member.value}>
@@ -213,11 +233,17 @@ export const DataFilter = ({ hideProjectFilter }: DataFilterProps) => {
           <SelectTrigger className="w-full lg:w-auto h-8">
             <div className="flex items-center pr-2">
               <FolderIcon className="size-4 mr-2" />
-              <SelectValue placeholder={"All projects"} />
+              <SelectValue
+                placeholder={t(
+                  "tasks.task-switcher.data-filter.projects.placeholder"
+                )}
+              />
             </div>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All projects</SelectItem>
+            <SelectItem value="all">
+              {t("tasks.task-switcher.data-filter.projects.placeholder")}
+            </SelectItem>
             <SelectSeparator />
             {projectOptions?.map((project) => (
               <SelectItem key={project.value} value={project.value}>
@@ -232,7 +258,7 @@ export const DataFilter = ({ hideProjectFilter }: DataFilterProps) => {
       )}
 
       <DatePicker
-        placeholder="Due date"
+        placeholder={t("tasks.task-switcher.data-filter.duedate.placeholder")}
         className="h-8 w-full lg:w-auto"
         value={dueDate ? new Date(dueDate) : undefined}
         onChange={(date) => {
@@ -243,28 +269,4 @@ export const DataFilter = ({ hideProjectFilter }: DataFilterProps) => {
   );
 };
 
-// Optional: Create skeletons for select content
-const SelectContentSkeleton = () => {
-  return (
-    <div className="p-2 space-y-2">
-      <Skeleton className="h-8 w-full" />
-      <Skeleton className="h-px w-full" /> {/* Separator */}
-      {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="flex items-center gap-x-2">
-          <Skeleton className="h-6 w-6 rounded-full" /> {/* Avatar/Icon */}
-          <Skeleton className="h-4 flex-1" /> {/* Text */}
-        </div>
-      ))}
-    </div>
-  );
-};
 
-// Optional: Create skeleton for individual filter items
-const FilterItemSkeleton = ({ withIcon = true }: { withIcon?: boolean }) => {
-  return (
-    <div className="flex items-center gap-x-2">
-      {withIcon && <Skeleton className="size-4" />}
-      <Skeleton className="h-4 w-24" />
-    </div>
-  );
-};

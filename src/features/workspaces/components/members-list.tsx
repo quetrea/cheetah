@@ -24,9 +24,10 @@ import {
 import { MemberRole } from "@/features/members/types";
 import { useCurrent } from "@/features/auth/api/use-current";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 export const MemberList = () => {
-  const user = useCurrent();
+  const { t } = useTranslation();
   const workspaceId = useWorkspaceId();
   const [ConfirmDialog, confirm] = useConfirm(
     "Remove member",
@@ -122,12 +123,12 @@ export const MemberList = () => {
                 >
                   <Link href={`/workspaces/${workspaceId}`}>
                     <ArrowLeftIcon className="size-4 mr-2" />
-                    Back
+                    {t("settingsSections.members.back")}
                   </Link>
                 </Button>
               </motion.div>
               <CardTitle className="text-xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                Members list
+                {t("settingsSections.members.title")}
               </CardTitle>
             </CardHeader>
           </motion.div>
@@ -140,6 +141,7 @@ export const MemberList = () => {
             <AnimatePresence mode="wait">
               {data?.documents.map((member, index) => (
                 <motion.div
+                  className=""
                   key={member.$id}
                   variants={itemVariants}
                   initial="hidden"

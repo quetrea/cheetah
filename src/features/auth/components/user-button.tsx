@@ -16,10 +16,11 @@ import { useLogout } from "../api/use-logout";
 import { useCurrent } from "../api/use-current";
 import Link from "next/link";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
-import { useGetPlan } from "@/features/plans/api/use-get-user-plan";
 import { PlanType } from "@/features/plans/types";
+import { useTranslation } from "react-i18next";
 
 export const UserButton = () => {
+  const { t } = useTranslation();
   const { data: data, isLoading } = useCurrent();
   const { mutate: logout } = useLogout();
 
@@ -120,7 +121,7 @@ export const UserButton = () => {
                 className="flex flex-col items-center justify-center"
               >
                 <p className="text-sm font-medium text-neutral-900 dark:text-white">
-                  {data.user.name || "User"}
+                  {data.user.name || `${t("userButton.user")}`}
                 </p>
                 <p className="text-xs text-neutral-500 dark:text-neutral-500">
                   {data.user.email}
@@ -139,7 +140,7 @@ export const UserButton = () => {
                 >
                   <Link href={`/account`}>
                     <UserCog2 className="size-5 mr-2" />
-                    Account Settings
+                    {t("userButton.tabs.account")}
                   </Link>
                 </DropdownMenuItem>
               </motion.div>
@@ -152,7 +153,7 @@ export const UserButton = () => {
                   >
                     <Link href={`/account/upgrade`}>
                       <LightningBoltIcon className="size-5 mr-2" />
-                      Upgrade to Plus
+                      {t("userButton.tabs.upgrade")}
                     </Link>
                   </DropdownMenuItem>
                 </motion.div>
@@ -161,7 +162,7 @@ export const UserButton = () => {
               <motion.div whileHover={{ scale: 1.02, x: 5 }}>
                 <DropdownMenuItem className="w-full p-2.5 hover:bg-neutral-200 dark:hover:bg-white/10 dark:text-neutral-300 text-neutral-900 font-medium cursor-pointer">
                   <LifeBuoyIcon className="size-5 mr-2" />
-                  Help Center
+                  {t("userButton.tabs.help-center")}
                 </DropdownMenuItem>
               </motion.div>
             </motion.div>
@@ -172,7 +173,7 @@ export const UserButton = () => {
                 className="h-10 flex items-center justify-center text-amber-700 dark:hover:bg-white/10 font-medium cursor-pointer"
               >
                 <LogOut className="size-4 mr-2" />
-                Log out
+                {t("userButton.tabs.log-out")}
               </DropdownMenuItem>
             </motion.div>
           </motion.div>

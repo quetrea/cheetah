@@ -76,17 +76,7 @@
     "notFound": "Project not found",
     "total": "Total Projects"
   },
-  "tasks": {
-    "title": "Tasks",
-    "create": "New Task",
-    "edit": "Edit Task",
-    "delete": "Delete Task",
-    "status": {
-      "completed": "Completed",
-      "inProgress": "In Progress",
-      "pending": "Pending"
-    }
-  },
+
   "navigation": {
     "home": "Home",
     "guide": "Guide",
@@ -277,7 +267,45 @@
       "createdAt": "Created at {{date}}"
     }
   },
-
+  "tasks": {
+    "task-switcher": {
+      "tabs": {
+        "table": "Table",
+        "kanban": "Kanban",
+        "calendar": "Calendar"
+      },
+      "new": "New",
+      "data-filter": {
+        "status": {
+          "placeholder": "All statuses",
+          "list": {
+            "BACKLOG": "Backlog",
+            "TODO": "Todo",
+            "IN_PROGRESS": "In Progress",
+            "IN_REVIEW": "In Review",
+            "DONE": "Done"
+          }
+        },
+        "priority": {
+          "placeholder": "All priorities",
+          "list": {
+            "high": "High",
+            "medium": "Medium",
+            "low": "Low"
+          }
+        },
+        "assignee": {
+          "placeholder": "All assignees"
+        },
+        "projects": {
+          "placeholder": "All projects"
+        },
+        "duedate": {
+          "placeholder": "Due date"
+        }
+      }
+    }
+  },
   "modals": {
     "create": {
       "workspace": {
@@ -401,8 +429,82 @@
       }
     }
   },
+  "sections": {
+    "tasks": {
+      "title": "Tasks",
+      "view-all-tasks": "View all tasks",
+      "add-button-hint": "Create a new task",
+      "created-at": "Created at",
+      "dueDate": "Duedate",
+      "reset-more": "Reset show more",
+      "no-task-found": "No tasks found",
+      "options": {
+        "open-task": "Open Task",
+        "edit-task": "Edit Task",
+        "delete-task": "Delete Task",
+        "show-more": "Show more",
+        "show-less": "Show less"
+      }
+    },
+    "projects": {
+      "title": "Projects",
+      "add-button-hint": "Create a new project",
+      "no-project-found": "No projects found"
+    },
+    "members": {
+      "title": "Members",
+      "view-all-members": "View all members"
+    }
+  },
+  "userButton": {
+    "user": "User",
+    "tabs": {
+      "account": "Account Settings",
+      "upgrade": "Upgrade to Plus",
+      "help-center": "Help Center",
+      "log-out": "Log out"
+    }
+  },
+
+  "idPages": {},
   "settingsSections": {
-    "project": {},
+    "project": {
+      "edit": {
+        "back": "Back",
+        "formFields": {
+          "titles": {
+            "name": "Project Name",
+            "icon": "Project Icon"
+          },
+          "placeholders": {
+            "name": "Enter project name",
+            "icon": "Upload a image"
+          },
+          "or": " or ",
+          "values": {
+            "max": " Max: "
+          },
+          "options": {
+            "removeIcon": "Remove Image",
+            "uploadIcon": "Upload Image",
+            "cancel": "Cancel",
+            "save": "Save Changes"
+          }
+        }
+      },
+      "delete": {
+        "formFields": {
+          "options": {
+            "delete": {
+              "title": "Delete Project",
+              "alt-description": "  Deleting a project is a irreversible and will remove all associated data!",
+              "loading-text": "Deleting...",
+              "description": "This process is irreversible!"
+            }
+          }
+        }
+      }
+    },
     "workspace": {
       "invite": {
         "title": "Invite Members",
@@ -418,6 +520,79 @@
         "title": "Leave Workspace",
         "description": "Leaving a workspace is a irreversible and will remove all your data in the workspace!",
         "button": "Leave Workspace"
+      }
+    },
+    "members": {
+      "back": "Back",
+      "title": "Members List"
+    },
+    "account": {
+      "back": "Back",
+      "title": "Account Settings",
+      "dialogs": {
+        "update": {
+          "title": "Update Account Name",
+          "description": "This action cannot be undone but you can rechange after."
+        }
+      },
+      "sections": {
+        "update": {
+          "title": "Update Account Name",
+          "description": "This action cannot be undone but you can rechange after.",
+          "formFields": {
+            "titles": {
+              "name": "User name"
+            },
+            "placeholders": {
+              "name": "Enter user name"
+            },
+            "options": {
+              "cancel": "Cancel",
+              "save": "Save Changes"
+            }
+          }
+        },
+
+        "change-email": {
+          "title": "Change your email",
+          "description": "",
+          "formFields": {
+            "titles": {
+              "email": "Email",
+              "password": "Password"
+            },
+            "placeholders": {
+              "email": "Enter email address",
+              "password": "Enter your password"
+            },
+            "doesnt-work": "If you are logging in without a password, this will not work.",
+            "recovery-span": "Email Recovery Password",
+            "options": {
+              "cancel": "Cancel",
+              "save": "Save Changes"
+            }
+          }
+        },
+        "change-password": {
+          "title": "Change your password",
+          "description": "",
+          "formFields": {
+            "titles": {
+              "old-password": "Old Password",
+              "password": "New Password"
+            },
+            "placeholders": {
+              "old-password": "Enter your old password",
+              "password": "Enter your new password"
+            },
+            "doesnt-work": "If you are logging in without a password, this will not work.",
+            "recovery-span": "Email Recovery Password",
+            "options": {
+              "cancel": "Cancel",
+              "save": "Save Changes"
+            }
+          }
+        }
       }
     }
   }

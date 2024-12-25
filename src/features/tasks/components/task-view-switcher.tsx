@@ -23,6 +23,7 @@ import { useBulkUpdateTasks } from "../api/use-bulk-update-tasks";
 import { DataCalendar } from "./data-calendar";
 import { useProjectId } from "@/features/projects/hooks/use-task-id";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslation } from "react-i18next";
 
 interface TaskViewSwitcherProps {
   hideProjectFilter?: boolean;
@@ -98,6 +99,7 @@ const FiltersSkeleton = () => (
 export const TaskViewSwitcher = ({
   hideProjectFilter,
 }: TaskViewSwitcherProps) => {
+  const { t } = useTranslation();
   const [{ status, assigneeId, projectId, dueDate, priority }] =
     useTasksFilters();
   const [view, setView] = useQueryState("task-view", {
@@ -214,13 +216,13 @@ export const TaskViewSwitcher = ({
         >
           <TabsList className="w-full lg:w-auto">
             <TabsTrigger className="h-8 w-full lg:w-auto" value="table">
-              Table
+              {t("tasks.task-switcher.tabs.table")}
             </TabsTrigger>
             <TabsTrigger className="h-8 w-full lg:w-auto" value="kanban">
-              Kanban
+              {t("tasks.task-switcher.tabs.kanban")}
             </TabsTrigger>
             <TabsTrigger className="h-8 w-full lg:w-auto" value="calendar">
-              Calendar
+              {t("tasks.task-switcher.tabs.calendar")}
             </TabsTrigger>
           </TabsList>
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
@@ -230,7 +232,7 @@ export const TaskViewSwitcher = ({
               size={"sm"}
             >
               <PlusIcon className="size-4 mr-2" />
-              New
+              {t("tasks.task-switcher.new")}
             </Button>
           </motion.div>
         </motion.div>
