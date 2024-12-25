@@ -500,10 +500,12 @@ export const EditWorkspaceForm = ({
           <Card className="w-full h-full shadow-none border border-amber-500">
             <CardContent className="p-7">
               <div className="flex flex-col ">
-                <h3 className="font-bold">Leave Workspace</h3>
+                <h3 className="font-bold">
+                  {" "}
+                  {t("settingsSections.workspace.leave.title")}
+                </h3>
                 <p className="text-sm text-muted-foreground">
-                  Leaving a workspace is a irreversible and will remove all your
-                  data in the workspace!
+                  {t("settingsSections.workspace.leave.description")}
                 </p>
                 <DottedSeparator className="py-7" />
                 <Button
@@ -514,7 +516,7 @@ export const EditWorkspaceForm = ({
                   disabled={isPending || isLeavingWorkspace}
                   onClick={handleLeave}
                 >
-                  Leave Workspace
+                  {t("settingsSections.workspace.leave.button")}
                 </Button>
               </div>
             </CardContent>

@@ -413,6 +413,11 @@
         "title": "Danger Zone",
         "description": "Deleting a workspace is a irreversible and will remove allassociated data!",
         "button": "Delete Workspace"
+      },
+      "leave": {
+        "title": "Leave Workspace",
+        "description": "Leaving a workspace is a irreversible and will remove all your data in the workspace!",
+        "button": "Leave Workspace"
       }
     }
   }

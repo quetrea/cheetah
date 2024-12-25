@@ -413,7 +413,7 @@
       "leave": {
         "title": "Çalışma Alanından Ayrıl",
         "description": "Bir çalışma alanından ayrılmak verilerinizi tamamiylen silmeyebilir",
-        "button": "Çalışma alanını kaldır"
+        "button": "Çalışma alanından ayrıl"
       }
     }
   }
