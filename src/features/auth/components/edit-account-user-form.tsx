@@ -467,7 +467,7 @@ export const EditAccountSettings = ({
                         className="text-xs flex justify-end hover:underline text-sky-700 cursor-pointer"
                       >
                         {t(
-                          "settingsSections.account.sections.change-password.formFields.doesnt-work"
+                          "settingsSections.account.sections.change-password.formFields.recovery-span"
                         )}
                       </span>
                     </div>
