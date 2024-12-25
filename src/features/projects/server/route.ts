@@ -24,13 +24,7 @@ import { Webhook, WebhookEvent } from "@/features/webhooks/types";
 import { sendDiscordWebhook } from "@/lib/webhook";
 import { SubTask } from "@/features/subtasks/types";
 
-const ALLOWED_FILE_TYPES = [
-  "image/png",
-  "image/jpeg",
-  "image/jpg",
-  "image/svg+xml",
-];
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
 
 const app = new Hono()
   .post(
