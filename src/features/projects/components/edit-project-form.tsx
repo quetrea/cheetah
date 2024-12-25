@@ -27,15 +27,10 @@ import { cn } from "@/lib/utils";
 
 import { useConfirm } from "@/hooks/use-confirm";
 
-import { toast } from "sonner";
 
-import { useGetMembers } from "@/features/members/api/use-get-members";
-
-import { MemberRole } from "@/features/members/types";
 import { Project } from "../types";
 import { updateProjectSchema } from "../schemas";
 import { useUpdateProject } from "../api/use-update-project";
-import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useDeleteProject } from "../api/use-delete-project";
 import { useTranslation } from "react-i18next";
 

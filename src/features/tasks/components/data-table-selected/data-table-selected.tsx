@@ -5,6 +5,8 @@ import { Task } from "../../types";
 import { toast } from "sonner";
 import { useBulkDeleteTasks } from "../../api/use-bulk-delete-tasks";
 import { useRouter } from "next/navigation";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 interface DataTableSelectedProps<TData> {
   table: Table<TData>;
@@ -13,6 +15,7 @@ interface DataTableSelectedProps<TData> {
 export function DataTableSelected<TData>({
   table,
 }: DataTableSelectedProps<TData>) {
+  const { t } = useTranslation();
   const router = useRouter();
   const selectedRows = table
     .getFilteredSelectedRowModel()
@@ -38,13 +41,13 @@ export function DataTableSelected<TData>({
   return (
     <div className="flex items-center gap-2 p-2">
       <span className="text-sm text-muted-foreground">
-        Selected: {selectedRows.length}
+        {t("table.selected", { selected: selectedRows.length })}
       </span>
       <div className="ml-auto flex gap-2">
-        <Button variant="outline" size="sm" onClick={handleEdit}>
+        {/* <Button variant="outline" size="sm" onClick={handleEdit}>
           <Pencil className="h-4 w-4 mr-2" />
           Edit Selected
-        </Button>
+        </Button> */}
         <Button
           variant="destructive"
           size="sm"
@@ -52,7 +55,7 @@ export function DataTableSelected<TData>({
           disabled={isDeletingTasks}
         >
           <Trash2 className="h-4 w-4 mr-2" />
-          {isDeletingTasks ? "Deleting..." : "Delete Selected"}
+          {isDeletingTasks ? "Deleting..." : `${t("table.delete-select")}`}
         </Button>
       </div>
     </div>

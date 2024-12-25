@@ -18,6 +18,7 @@ import { NameColumn } from "./columns/name-column";
 import { ProjectColumn } from "./columns/project-column";
 import { LabelsColumn } from "./columns/labels-column";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslation } from "react-i18next";
 
 // Skeleton component for table cells
 const TableCellSkeleton = () => (
@@ -63,15 +64,19 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Task name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
+      const HeaderComponent = () => {
+        const { t } = useTranslation();
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            {t("table.task-name")}
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      };
+      return <HeaderComponent />;
     },
     cell: ({ row }) => {
       const name = row.original.name;
@@ -84,15 +89,19 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "project",
     header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Project
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
+      const HeaderComponent = () => {
+        const { t } = useTranslation();
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            {t("table.project")}
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      };
+      return <HeaderComponent />;
     },
     cell: ({ row }) => {
       const project = row.original.project;
@@ -105,15 +114,19 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "assignee",
     header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Assignee
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
+      const HeaderComponent = () => {
+        const { t } = useTranslation();
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            {t("table.assignee")}
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      };
+      return <HeaderComponent />;
     },
     cell: ({ row }) => {
       const assignee = row.original.assignee;
@@ -134,15 +147,20 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "dueDate",
     header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Due date
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
+      const HeaderComponent = () => {
+        const { t } = useTranslation();
+
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            {t("table.duedate")}
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      };
+      return <HeaderComponent />;
     },
     cell: ({ row }) => {
       const dueDate = row.original.dueDate;
@@ -157,15 +175,19 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Status
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
+      const HeaderComponent = () => {
+        const { t } = useTranslation();
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            {t("table.status")}
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      };
+      return <HeaderComponent />;
     },
     cell: ({ row }) => {
       const status = row.original.status;
@@ -197,15 +219,19 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "priority",
     header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Priority
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
+      const HeaderComponent = () => {
+        const { t } = useTranslation();
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            {t("table.priority")}
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      };
+      return <HeaderComponent />;
     },
     cell: ({ row }) => {
       const priority = row.original.priority;

@@ -24,7 +24,6 @@
       "description": "Platformumuzdan en iyi şekilde yararlanmak için kapsamlı bir rehber."
     }
   },
-
   "navigation": {
     "home": "Ana Sayfa",
     "guide": "Rehber",
@@ -103,6 +102,9 @@
       "totalTask": {
         "title": "Toplam Görevler"
       },
+      "assigneedTask": {
+        "title": "Atanmış Görevler"
+      },
       "completedTask": {
         "title": "Tamamlanmış Görevler"
       },
@@ -134,7 +136,6 @@
     "notFound": "Proje bulunamadı",
     "total": "Toplam Proje"
   },
-
   "auth": {
     "signIn": {
       "title": "Giriş Yap",
@@ -263,7 +264,23 @@
       "createdAt": "Oluşturulma tarihi: {{date}}"
     }
   },
+  "table": {
+    "search": "Görev adı ile arama",
+    "task-name": "Görev adı",
+    "project": "Proje",
+    "assignee": "Atanan",
+    "priority": "Öncelik",
+    "status": "Durum",
+    "no-result": "Veri bulunamadı.",
+    "previous": "Önceki",
+    "next": "Next",
+    "duedate": "Bitiş Zamanı",
+    "delete-select": "Seçilenleri sil",
+    "selected": "{{selected}} tane seçildi.",
+    "selected-rows": "{{selected}} / {{total}} satır seçildi."
+  },
   "tasks": {
+    "edit-project": "Projeyi düzenle",
     "task-switcher": {
       "tabs": {
         "table": "Tablo",
@@ -425,7 +442,6 @@
       }
     }
   },
-
   "sections": {
     "tasks": {
       "title": "Görevler",

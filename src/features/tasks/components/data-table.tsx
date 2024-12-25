@@ -26,6 +26,7 @@ import { Input } from "@/components/ui/input";
 import { Task } from "../types";
 import { useDeleteTask } from "../api/use-delete-task";
 import { DataTableSelected } from "./data-table-selected/data-table-selected";
+import { useTranslation } from "react-i18next";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -38,6 +39,7 @@ export function DataTable<TData, TValue>({
   data,
   onRowSelect,
 }: DataTableProps<TData, TValue>) {
+  const { t } = useTranslation();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -77,7 +79,7 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center py-4 pt-0">
         <div className="flex items-center justify-between w-full">
           <Input
-            placeholder="Search task name"
+            placeholder={t("table.search")}
             value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
               table.getColumn("name")?.setFilterValue(event.target.value)
@@ -89,9 +91,9 @@ export function DataTable<TData, TValue>({
           )}
         </div>
       </div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader className="bg-neutral-200 rounded-md dark:bg-neutral-900">
+      <div className="rounded-md border  ">
+        <Table className="rounded-md overflow-hidden">
+          <TableHeader className="bg-neutral-200  dark:bg-neutral-900">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -132,7 +134,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {t("table.no-result")}
                 </TableCell>
               </TableRow>
             )}
@@ -142,8 +144,10 @@ export function DataTable<TData, TValue>({
 
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {t("table.selected-rows", {
+            selected: table.getFilteredSelectedRowModel().rows.length,
+            total: table.getFilteredRowModel().rows.length,
+          })}
         </div>
         <div className="flex items-center justify-end space-x-2">
           <Button
@@ -152,7 +156,7 @@ export function DataTable<TData, TValue>({
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            {t("table.previous")}
           </Button>
           <Button
             variant="outline"
@@ -160,7 +164,7 @@ export function DataTable<TData, TValue>({
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            {t("table.next")}
           </Button>
         </div>
       </div>

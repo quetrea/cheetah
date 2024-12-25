@@ -45,6 +45,9 @@
       "totalTask": {
         "title": "Total Tasks"
       },
+      "assigneedTask": {
+        "title": "Assigned Tasks"
+      },
       "completedTask": {
         "title": "Completed Tasks"
       },
@@ -268,6 +271,7 @@
     }
   },
   "tasks": {
+    "edit-project": "Edit Project",
     "task-switcher": {
       "tabs": {
         "table": "Table",
@@ -305,6 +309,21 @@
         }
       }
     }
+  },
+  "table": {
+    "search": "Search task name",
+    "task-name": "Task name",
+    "project": "Project",
+    "assignee": "Assignee",
+    "priority": "Priority",
+    "status": "Status",
+    "no-result": "No results",
+    "previous": "Previous",
+    "next": "Next",
+    "duedate": "Duedate",
+    "delete-select": "Delete Selected",
+    "selected": "Selected: {{selected}} ",
+    "selected-rows": "{{selected}} of {{total}} row(s) selected"
   },
   "modals": {
     "create": {

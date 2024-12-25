@@ -13,9 +13,10 @@ import { useProjectId } from "@/features/projects/hooks/use-task-id";
 import { TaskViewSwitcher } from "@/features/tasks/components/task-view-switcher";
 import { PencilIcon } from "lucide-react";
 import Link from "next/link";
-
+import { useTranslation } from "react-i18next";
 
 export const ProjectIdClient = () => {
+  const { t } = useTranslation();
   const projectId = useProjectId();
   const { data: project, isLoading: isLoadingProject } = useGetProject({
     projectId: projectId,
@@ -79,7 +80,7 @@ export const ProjectIdClient = () => {
               href={`/workspaces/${project.workspaceId}/projects/${project.$id}/settings`}
             >
               <PencilIcon className="size-4 mr-2" />
-              Edit project
+              {t("tasks.edit-project")}
             </Link>
           </Button>
         </motion.div>
