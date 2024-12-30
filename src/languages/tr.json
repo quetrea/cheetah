@@ -320,6 +320,20 @@
       }
     }
   },
+  "task_actions": {
+    "details": {
+      "title": "Görevi görüntüle"
+    },
+    "open": {
+      "title": "Projeyi aç"
+    },
+    "edit": {
+      "title": "Görevi düzenle"
+    },
+    "delete": {
+      "title": "Görevi sil"
+    }
+  },
   "modals": {
     "create": {
       "workspace": {

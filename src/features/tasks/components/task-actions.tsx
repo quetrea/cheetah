@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useEditTaskModal } from "../hooks/use-edit-task-modal";
 import { useGetTask } from "../api/use-get-task";
+import { useTranslation } from "react-i18next";
 
 interface TaskActionsProps {
   id: string;
@@ -21,6 +22,7 @@ interface TaskActionsProps {
 }
 
 export const TaskActions = ({ id, projectId, children }: TaskActionsProps) => {
+  const { t } = useTranslation();
   const workspaceId = useWorkspaceId();
   const router = useRouter();
   const { data } = useGetTask({ taskId: id });
@@ -62,14 +64,14 @@ export const TaskActions = ({ id, projectId, children }: TaskActionsProps) => {
             className="font-medium p-[10px]"
           >
             <ExternalLinkIcon className="size-4 mr-2 stroke-2" />
-            Task Details
+            {t("task_actions.details.title")}
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={onOpenProject}
             className="font-medium p-[10px]"
           >
             <ExternalLinkIcon className="size-4 mr-2 stroke-2" />
-            Open Project
+            {t("task_actions.open.title")}
           </DropdownMenuItem>
           {data?.$id === id ? (
             <DropdownMenuItem
@@ -77,7 +79,7 @@ export const TaskActions = ({ id, projectId, children }: TaskActionsProps) => {
               className="font-medium p-[10px]"
             >
               <PencilIcon className="size-4 mr-2 stroke-2" />
-              Edit Task
+              {t("task_actions.edit.title")}
             </DropdownMenuItem>
           ) : (
             <DropdownMenuItem
@@ -85,7 +87,7 @@ export const TaskActions = ({ id, projectId, children }: TaskActionsProps) => {
               className="font-medium p-[10px]"
             >
               <PencilIcon className="size-4 mr-2 stroke-2" />
-              Edit Task
+              {t("task_actions.edit.title")}
             </DropdownMenuItem>
           )}
           <DropdownMenuItem
@@ -94,7 +96,7 @@ export const TaskActions = ({ id, projectId, children }: TaskActionsProps) => {
             className="text-amber-700 focus:text-amber-700 font-medium p-[10px]"
           >
             <Trash className="size-4 mr-2 stroke-2" />
-            Delete Task
+            {t("task_actions.delete.title")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

@@ -310,6 +310,20 @@
       }
     }
   },
+  "task_actions": {
+    "details": {
+      "title": "Task Details"
+    },
+    "open": {
+      "title": "Open Project"
+    },
+    "edit": {
+      "title": "Edit Task"
+    },
+    "delete": {
+      "title": "Delete Task"
+    }
+  },
   "table": {
     "search": "Search task name",
     "task-name": "Task name",
@@ -531,7 +545,6 @@
     }
   },
 
-  "idPages": {},
   "settingsSections": {
     "project": {
       "edit": {

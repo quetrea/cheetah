@@ -54,6 +54,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
+import { TaskActions } from "@/features/tasks/components/task-actions";
 
 // Ana container animasyonu
 const containerVariants = {
@@ -400,10 +401,17 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
         <div className="flex items-center justify-between">
           <Hint label={t("sections.tasks.view-all-tasks")} side="right">
             <Link
-              className="text-lg transition-all duration-300 px-2 py-1 rounded-lg hover:bg-white dark:hover:bg-neutral-950 cursor-pointer font-semibold"
+              className="text-lg transition-all dark:hover:bg-neutral-950 duration-300 px-2 py-1 rounded-lg hover:bg-white inline-flex items-center gap-x-2.5 cursor-pointer font-semibold"
               href={`/workspaces/${workspaceId}/tasks`}
             >
-              {t("sections.tasks.title")} ({total})
+              {t("sections.tasks.title")}{" "}
+              <Button
+                size={"smIcon"}
+                variant={"outline"}
+                className="rounded-full text-sm bg-white dark:bg-neutral-800 p-1 "
+              >
+                {total}
+              </Button>
             </Link>
           </Hint>
           <div className="flex gap-x-4 ">
@@ -489,50 +497,11 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
 
                   <div className="space-x-2">
                     <DropdownMenu modal={false}>
-                      <DropdownMenuTrigger asChild>
+                      <TaskActions id={task.$id} projectId={task.projectId}>
                         <Button variant={"outline"} size={"icon"}>
                           <MoreVerticalIcon className="size-4" />
                         </Button>
-                      </DropdownMenuTrigger>
-
-                      <DropdownMenuContent
-                        align="end"
-                        side="bottom"
-                        className="w-40 dark:bg-neutral-900 dark:border-neutral-800 dark:shadow-lg dark:shadow-black/20"
-                        sideOffset={10}
-                      >
-                        <div className="flex flex-col">
-                          <DropdownMenuItem
-                            className="gap-x-4 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 transition-colors duration-200"
-                            asChild
-                          >
-                            <Link
-                              href={`/workspaces/${workspaceId}/tasks/${task.$id}`}
-                            >
-                              <ExternalLinkIcon className="size-4" />
-                              {t("sections.tasks.options.open-task")}
-                            </Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="gap-x-4"
-                            onClick={() => editTask(task.$id)}
-                          >
-                            <Pencil className="size-4" />
-                            {t("sections.tasks.options.edit-task")}
-                          </DropdownMenuItem>
-                          {currentMember.role === MemberRole.ADMIN && (
-                            <>
-                              <DropdownMenuItem
-                                className="gap-x-4 text-amber-500"
-                                onClick={() => onDelete(task.$id)}
-                              >
-                                <Trash className="size-4" />
-                                {t("sections.tasks.options.delete-task")}
-                              </DropdownMenuItem>
-                            </>
-                          )}
-                        </div>
-                      </DropdownMenuContent>
+                      </TaskActions>
                     </DropdownMenu>
                   </div>
                 </CardContent>
@@ -601,11 +570,17 @@ export const ProjectList = ({
     >
       <div className="bg-white dark:bg-neutral-950  hover:shadow-sm transition-all duration-300 hover:bg-muted border rounded-lg p-4">
         <div className="flex items-center justify-between">
-          <Hint label="Your projects total" side="right">
-            <p className="text-lg font-semibold cursor-pointer">
-              {t("sections.projects.title")} ({total})
-            </p>
-          </Hint>
+          <div className="text-lg transition-all dark:hover:bg-neutral-900 duration-300 px-2 py-1 rounded-lg hover:bg-white inline-flex items-center gap-x-2.5 cursor-pointer font-semibold">
+            {t("sections.projects.title")}{" "}
+            <Button
+              size={"smIcon"}
+              variant={"outline"}
+              className="rounded-full text-sm bg-white dark:bg-neutral-800 p-1 "
+            >
+              {total}
+            </Button>
+          </div>
+
           <Hint label={t("sections.projects.add-button-hint")} side="left">
             <Button
               className="dark:bg-neutral-900 "
@@ -634,7 +609,7 @@ export const ProjectList = ({
               <Link href={`/workspaces/${workspaceId}/projects/${project.$id}`}>
                 <Card className="shadow-none rounded-lg hover:opacity-75 transition">
                   <CardContent className="p-4 flex items-center   justify-between">
-                    <div className="flex gap-x-2.5 items-center">
+                    <div className="flex gap-x-4 items-center">
                       <ProjectAvatar
                         className="size-12"
                         fallbackClassname="text-lg"
@@ -643,17 +618,6 @@ export const ProjectList = ({
                       />
                       <p className=" font-medium truncate">{project.name}</p>
                     </div>
-                    {currentMember.role === MemberRole.ADMIN && (
-                      <div className="flex items-center">
-                        <Button variant={"outline"}>
-                          <Link
-                            href={`/workspaces/${workspaceId}/projects/${project.$id}/settings`}
-                          >
-                            <Pencil className="size-4" />
-                          </Link>
-                        </Button>
-                      </div>
-                    )}
                   </CardContent>
                 </Card>
               </Link>
@@ -704,14 +668,20 @@ export const MembersList = ({
     >
       <div className="bg-white dark:bg-neutral-950 hover:shadow-sm transition-all duration-300 hover:bg-muted border rounded-lg p-4">
         <div className="flex items-center justify-between">
-          <Hint label="View all members" side="right">
-            <Link
-              href={`/workspaces/${workspaceId}/members`}
-              className="text-lg transition-all dark:hover:bg-neutral-900 duration-300 px-2 py-1 rounded-lg hover:bg-white cursor-pointer font-semibold"
+          <Link
+            href={`/workspaces/${workspaceId}/members`}
+            className="text-lg transition-all dark:hover:bg-neutral-900 duration-300 px-2 py-1 rounded-lg hover:bg-white inline-flex items-center gap-x-2.5 cursor-pointer font-semibold"
+          >
+            {t("sections.members.title")}{" "}
+            <Button
+              size={"smIcon"}
+              variant={"outline"}
+              className="rounded-full text-sm bg-white dark:bg-neutral-800 p-1 "
             >
-              {t("sections.members.title")} ({total})
-            </Link>
-          </Hint>
+              {total}
+            </Button>
+          </Link>
+
           <Hint label={t("sections.members.view-all-members")} side="left">
             <Button
               className="dark:bg-neutral-900"
