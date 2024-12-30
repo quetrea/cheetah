@@ -4,6 +4,7 @@ import { InferRequestType, InferResponseType } from "hono";
 import { client } from "@/lib/rpc";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 type ResponseType = InferResponseType<
   (typeof client.api.workspaces)[":workspaceId"]["reset-invite-code"]["$post"],
@@ -14,6 +15,7 @@ type RequestType = InferRequestType<
 >;
 
 export const useResetInviteCode = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -31,13 +33,13 @@ export const useResetInviteCode = () => {
       return await response.json();
     },
     onSuccess: ({ data }) => {
-      toast.success("Invite code reset");
+      toast.success(`${t("API_MESSAGES.workspace.coderst.message")}`);
 
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
       queryClient.invalidateQueries({ queryKey: ["workspace", data.$id] });
     },
     onError: () => {
-      toast.error("Failed to reset invite code");
+      toast.error(`${t("API_MESSAGES.workspace.coderst.failed-message")}`);
     },
   });
 

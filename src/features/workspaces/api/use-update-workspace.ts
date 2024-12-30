@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { client } from "@/lib/rpc";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 type ResponseType = InferResponseType<
   (typeof client.api.workspaces)[":workspaceId"]["$patch"],
@@ -14,6 +15,7 @@ type RequestType = InferRequestType<
 >;
 
 export const useUpdateWorkspace = () => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ResponseType, Error, RequestType>({
@@ -30,13 +32,13 @@ export const useUpdateWorkspace = () => {
       return await response.json();
     },
     onSuccess: ({ data }) => {
-      toast.success("Workspace updated");
+      toast.success(`${t("API_MESSAGES.workspace.update.message")}`);
 
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
       queryClient.invalidateQueries({ queryKey: ["workspace", data.$id] });
     },
     onError: () => {
-      toast.error("Failed to update workspace");
+      toast.error(`${t("API_MESSAGES.workspace.update.failed-message")}`);
     },
   });
 

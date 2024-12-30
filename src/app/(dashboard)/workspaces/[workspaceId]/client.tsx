@@ -51,12 +51,7 @@ import TaskAnalytics from "@/features/analytics/components/TaskAnalytics";
 import MembersPieChart from "@/features/analytics/components/MembersPieChart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import {
-  motion,
-  useAnimation,
-  useInView,
-
-} from "framer-motion";
+import { motion, useAnimation, useInView } from "framer-motion";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 
@@ -399,9 +394,9 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="flex flex-col gap-y-4"
+      className="flex flex-col gap-y-4 "
     >
-      <span className="bg-white hover:bg-muted duration-300 transition-all rounded-lg p-4 dark:bg-neutral-900">
+      <div className="flex flex-col bg-white h-full hover:bg-muted duration-300 shadow  transition-all rounded-lg p-4 dark:bg-neutral-900">
         <div className="flex items-center justify-between">
           <Hint label={t("sections.tasks.view-all-tasks")} side="right">
             <Link
@@ -438,7 +433,7 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
           </div>
         </div>
         <DottedSeparator className="my-4" />
-        <motion.ul className="space-y-2.5">
+        <motion.ul className="space-y-2.5 h-full">
           {data.slice(0, slice).map((task) => (
             <motion.li
               key={task.$id}
@@ -453,9 +448,16 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
                       {task.name}
                     </p>
                     <div className="flex items-center gap-x-2">
-                      <p className="text-sm truncate ">{task.project?.name}</p>
+                      <div className="flex gap-x-2">
+                        <ProjectAvatar
+                          image={task.project.imageUrl}
+                          name={task.project.name}
+                        />
+                        <p className="text-sm truncate ">{task.project.name}</p>
+                      </div>
+
                       <div className="flex gap-x-2 items-center">
-                        <div className="size-1 rounded-full bg-neutral-300" />
+                        {/* <div className="size-1 rounded-full bg-neutral-300" />
                         <div className="text-xs text-muted-foreground flex items-center gap-x-1  ">
                           <CalendarIcon className="size-3 mr-1" />
 
@@ -468,7 +470,7 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
                               "MM/dd/yyyy hh:mm a"
                             )}
                           </span>
-                        </div>
+                        </div> */}
                         <div className="size-1 rounded-full bg-neutral-300" />
                         <div className="text-xs text-muted-foreground flex items-center gap-x-1  ">
                           <CalendarIcon className="size-3 mr-1" />
@@ -478,10 +480,7 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
                               {" "}
                               {t("sections.tasks.dueDate")}
                             </p>
-                            {format(
-                              new Date(task.dueDate),
-                              "MM/dd/yyyy hh:mm a"
-                            )}
+                            {format(new Date(task.dueDate), "MM/dd/yyyy ")}
                           </span>
                         </div>
                       </div>
@@ -540,8 +539,8 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
               </Card>
             </motion.li>
           ))}
-          <li className="text-sm text-muted-foreground text-center hidden first-of-type:block">
-            {t("sections.tasks.no-task-found")}
+          <li className=" text-muted-foreground w-full hidden first-of-type:flex items-center justify-center h-full  ">
+            <span>{t("sections.tasks.no-task-found")}</span>
           </li>
         </motion.ul>
 
@@ -571,7 +570,7 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
             </div>
           </Button>
         )}
-      </span>
+      </div>
     </motion.div>
   );
 };

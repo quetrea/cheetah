@@ -357,7 +357,7 @@ export const EditWorkspaceForm = ({
                                     variant={"destructive"}
                                     className="w-fit mt-2"
                                     onClick={() => {
-                                      field.onChange(null);
+                                      field.onChange("");
                                       if (inputRef.current) {
                                         inputRef.current.value = "";
                                       }

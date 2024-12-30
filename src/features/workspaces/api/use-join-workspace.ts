@@ -3,6 +3,7 @@ import { InferRequestType, InferResponseType } from "hono";
 
 import { client } from "@/lib/rpc";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 type ResponseType = InferResponseType<
   (typeof client.api.workspaces)[":workspaceId"]["join"]["$post"],
@@ -13,6 +14,7 @@ type RequestType = InferRequestType<
 >;
 
 export const useJoinWorkspace = () => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ResponseType, Error, RequestType>({
@@ -30,12 +32,12 @@ export const useJoinWorkspace = () => {
       return await response.json();
     },
     onSuccess: ({ data }) => {
-      toast.success("Joined workspace");
+      toast.success(`${t("API_MESSAGES.workspace.join.message", data.name)}`);
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
       queryClient.invalidateQueries({ queryKey: ["workspace", data.$id] });
     },
     onError: () => {
-      toast.error("Failed to join workspace");
+      toast.error(`${t("API_MESSAGES.workspace.join.failed-message")}`);
     },
   });
 

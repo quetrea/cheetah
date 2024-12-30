@@ -3,6 +3,7 @@ import { InferRequestType, InferResponseType } from "hono";
 
 import { client } from "@/lib/rpc";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 type ResponseType = InferResponseType<
   (typeof client.api.workspaces)[":workspaceId"]["$delete"],
@@ -13,6 +14,7 @@ type RequestType = InferRequestType<
 >;
 
 export const useDeleteWorkspace = () => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ResponseType, Error, RequestType>({
@@ -27,12 +29,12 @@ export const useDeleteWorkspace = () => {
       return await response.json();
     },
     onSuccess: ({ data }) => {
-      toast.success("Workspace deleted");
+      toast.success(`${t("API_MESSAGES.workspace.delete.message")}`);
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
       queryClient.invalidateQueries({ queryKey: ["workspace", data.$id] });
     },
     onError: () => {
-      toast.error("Failed to delete workspace");
+      toast.error(`${t("API_MESSAGES.workspace.delete.failed-message")}`);
     },
   });
 

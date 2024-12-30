@@ -55,7 +55,9 @@ export function DataTableSelected<TData>({
           disabled={isDeletingTasks}
         >
           <Trash2 className="h-4 w-4 mr-2" />
-          {isDeletingTasks ? "Deleting..." : `${t("table.delete-select")}`}
+          {isDeletingTasks
+            ? `${t("table.deleting")}`
+            : `${t("table.delete-select")}`}
         </Button>
       </div>
     </div>

@@ -277,6 +277,7 @@
     "duedate": "Bitiş Zamanı",
     "delete-select": "Seçilenleri sil",
     "selected": "{{selected}} tane seçildi.",
+    "deleting": "Siliniyor...",
     "selected-rows": "{{selected}} / {{total}} satır seçildi."
   },
   "tasks": {
@@ -304,7 +305,7 @@
           "list": {
             "high": "Yüksek",
             "medium": "Orta",
-            "low": "Az"
+            "low": "Düşük"
           }
         },
         "assignee": {
@@ -367,6 +368,52 @@
             "create": "Oluştur",
             "cancel": "İptal"
           }
+        }
+      },
+      "task": {
+        "title": "Yeni bir görev oluştur",
+        "sections": {
+          "name": {
+            "title": "Görev adı",
+            "placeholder": "Görev adını girin"
+          },
+          "duedate": {
+            "title": "Bitiş zamanı",
+            "placeholder": "Tarih seçin"
+          },
+          "assignee": {
+            "title": "Göreve Atanan Kişi",
+            "placeholder": "Atanacak kişi seçin"
+          },
+          "status": {
+            "title": "Durum",
+            "placeholder": "Durum seçin",
+
+            "statuses": {
+              "BACKLOG": "Hazırlanıyor",
+              "TODO": "Yapılacaklar",
+              "IN_PROGRESS": "Yapılıyor",
+              "IN_REVIEW": "İncelemede",
+              "DONE": "Tamamlandı"
+            }
+          },
+          "priority": {
+            "title": "Öncelik",
+            "placeholder": "Görevin önceliğini seçin",
+            "priorities": {
+              "high": "Yüksek",
+              "medium": "Orta",
+              "low": "Düşük"
+            }
+          },
+          "project": {
+            "title": "Proje",
+            "placeholder": "Görevinizin projesini seçin"
+          }
+        },
+        "options": {
+          "cancel": "İptal",
+          "create": "Görevi oluştur"
         }
       }
     },
@@ -603,6 +650,36 @@
             }
           }
         }
+      }
+    }
+  },
+
+  "API_MESSAGES": {
+    "workspace": {
+      "create": {
+        "message": "Çalışma alanı oluşturuldu",
+        "failed-message": "Çalışma alanı oluşturulurken hata oluştu"
+      },
+      "update": {
+        "message": "Çalışma alanı güncellendi.",
+        "failed-message": "Çalışma alanı güncellenirken hata oluştu"
+      },
+      "delete": {
+        "message": "Çalışma alanı kaldırıldı",
+        "failed-message": "Çalışma alanı silinirken hata oluştu"
+      },
+      "analytics": {},
+      "join": {
+        "message": "{{name}} adlı çalışma alanına katıldın",
+        "failed-message": "Bu çalışma alanına daha önce katıldın veya başka bir sorun oluştu"
+      },
+      "leave": {
+        "message": "{{name}} adlı çalışma alanından ayrıldın",
+        "failed-message": "There was a problem leaving this workspace"
+      },
+      "coderst": {
+        "message": "Davet kodu sıfırlandı",
+        "failed-message": "Davet kodu sıfırlanırken sorun oluştu"
       }
     }
   }

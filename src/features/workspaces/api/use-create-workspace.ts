@@ -4,6 +4,7 @@ import { InferRequestType, InferResponseType } from "hono";
 import { client } from "@/lib/rpc";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 type ResponseType = InferResponseType<
   (typeof client.api.workspaces)["$post"],
@@ -12,6 +13,7 @@ type ResponseType = InferResponseType<
 type RequestType = InferRequestType<(typeof client.api.workspaces)["$post"]>;
 
 export const useCreateWorkspace = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -24,16 +26,17 @@ export const useCreateWorkspace = () => {
       if (!response.ok) {
         throw new Error("Failed to create workspace");
       }
+
       return await response.json();
     },
     onSuccess: () => {
-      toast.success("Workspace created");
+      toast.success(`${t("API_MESSAGES.workspace.create.message")}`);
 
       router.refresh();
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
     },
     onError: () => {
-      toast.error("Failed to create workspace");
+      toast.error(`${t("API_MESSAGES.workspace.create.failed-message")}`);
     },
   });
 

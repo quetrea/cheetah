@@ -3,6 +3,7 @@ import { InferRequestType, InferResponseType } from "hono";
 
 import { client } from "@/lib/rpc";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 type ResponseType = InferResponseType<
   (typeof client.api.workspaces)[":workspaceId"]["leave"]["$post"],
@@ -13,6 +14,7 @@ type RequestType = InferRequestType<
 >;
 
 export const useLeaveWorkspace = () => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ResponseType, Error, RequestType>({
@@ -29,12 +31,12 @@ export const useLeaveWorkspace = () => {
       return await response.json();
     },
     onSuccess: ({ data }) => {
-      toast.success("Successfully leave from workspace");
+      toast.success(`${t("API_MESSAGES.workspace.leave.message", data.name)}`);
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
       queryClient.invalidateQueries({ queryKey: ["workspace", data.$id] });
     },
     onError: () => {
-      toast.error("Failed to leave workspace");
+      toast.error(`${t("API_MESSAGES.workspace.leave.failed-message")}`);
     },
   });
 

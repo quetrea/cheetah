@@ -35,6 +35,7 @@ import { MemberAvatar } from "@/features/members/components/member-avatar";
 import { Priority, TaskStatus } from "../types";
 import { Circle } from "lucide-react";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
+import { useTranslation } from "react-i18next";
 
 interface CreateTaskFormProps {
   onCancel?: () => void;
@@ -49,6 +50,7 @@ export const CreateTaskForm = ({
   memberOptions,
   onStatusUpdate,
 }: CreateTaskFormProps) => {
+  const { t } = useTranslation();
   const workspaceId = useWorkspaceId();
   const { mutate, isPending } = useCreateTask();
 
@@ -75,7 +77,9 @@ export const CreateTaskForm = ({
   return (
     <Card className="w-full h-full border-none shadow-none rounded-none">
       <CardHeader className="flex p-7">
-        <CardTitle className="text-xl font-bold">Create a new task</CardTitle>
+        <CardTitle className="text-xl font-bold">
+          {t("modals.create.task.title")}
+        </CardTitle>
       </CardHeader>
       <div className="px-7">
         <DottedSeparator />
@@ -89,14 +93,18 @@ export const CreateTaskForm = ({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Task name</FormLabel>
+                    <FormLabel>
+                      {t("modals.create.task.sections.name.title")}
+                    </FormLabel>
 
                     <FormControl>
                       <Input
                         className="rounded-sm border-none shadow-none hover:bg-accent focus-visible:ring-neutral-400 cursor-default focus:cursor-text active:border-neutral-100 transition-all focus-visible:ring-2 ring-neutral-100 py-0 focus-visible:rounded-sm"
                         {...field}
                         disabled={isPending}
-                        placeholder="Enter task name"
+                        placeholder={t(
+                          "modals.create.task.sections.name.placeholder"
+                        )}
                       />
                     </FormControl>
                     <FormMessage />
@@ -108,10 +116,17 @@ export const CreateTaskForm = ({
                 name="dueDate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Due date</FormLabel>
+                    <FormLabel>
+                      {t("modals.create.task.sections.duedate.title")}
+                    </FormLabel>
 
                     <FormControl>
-                      <DatePicker {...field} />
+                      <DatePicker
+                        {...field}
+                        placeholder={t(
+                          "modals.create.task.sections.duedate.placeholder"
+                        )}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -122,7 +137,9 @@ export const CreateTaskForm = ({
                 name="assigneeId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Assignee</FormLabel>
+                    <FormLabel>
+                      {t("modals.create.task.sections.assignee.title")}
+                    </FormLabel>
 
                     <Select
                       defaultValue={field.value}
@@ -130,7 +147,11 @@ export const CreateTaskForm = ({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select assignee" />
+                          <SelectValue
+                            placeholder={t(
+                              "modals.create.task.sections.assignee.placeholder"
+                            )}
+                          />
                         </SelectTrigger>
                       </FormControl>
 
@@ -156,7 +177,9 @@ export const CreateTaskForm = ({
                 name="status"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Status</FormLabel>
+                    <FormLabel>
+                      {t("modals.create.task.sections.status.title")}
+                    </FormLabel>
 
                     <Select
                       defaultValue={
@@ -168,7 +191,11 @@ export const CreateTaskForm = ({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select status" />
+                          <SelectValue
+                            placeholder={t(
+                              "modals.create.task.sections.status.placeholder"
+                            )}
+                          />
                         </SelectTrigger>
                       </FormControl>
 
@@ -176,31 +203,42 @@ export const CreateTaskForm = ({
                         <SelectItem value={TaskStatus.BACKLOG}>
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-pink-400 p-2" />
-                            Backlog
+
+                            {t(
+                              "modals.create.task.sections.status.statuses.BACKLOG"
+                            )}
                           </div>
                         </SelectItem>
                         <SelectItem value={TaskStatus.TODO}>
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-red-400 p-2" />
-                            Todo
+                            {t(
+                              "modals.create.task.sections.status.statuses.TODO"
+                            )}
                           </div>
                         </SelectItem>
                         <SelectItem value={TaskStatus.IN_PROGRESS}>
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-yellow-400 p-2" />
-                            In Progress
+                            {t(
+                              "modals.create.task.sections.status.statuses.IN_PROGRESS"
+                            )}
                           </div>
                         </SelectItem>
                         <SelectItem value={TaskStatus.IN_REVIEW}>
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-blue-400 p-2" />
-                            In Review
+                            {t(
+                              "modals.create.task.sections.status.statuses.IN_REVIEW"
+                            )}
                           </div>
                         </SelectItem>
                         <SelectItem value={TaskStatus.DONE}>
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-emerald-400 p-2" />
-                            Done
+                            {t(
+                              "modals.create.task.sections.status.statuses.DONE"
+                            )}
                           </div>
                         </SelectItem>
                       </SelectContent>
@@ -214,7 +252,9 @@ export const CreateTaskForm = ({
                 name="priority"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Priority</FormLabel>
+                    <FormLabel>
+                      {t("modals.create.task.sections.priority.title")}
+                    </FormLabel>
 
                     <Select
                       defaultValue={field.value}
@@ -222,7 +262,11 @@ export const CreateTaskForm = ({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select priority" />
+                          <SelectValue
+                            placeholder={t(
+                              "modals.create.task.sections.priority.title"
+                            )}
+                          />
                         </SelectTrigger>
                       </FormControl>
 
@@ -230,19 +274,25 @@ export const CreateTaskForm = ({
                         <SelectItem value={Priority.HIGH}>
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-red-600 p-2" />
-                            High
+                            {t(
+                              "modals.create.task.sections.priority.priorities.high"
+                            )}
                           </div>
                         </SelectItem>
                         <SelectItem value={Priority.MEDIUM}>
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-green-600 p-2" />
-                            Medium
+                            {t(
+                              "modals.create.task.sections.priority.priorities.medium"
+                            )}
                           </div>
                         </SelectItem>
                         <SelectItem value={Priority.LOW}>
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-yellow-700 p-2" />
-                            Low
+                            {t(
+                              "modals.create.task.sections.priority.priorities.low"
+                            )}
                           </div>
                         </SelectItem>
                       </SelectContent>
@@ -256,7 +306,9 @@ export const CreateTaskForm = ({
                 name="projectId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Project</FormLabel>
+                    <FormLabel>
+                      {t("modals.create.task.sections.project.title")}
+                    </FormLabel>
 
                     <Select
                       defaultValue={field.value}
@@ -264,7 +316,11 @@ export const CreateTaskForm = ({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select project" />
+                          <SelectValue
+                            placeholder={t(
+                              "modals.create.task.sections.project.placeholder"
+                            )}
+                          />
                         </SelectTrigger>
                       </FormControl>
 
@@ -297,10 +353,10 @@ export const CreateTaskForm = ({
                 onClick={onCancel}
                 className={cn(!onCancel && "invisible")}
               >
-                Cancel
+                {t("modals.create.task.options.cancel")}
               </Button>
               <Button type="submit" disabled={isPending} size={"lg"}>
-                Create Task
+                {t("modals.create.task.options.create")}
               </Button>
             </div>
           </form>
