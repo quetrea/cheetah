@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useDeleteTask } from "../api/use-delete-task";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 interface TaskBreadcrumbsProps {
   project: Project;
@@ -15,6 +16,7 @@ interface TaskBreadcrumbsProps {
 }
 
 export const TaskBreadcrumbs = ({ project, task }: TaskBreadcrumbsProps) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const workspaceId = useWorkspaceId();
 
@@ -64,7 +66,7 @@ export const TaskBreadcrumbs = ({ project, task }: TaskBreadcrumbsProps) => {
           size={"sm"}
         >
           <TrashIcon className="size-4 lg:mr-2" />
-          <span className="hidden lg:block">Delete Task</span>
+          <span className="hidden lg:block">{t("tasks.delete")}</span>
         </Button>
       </div>
     </>

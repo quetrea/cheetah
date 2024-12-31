@@ -159,6 +159,7 @@
         "email": "Email address",
         "password": "Enter password"
       },
+      "get-started": "Get started",
       "privacy-info": "By signing up, you agree to our"
     },
     "alt-info": "or continue with",
@@ -272,6 +273,52 @@
   },
   "tasks": {
     "edit-project": "Edit Project",
+    "delete": "Delete",
+    "edit": "Edit",
+    "new": "New",
+    "overview": {
+      "title": "Overview",
+      "info": "Task Info",
+      "details": {
+        "title": "Details",
+        "info": "Task Details"
+      },
+      "sections": {
+        "assignee": {
+          "title": "Assignee",
+          "placeholder": ""
+        },
+        "created-at": {
+          "title": "Created At"
+        },
+        "endDate": {
+          "title": "End Date"
+        },
+        "status": {
+          "title": "Status"
+        },
+        "priority": {
+          "title": "Priority"
+        }
+      }
+    },
+    "task-graph": {
+      "title": "Task Graph",
+      "no-task": "No subtasks available."
+    },
+    "task-description": {
+      "title": "Task Description",
+      "info": "No description",
+      "warning": "No description set",
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "saving": "Saving...",
+      "save": "Save Changes"
+    },
+    "sub-tasks": {
+      "title": "Sub Tasks",
+      "no-subtasks": "No subtasks yet or not yet set"
+    },
     "task-switcher": {
       "tabs": {
         "table": "Table",
@@ -484,6 +531,51 @@
             "create": "Create",
             "cancel": "Cancel"
           }
+        }
+      },
+      "task": {
+        "title": "Edit Task",
+        "sections": {
+          "name": {
+            "title": "Task name",
+            "placeholder": "Enter task name"
+          },
+          "duedate": {
+            "title": "Duedate",
+            "placeholder": "Select date"
+          },
+          "assignee": {
+            "title": "Assignee",
+            "placeholder": "Select assignee"
+          },
+          "status": {
+            "title": "Status",
+            "placeholder": "Select status",
+            "statuses": {
+              "BACKLOG": "Backlog",
+              "TODO": "Todo",
+              "IN_PROGRESS": "In Progress",
+              "IN_REVIEW": "In Review",
+              "DONE": "Done"
+            }
+          },
+          "priority": {
+            "title": "Priority",
+            "placeholder": "Select priority",
+            "priorities": {
+              "high": "High",
+              "medium": "Medium",
+              "low": "Low"
+            }
+          },
+          "project": {
+            "title": "Project",
+            "placeholder": "Select project"
+          }
+        },
+        "options": {
+          "cancel": "Cancel",
+          "save": "Save Changes"
         }
       }
     },

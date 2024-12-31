@@ -17,6 +17,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { useTranslation } from "react-i18next";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -215,6 +216,7 @@ interface TaskDescriptionProps {
 }
 
 export const TaskDescription = ({ task }: TaskDescriptionProps) => {
+  const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [originalValue, setOriginalValue] = useState(task.description || "");
   const [value, setValue] = useState(task.description || "");
@@ -318,7 +320,7 @@ export const TaskDescription = ({ task }: TaskDescriptionProps) => {
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <h2 className="text-xl font-semibold bg-gradient-to-r from-violet-500 to-fuchsia-500 bg-clip-text text-transparent">
-              Task Description
+              {t("tasks.task-description.title")}
             </h2>
             <HoverCard>
               <HoverCardTrigger>
@@ -333,7 +335,7 @@ export const TaskDescription = ({ task }: TaskDescriptionProps) => {
                 >
                   <div className="px-2 py-1 text-[10px] font-medium rounded-full bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 border border-purple-500/30 text-purple-700 dark:text-purple-300 cursor-pointer">
                     <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                      NEW
+                      {t("tasks.new")}
                     </span>
                   </div>
                 </motion.div>
@@ -371,7 +373,7 @@ export const TaskDescription = ({ task }: TaskDescriptionProps) => {
           </div>
           {!isEditing && !value && (
             <span className="text-xs font-medium text-muted-foreground bg-accent/20 px-3 py-1.5 rounded-full">
-              No description
+              {t("tasks.task-description.info")}
             </span>
           )}
           {!isEditing && task.updatedAt && (
@@ -381,7 +383,8 @@ export const TaskDescription = ({ task }: TaskDescriptionProps) => {
               className="text-xs font-medium text-muted-foreground bg-accent/20 px-3 py-1.5 rounded-full flex items-center gap-2"
             >
               <span className="size-2 bg-blue-500/90 dark:bg-blue-400 rounded-full animate-pulse" />
-              Updated {new Date(task.updatedAt).toLocaleDateString()}
+              {t("tasks.task-description.updated")}{" "}
+              {new Date(task.updatedAt).toLocaleDateString()}
             </motion.span>
           )}
         </div>
@@ -396,7 +399,9 @@ export const TaskDescription = ({ task }: TaskDescriptionProps) => {
           ) : (
             <PencilIcon className="size-4 mr-2" />
           )}
-          {isEditing ? "Cancel" : "Edit"}
+          {isEditing
+            ? `${t("tasks.task-description.cancel")}`
+            : `${t("tasks.task-description.edit")}`}
         </Button>
       </div>
       <DottedSeparator className="mb-4" />
@@ -458,7 +463,7 @@ export const TaskDescription = ({ task }: TaskDescriptionProps) => {
                   disabled={isPending}
                   className="w-full sm:w-auto"
                 >
-                  Cancel
+                  {t("tasks.task-description.cancel")}
                 </Button>
                 <Button
                   className="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-600/90 dark:hover:bg-emerald-700/90 text-white w-full sm:w-auto"
@@ -467,9 +472,11 @@ export const TaskDescription = ({ task }: TaskDescriptionProps) => {
                   disabled={isPending || !value.trim()}
                 >
                   {isPending ? (
-                    <span className="animate-pulse">Saving...</span>
+                    <span className="animate-pulse">
+                      {t("tasks.task-description.saving")}
+                    </span>
                   ) : (
-                    "Save Changes"
+                    `${t("tasks.task-description.save")}`
                   )}
                 </Button>
               </div>
@@ -489,7 +496,9 @@ export const TaskDescription = ({ task }: TaskDescriptionProps) => {
             dangerouslySetInnerHTML={{
               __html:
                 value ||
-                '<span class="text-muted-foreground">No description set</span>',
+                `<span class="text-muted-foreground">${t(
+                  "task.task-description.no-subtasks"
+                )}</span>`,
             }}
           />
         )}

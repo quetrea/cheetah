@@ -16,12 +16,14 @@ import { Hint } from "@/components/hint";
 import { format } from "date-fns";
 import { TaskOverviewSkeleton } from "./skeletons/task-overview-skeleton";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 interface TaskOverviewProps {
   task: Task;
 }
 
 export const TaskOverview = ({ task }: TaskOverviewProps) => {
+  const { t } = useTranslation();
   const { open } = useEditTaskModal();
 
   const { data, isLoading } = useGetLabels({ taskId: task.$id });
@@ -85,13 +87,13 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
             className="flex items-center gap-2"
           >
             <p className="text-lg font-semibold text-neutral-800 dark:text-neutral-200">
-              Overview
+              {t("tasks.overview.title")}
             </p>
             <Badge
               variant="outline"
               className="text-xs font-normal bg-neutral-200/50 dark:bg-neutral-800/50"
             >
-              Task Info
+              {t("tasks.overview.info")}
             </Badge>
           </motion.div>
           <Button
@@ -101,7 +103,7 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
             className="bg-neutral-200/80 hover:bg-neutral-300/80 dark:bg-neutral-800/80 dark:hover:bg-neutral-700/80"
           >
             <PencilIcon className="size-4 mr-2" />
-            Edit
+            {t("tasks.edit")}
           </Button>
         </div>
 
@@ -110,37 +112,49 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
         <div className="flex lg:flex-col xl:flex-row flex-col gap-4">
           <motion.div className="flex flex-col flex-1 space-y-4">
             <div className="flex items-center gap-2">
-              <Badge variant="overview">Details</Badge>
+              <Badge variant="overview">
+                {t("tasks.overview.details.title")}
+              </Badge>
               <span className="bg-neutral-200/30 dark:bg-neutral-800/30 px-2 py-1 rounded-md text-xs text-neutral-600 dark:text-neutral-400">
-                Task Details
+                {t("tasks.overview.details.info")}
               </span>
             </div>
             <motion.div
               className="p-4 flex flex-col gap-y-4 border border-neutral-200/50 dark:border-neutral-800/50 rounded-lg bg-neutral-100/50 dark:bg-neutral-900/50 hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 transition-colors"
               whileHover={innerCardHover}
             >
-              <OverviewProperty label="Assignee">
+              <OverviewProperty
+                label={t("tasks.overview.sections.assignee.title")}
+              >
                 <MemberAvatar name={task.assignee.name} className="size-6" />
                 <p className="text-sm font-medium">{task.assignee.name}</p>
               </OverviewProperty>
-              <OverviewProperty label="Created At">
+              <OverviewProperty
+                label={t("tasks.overview.sections.created-at.title")}
+              >
                 <div className="text-sm text-blue-500">
                   {format(task.$createdAt, "PPP")}
                 </div>
               </OverviewProperty>
-              <OverviewProperty label="End Date">
+              <OverviewProperty
+                label={t("tasks.overview.sections.endDate.title")}
+              >
                 <TaskDate
                   compeleted={task.status === TaskStatus.DONE}
                   value={task.dueDate}
                   className="text-sm font-medium"
                 />
               </OverviewProperty>
-              <OverviewProperty label="Status">
+              <OverviewProperty
+                label={t("tasks.overview.sections.status.title")}
+              >
                 <Badge variant={task.status}>
                   {snakeCaseToTitleCase(task.status)}
                 </Badge>
               </OverviewProperty>
-              <OverviewProperty label="Priority">
+              <OverviewProperty
+                label={t("tasks.overview.sections.priority.title")}
+              >
                 <Badge variant={task.priority}>
                   {snakeCaseToTitleCase(task.priority)}
                 </Badge>

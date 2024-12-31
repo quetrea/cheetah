@@ -24,9 +24,6 @@ const CheetahLogo = () => (
       <span className="text-xl font-bold  bg-gradient-to-bl from-gray-100 to-gray-800/80 bg-clip-text text-transparent">
         Cheetah
       </span>
-      <span className="text-xs font-medium text-muted-foreground text-center whitespace-nowrap">
-        Lightning-Fast Project Management
-      </span>
     </motion.div>
   </motion.div>
 );

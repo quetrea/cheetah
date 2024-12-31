@@ -282,6 +282,53 @@
   },
   "tasks": {
     "edit-project": "Projeyi düzenle",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "new": "Yeni",
+    "overview": {
+      "title": "Önizleme",
+      "info": "Görev Bilgileri",
+      "details": {
+        "title": "Görev Hakkında",
+        "info": "Görev Detayları"
+      },
+      "sections": {
+        "assignee": {
+          "title": "Atanan",
+          "placeholder": ""
+        },
+        "created-at": {
+          "title": "Oluşturulduğu Zaman"
+        },
+        "endDate": {
+          "title": "Bitiş Zamanı"
+        },
+        "status": {
+          "title": "Durum"
+        },
+        "priority": {
+          "title": "Öncelik"
+        }
+      }
+    },
+    "task-graph": {
+      "title": "Görev Grafiği",
+      "no-task": "Altgörev bulunamadı"
+    },
+    "task-description": {
+      "title": "Görev Açıklaması",
+      "info": "Görev açıklaması yok",
+      "updated": "Son Girilme Tarihi",
+      "warning": "Görev açıklaması henüz uygulanmadı",
+      "edit": "Düzenle",
+      "cancel": "İptal et",
+      "saving": "Kaydediliyor...",
+      "save": "Değişiklikleri kaydet"
+    },
+    "sub-tasks": {
+      "title": "Alt Görevler",
+      "no-subtasks": "Henüz alt görev oluşturulmadı"
+    },
     "task-switcher": {
       "tabs": {
         "table": "Tablo",
@@ -479,6 +526,52 @@
             "save": "Değişiklikleri kaydet",
             "cancel": "Değişiklikleri iptal et"
           }
+        }
+      },
+      "task": {
+        "title": "Görevi düzenle",
+        "sections": {
+          "name": {
+            "title": "Görev adı",
+            "placeholder": "Görev adını girin"
+          },
+          "duedate": {
+            "title": "Bitiş zamanı",
+            "placeholder": "Tarih seçin"
+          },
+          "assignee": {
+            "title": "Göreve Atanan Kişi",
+            "placeholder": "Atanacak kişi seçin"
+          },
+          "status": {
+            "title": "Durum",
+            "placeholder": "Durum seçin",
+
+            "statuses": {
+              "BACKLOG": "Hazırlanıyor",
+              "TODO": "Yapılacaklar",
+              "IN_PROGRESS": "Yapılıyor",
+              "IN_REVIEW": "İncelemede",
+              "DONE": "Tamamlandı"
+            }
+          },
+          "priority": {
+            "title": "Öncelik",
+            "placeholder": "Görevin önceliğini seçin",
+            "priorities": {
+              "high": "Yüksek",
+              "medium": "Orta",
+              "low": "Düşük"
+            }
+          },
+          "project": {
+            "title": "Proje",
+            "placeholder": "Görevinizin projesini seçin"
+          }
+        },
+        "options": {
+          "cancel": "İptal",
+          "save": "Değişiklikleri kaydet"
         }
       }
     },

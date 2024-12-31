@@ -11,6 +11,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "../ui/hover-card";
+import { useTranslation } from "react-i18next";
 
 type NodeGraphProps = {
   task: Task; // Burada task verilerinizi geçin
@@ -18,6 +19,7 @@ type NodeGraphProps = {
 };
 
 export const NodeGraphTasks = ({ task, taskId }: NodeGraphProps) => {
+  const { t } = useTranslation();
   const { data: subTasks } = useGetSubTaskByTaskId({
     taskId: taskId,
   });
@@ -62,7 +64,7 @@ export const NodeGraphTasks = ({ task, taskId }: NodeGraphProps) => {
     >
       <div className="flex gap-2 items-center">
         <h2 className="text-xl font-semibold bg-gradient-to-r from-violet-500 to-fuchsia-500 bg-clip-text text-transparent">
-          Task Graph
+          {t("tasks.task-graph.title")}
         </h2>
         <HoverCard>
           <HoverCardTrigger>
@@ -77,7 +79,7 @@ export const NodeGraphTasks = ({ task, taskId }: NodeGraphProps) => {
             >
               <div className="px-2 py-1 text-[10px] font-medium rounded-full bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 border border-purple-500/30 text-purple-700 dark:text-purple-300 cursor-pointer">
                 <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                  NEW
+                  {t("tasks.new")}
                 </span>
               </div>
             </motion.div>
@@ -86,7 +88,7 @@ export const NodeGraphTasks = ({ task, taskId }: NodeGraphProps) => {
       </div>
       {nodes && nodes.length === 0 && (
         <div className="text-sm text-muted-foreground">
-          No subtasks available.
+          {t("tasks.task-graph.no-task")}
         </div>
       )}
       <div className="h-full border rounded-lg">

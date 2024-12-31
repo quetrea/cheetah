@@ -23,7 +23,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+
 import {
   Select,
   SelectContent,
@@ -36,6 +36,7 @@ import { Priority, Task, TaskStatus } from "../types";
 import { Circle } from "lucide-react";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { useUpdateTask } from "../api/use-update-task";
+import { useTranslation } from "react-i18next";
 
 interface EditTaskFormProps {
   onCancel?: () => void;
@@ -50,6 +51,7 @@ export const EditTaskForm = ({
   memberOptions,
   initialValues,
 }: EditTaskFormProps) => {
+  const { t } = useTranslation();
   const { mutate, isPending } = useUpdateTask();
 
   const form = useForm<z.infer<typeof createTaskSchema>>({
@@ -80,7 +82,9 @@ export const EditTaskForm = ({
   return (
     <Card className="w-full h-full border-none shadow-none rounded-none">
       <CardHeader className="flex p-7 pb-4 ">
-        <CardTitle className="text-xl font-bold">Edit task</CardTitle>
+        <CardTitle className="text-3xl font-bold">
+          {t("modals.edit.task.title")}
+        </CardTitle>
       </CardHeader>
       <div className="px-7">
         <DottedSeparator />
@@ -94,14 +98,18 @@ export const EditTaskForm = ({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Task name</FormLabel>
+                    <FormLabel>
+                      {t("modals.edit.task.sections.name.title")}
+                    </FormLabel>
 
                     <FormControl>
                       <Input
                         className="rounded-sm border-none shadow-none hover:bg-accent focus-visible:ring-neutral-400 cursor-default focus:cursor-text active:border-neutral-100 transition-all focus-visible:ring-2 ring-neutral-100 py-0 focus-visible:rounded-sm"
                         {...field}
                         disabled={isPending}
-                        placeholder="Enter task name"
+                        placeholder={t(
+                          "modals.edit.task.sections.name.placeholder"
+                        )}
                       />
                     </FormControl>
                     <FormMessage />
@@ -109,63 +117,37 @@ export const EditTaskForm = ({
                 )}
               />
 
-       
-                <FormField
-                  control={form.control}
-                  name="dueDate"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Due date</FormLabel>
-
-                      <FormControl>
-                        <DatePicker {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="assigneeId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Assignee</FormLabel>
-
-                      <Select
-                        defaultValue={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select assignee" />
-                          </SelectTrigger>
-                        </FormControl>
-
-                        <SelectContent>
-                          {memberOptions.map((member) => (
-                            <SelectItem key={member.id} value={member.id}>
-                              <div className="flex items-center gap-x-2">
-                                <MemberAvatar
-                                  name={member.name}
-                                  className="size-6"
-                                />
-                                {member.name}
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormItem>
-                  )}
-                />
-     
-
               <FormField
                 control={form.control}
-                name="status"
+                name="dueDate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Status</FormLabel>
+                    <FormLabel>
+                      {" "}
+                      {t("modals.edit.task.sections.duedate.title")}
+                    </FormLabel>
+
+                    <FormControl>
+                      <DatePicker
+                        {...field}
+                        placeholder={t(
+                          "modals.edit.task.sections.duedate.placehodler"
+                        )}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="assigneeId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      {" "}
+                      {t("modals.edit.task.sections.assignee.title")}
+                    </FormLabel>
 
                     <Select
                       defaultValue={field.value}
@@ -173,7 +155,52 @@ export const EditTaskForm = ({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select status" />
+                          <SelectValue
+                            placeholder={t(
+                              "modals.edit.task.sections.assignee.placeholder"
+                            )}
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+
+                      <SelectContent>
+                        {memberOptions.map((member) => (
+                          <SelectItem key={member.id} value={member.id}>
+                            <div className="flex items-center gap-x-2">
+                              <MemberAvatar
+                                name={member.name}
+                                className="size-6"
+                              />
+                              {member.name}
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      {t("modals.edit.task.sections.status.title")}
+                    </FormLabel>
+
+                    <Select
+                      defaultValue={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={t(
+                              "modals.edit.task.sections.status.placeholder"
+                            )}
+                          />
                         </SelectTrigger>
                       </FormControl>
 
@@ -181,31 +208,41 @@ export const EditTaskForm = ({
                         <SelectItem value={TaskStatus.BACKLOG}>
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-pink-400 p-2" />
-                            Backlog
+                            {t(
+                              "modals.edit.task.sections.status.statuses.BACKLOG"
+                            )}
                           </div>
                         </SelectItem>
                         <SelectItem value={TaskStatus.TODO}>
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-red-400 p-2" />
-                            Todo
+                            {t(
+                              "modals.edit.task.sections.status.statuses.TODO"
+                            )}
                           </div>
                         </SelectItem>
                         <SelectItem value={TaskStatus.IN_PROGRESS}>
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-yellow-400 p-2" />
-                            In Progress
+                            {t(
+                              "modals.edit.task.sections.status.statuses.IN_PROGRESS"
+                            )}
                           </div>
                         </SelectItem>
                         <SelectItem value={TaskStatus.IN_REVIEW}>
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-blue-400 p-2" />
-                            In Review
+                            {t(
+                              "modals.edit.task.sections.status.statuses.IN_REVIEW"
+                            )}
                           </div>
                         </SelectItem>
                         <SelectItem value={TaskStatus.DONE}>
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-emerald-400 p-2" />
-                            Done
+                            {t(
+                              "modals.edit.task.sections.status.statuses.DONE"
+                            )}
                           </div>
                         </SelectItem>
                       </SelectContent>
@@ -218,7 +255,10 @@ export const EditTaskForm = ({
                 name="priority"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Priority</FormLabel>
+                    <FormLabel>
+                      {" "}
+                      {t("modals.edit.task.sections.priority.title")}
+                    </FormLabel>
 
                     <Select
                       defaultValue={field.value}
@@ -226,7 +266,11 @@ export const EditTaskForm = ({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select priority" />
+                          <SelectValue
+                            placeholder={t(
+                              "modals.edit.task.sections.priority.placeholder"
+                            )}
+                          />
                         </SelectTrigger>
                       </FormControl>
 
@@ -234,19 +278,25 @@ export const EditTaskForm = ({
                         <SelectItem value={Priority.HIGH}>
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-red-600 p-2" />
-                            High
+                            {t(
+                              "modals.edit.task.sections.priority.priorities.high"
+                            )}
                           </div>
                         </SelectItem>
                         <SelectItem value={Priority.MEDIUM}>
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-green-600 p-2" />
-                            Medium
+                            {t(
+                              "modals.edit.task.sections.priority.priorities.medium"
+                            )}
                           </div>
                         </SelectItem>
                         <SelectItem value={Priority.LOW}>
                           <div className="flex w-full items-center gap-x-4">
                             <Circle className="size-4 rounded-full bg-yellow-700 p-2" />
-                            Low
+                            {t(
+                              "modals.edit.task.sections.priority.priorities.low"
+                            )}
                           </div>
                         </SelectItem>
                       </SelectContent>
@@ -260,7 +310,10 @@ export const EditTaskForm = ({
                 name="projectId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Project</FormLabel>
+                    <FormLabel>
+                      {" "}
+                      {t("modals.edit.task.sections.project.title")}
+                    </FormLabel>
 
                     <Select
                       defaultValue={field.value}
@@ -268,7 +321,11 @@ export const EditTaskForm = ({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select project" />
+                          <SelectValue
+                            placeholder={t(
+                              "modals.edit.task.sections.project.placeholder"
+                            )}
+                          />
                         </SelectTrigger>
                       </FormControl>
 
@@ -301,10 +358,10 @@ export const EditTaskForm = ({
                 onClick={onCancel}
                 className={cn(!onCancel && "invisible")}
               >
-                Cancel
+                {t("modals.edit.task.options.cancel")}
               </Button>
               <Button type="submit" disabled={isPending} size={"lg"}>
-                Save Changes
+                {t("modals.edit.task.options.save")}
               </Button>
             </div>
           </form>
