@@ -137,11 +137,10 @@ export const MemberList = () => {
             <DottedSeparator />
           </div>
 
-          <CardContent className="p-7">
+          <CardContent className="p-8">
             <AnimatePresence mode="wait">
               {data?.documents.map((member, index) => (
                 <motion.div
-                  className=""
                   key={member.$id}
                   variants={itemVariants}
                   initial="hidden"
@@ -149,30 +148,31 @@ export const MemberList = () => {
                   exit={{ opacity: 0, x: -20 }}
                   layout
                 >
-                  <div className="flex items-center gap-2">
-                    <motion.div
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      <MemberAvatar
-                        name={member.name}
-                        fallbackClassName="text-lg"
-                        className="size-10"
-                      />
-                    </motion.div>
+                  <div className="flex items-center gap-2 justify-between p-2">
+                    <div className="flex items-center gap-4">
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <MemberAvatar
+                          name={member.name}
+                          fallbackClassName="text-lg"
+                          className="size-10"
+                        />
+                      </motion.div>
 
-                    <motion.div
-                      className="flex flex-col"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.2 }}
-                    >
-                      <p className="text-sm font-medium">{member.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {member.email}
-                      </p>
-                    </motion.div>
-
+                      <motion.div
+                        className="flex flex-col"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2 }}
+                      >
+                        <p className="text-sm font-medium">{member.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {member.email}
+                        </p>
+                      </motion.div>
+                    </div>
                     {data.currentMember.role === MemberRole.ADMIN &&
                       data.totalMembers > 1 && (
                         <DropdownMenu>
@@ -182,11 +182,11 @@ export const MemberList = () => {
                               whileTap={{ scale: 0.9 }}
                             >
                               <Button
-                                className="ml-auto dark:bg-neutral-950 border border-neutral-700"
-                                variant={"secondary"}
+                                className="ml-auto dark:bg-neutral-950 "
+                                variant={"outline"}
                                 size={"icon"}
                               >
-                                <MoreVerticalIcon className="size-4 text-muted-foreground" />
+                                <MoreVerticalIcon className="size-5 text-muted-foreground" />
                               </Button>
                             </motion.button>
                           </DropdownMenuTrigger>
@@ -202,7 +202,7 @@ export const MemberList = () => {
                                 }
                                 disabled={updatingMember}
                               >
-                                Set as Administrator
+                                {t("options.set-admin")}
                               </DropdownMenuItem>
                             )}
                             {member.role !== MemberRole.MEMBER && (
@@ -216,7 +216,7 @@ export const MemberList = () => {
                                 }
                                 disabled={updatingMember}
                               >
-                                Set as Member
+                                {t("options.set-member")}
                               </DropdownMenuItem>
                             )}
 
@@ -226,7 +226,7 @@ export const MemberList = () => {
                                 onClick={() => handleDeleteMember(member.$id)}
                                 disabled={deletingMember}
                               >
-                                Kick from workspace
+                                {t("options.kick")}
                               </DropdownMenuItem>
                             )}
                           </DropdownMenuContent>

@@ -809,5 +809,10 @@
     "october": "October",
     "november": "November",
     "december": "December"
+  },
+  "options": {
+    "set-admin": "Set as Administrator",
+    "set-member": "Set as Member",
+    "kick": "Kick from workspace"
   }
 }

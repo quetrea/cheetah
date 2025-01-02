@@ -804,5 +804,10 @@
     "october": "Ekim",
     "november": "Kasım",
     "december": "Aralık"
+  },
+  "options": {
+    "set-admin": "Yönetici olarak ayarla",
+    "set-member": "Üye olarak ayarla",
+    "kick": "Çalışma alanından kov"
   }
 }
