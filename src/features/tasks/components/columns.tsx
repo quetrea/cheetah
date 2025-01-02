@@ -68,6 +68,7 @@ export const columns: ColumnDef<Task>[] = [
         const { t } = useTranslation();
         return (
           <Button
+            className="px-2 "
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -93,6 +94,7 @@ export const columns: ColumnDef<Task>[] = [
         const { t } = useTranslation();
         return (
           <Button
+            className="px-2 "
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -118,6 +120,7 @@ export const columns: ColumnDef<Task>[] = [
         const { t } = useTranslation();
         return (
           <Button
+            className="px-2 "
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -133,7 +136,7 @@ export const columns: ColumnDef<Task>[] = [
 
       if (!assignee) return <AvatarCellSkeleton />;
       return (
-        <div className="flex items-center gap-x-2 text-sm font-medium">
+        <div className="flex items-center ml-2 gap-x-2 text-sm font-medium">
           <MemberAvatar
             className="size-6"
             fallbackClassName="text-xs"
@@ -152,6 +155,7 @@ export const columns: ColumnDef<Task>[] = [
 
         return (
           <Button
+            className="px-2 "
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -179,6 +183,7 @@ export const columns: ColumnDef<Task>[] = [
         const { t } = useTranslation();
         return (
           <Button
+            className="px-2 "
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -190,10 +195,25 @@ export const columns: ColumnDef<Task>[] = [
       return <HeaderComponent />;
     },
     cell: ({ row }) => {
-      const status = row.original.status;
+      const RowComponent = () => {
+        const { t } = useTranslation();
+        const status = row.original.status;
 
-      if (!status) return <BadgeCellSkeleton />;
-      return <Badge variant={status}>{snakeCaseToTitleCase(status)}</Badge>;
+        if (!status) return <BadgeCellSkeleton />;
+        return (
+          <Badge className="ml-2" variant={status}>
+                {snakeCaseToTitleCase(
+              `${t(
+                `modals.create.task.sections.status.statuses.${status}`
+              )}`
+            )}
+          </Badge>
+        );
+      };
+
+      return (
+        <RowComponent />
+      )
     },
   },
   // {
@@ -223,6 +243,7 @@ export const columns: ColumnDef<Task>[] = [
         const { t } = useTranslation();
         return (
           <Button
+            className="px-2 "
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -234,13 +255,26 @@ export const columns: ColumnDef<Task>[] = [
       return <HeaderComponent />;
     },
     cell: ({ row }) => {
-      const priority = row.original.priority;
+      const RowComponent = () => {
+        const { t } = useTranslation();
+        const priority = row.original.priority;
 
-      if (priority === null || priority === undefined) {
-        return <BadgeCellSkeleton />;
-      }
+        if (priority === null || priority === undefined) {
+          return <BadgeCellSkeleton />;
+        }
 
-      return <Badge variant={priority}>{priority}</Badge>;
+        return (
+          <Badge className="ml-2" variant={priority}>
+            {snakeCaseToTitleCase(
+              `${t(
+                `modals.create.task.sections.priority.priorities.${priority}`
+              )}`
+            )}
+          </Badge>
+        );
+      };
+
+      return <RowComponent />;
     },
   },
   {

@@ -10,7 +10,7 @@ interface ProjectColumnProps {
 export const ProjectColumn = ({ project, taskId }: ProjectColumnProps) => {
   const { mutate, isPending } = useUpdateTask();
   return (
-    <div className="flex items-center gap-x-2 text-sm font-medium">
+    <div className="flex items-center gap-x-2 ml-2 text-sm font-medium">
       <ProjectAvatar
         className="size-6"
         image={project.imageUrl}

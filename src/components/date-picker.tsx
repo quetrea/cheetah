@@ -14,6 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useTranslation } from "react-i18next";
 
 interface DatePickerProps {
   value: Date | undefined;
@@ -26,8 +27,13 @@ export const DatePicker = ({
   value,
   onChange,
   className,
-  placeholder = "Select date",
+  placeholder = "months.january",
 }: DatePickerProps) => {
+  const { t } = useTranslation();
+
+  const day = value ? format(value, "d") : "";
+  const monthName = value ? format(value, "MMMM") : "";
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -41,7 +47,11 @@ export const DatePicker = ({
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {value ? format(value, "PPP") : <span>{placeholder}</span>}
+          {value ? (
+            `${day} ${t(`months.${monthName.toLowerCase()}`)}`
+          ) : (
+            <span>{t(placeholder)}</span>
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">

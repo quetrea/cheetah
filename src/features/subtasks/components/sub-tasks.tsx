@@ -22,7 +22,7 @@ interface SubTaskProps {
   task: Task;
 }
 interface LocalSubTaskState {
-  [key: string]: boolean; // subtask id -> completed state
+  [key: string]: boolean;
 }
 
 export const SubTasks = ({ task }: SubTaskProps) => {

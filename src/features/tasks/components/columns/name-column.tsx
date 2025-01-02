@@ -18,7 +18,7 @@ export const NameColumn = ({ name, taskId }: NameColumnProps) => {
   return (
     <div
       onClick={() => handleOpen("name")}
-      className="line-clamp-1 inline-flex  pl-2 items-center gap-x-4 hover:underline cursor-pointer group"
+      className="line-clamp-1 inline-flex  ml-2 items-center gap-x-4 hover:underline cursor-pointer group"
     >
       {name}{" "}
     </div>

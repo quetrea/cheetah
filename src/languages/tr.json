@@ -789,5 +789,20 @@
         "failed-message": "Davet kodu sıfırlanırken sorun oluştu"
       }
     }
+  },
+
+  "months": {
+    "january": "Ocak",
+    "february": "Şubat",
+    "march": "Mart",
+    "april": "Nisan",
+    "may": "Mayıs",
+    "june": "Haziran",
+    "july": "Temmuz",
+    "august": "Ağustos",
+    "september": "Eylül",
+    "october": "Ekim",
+    "november": "Kasım",
+    "december": "Aralık"
   }
 }

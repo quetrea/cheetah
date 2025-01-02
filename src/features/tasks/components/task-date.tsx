@@ -28,7 +28,7 @@ export const TaskDate = ({ value, className, compeleted }: TaskDateProps) => {
   }
 
   return (
-    <div className={textColor}>
+    <div className={`${textColor} pl-2`}>
       <span className={cn("truncate", className)}>{format(value, "PPP")}</span>
     </div>
   );
