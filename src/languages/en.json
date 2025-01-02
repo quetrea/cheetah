@@ -317,7 +317,10 @@
     },
     "sub-tasks": {
       "title": "Sub Tasks",
-      "no-subtasks": "No subtasks yet or not yet set"
+      "no-subtasks": "No subtasks yet or not yet set",
+
+      "add": "Add subtask...",
+      "enterorcancel": "{{}}"
     },
     "task-switcher": {
       "tabs": {
