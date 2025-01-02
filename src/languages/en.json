@@ -624,7 +624,8 @@
     },
     "members": {
       "title": "Members",
-      "view-all-members": "View all members"
+      "view-all-members": "View all members",
+      "no-members-found": "No members found"
     }
   },
   "userButton": {

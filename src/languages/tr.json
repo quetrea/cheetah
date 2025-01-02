@@ -327,7 +327,9 @@
     },
     "sub-tasks": {
       "title": "Alt Görevler",
-      "no-subtasks": "Henüz alt görev oluşturulmadı"
+      "no-subtasks": "Henüz alt görev oluşturulmadı",
+      "add": "Yeni alt görev...",
+      "enterorcancel": "{{}}"
     },
     "task-switcher": {
       "tabs": {
@@ -621,7 +623,8 @@
     },
     "members": {
       "title": "Üyeler",
-      "view-all-members": "Bütün üyeleri görüntüle"
+      "view-all-members": "Bütün üyeleri görüntüle",
+      "no-members-found": "Üye bulunamadı"
     }
   },
   "userButton": {

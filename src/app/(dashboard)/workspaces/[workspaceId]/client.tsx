@@ -485,7 +485,6 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
 
                           <span className="truncate flex text-xs items-center">
                             <p className="mr-1">
-                              {" "}
                               {t("sections.tasks.dueDate")}
                             </p>
                             {format(new Date(task.dueDate), "MM/dd/yyyy ")}
@@ -571,7 +570,7 @@ export const ProjectList = ({
       <div className="bg-white dark:bg-neutral-950  hover:shadow-sm transition-all duration-300 hover:bg-muted border rounded-lg p-4">
         <div className="flex items-center justify-between">
           <div className="text-lg transition-all dark:hover:bg-neutral-900 duration-300 px-2 py-1 rounded-lg hover:bg-white inline-flex items-center gap-x-2.5 cursor-pointer font-semibold">
-            {t("sections.projects.title")}{" "}
+            {t("sections.projects.title")}
             <Button
               size={"smIcon"}
               variant={"outline"}
@@ -594,38 +593,42 @@ export const ProjectList = ({
         </div>
         <DottedSeparator className="my-4" />
         <motion.ul
-          className="grid grid-cols-1 lg:grid-cols-2 gap-4"
+          className="flex items-center justify-center "
           variants={containerVariants}
         >
-          {data.map((project) => (
-            <motion.li
-              key={project.$id}
-              variants={itemVariants}
-              whileHover={{
-                scale: 1.05,
-                transition: { duration: 0.2 },
-              }}
-            >
-              <Link href={`/workspaces/${workspaceId}/projects/${project.$id}`}>
-                <Card className="shadow-none rounded-lg hover:opacity-75 transition">
-                  <CardContent className="p-4 flex items-center   justify-between">
-                    <div className="flex gap-x-4 items-center">
-                      <ProjectAvatar
-                        className="size-12"
-                        fallbackClassname="text-lg"
-                        name={project.name}
-                        image={project.imageUrl}
-                      />
-                      <p className=" font-medium truncate">{project.name}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            </motion.li>
-          ))}
-          <li className="text-sm text-muted-foreground text-center hidden first-of-type:block">
-            {t("sections.projects.no-project-found")}
-          </li>
+          <div className="grid w-full grid-cols-1 lg:grid-cols-2 gap-4">
+            {data.map((project) => (
+              <motion.li
+                key={project.$id}
+                variants={itemVariants}
+                whileHover={{
+                  scale: 1.05,
+                  transition: { duration: 0.2 },
+                }}
+              >
+                <Link
+                  href={`/workspaces/${workspaceId}/projects/${project.$id}`}
+                >
+                  <Card className="shadow-none rounded-lg hover:opacity-75 transition">
+                    <CardContent className="p-4 flex items-center   justify-between">
+                      <div className="flex gap-x-4 items-center">
+                        <ProjectAvatar
+                          className="size-12"
+                          fallbackClassname="text-lg"
+                          name={project.name}
+                          image={project.imageUrl}
+                        />
+                        <p className=" font-medium truncate">{project.name}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </motion.li>
+            ))}
+            <li className="text-md text-muted-foreground text-center hidden first-of-type:block">
+              {t("sections.projects.no-project-found")}
+            </li>
+          </div>
         </motion.ul>
       </div>
     </motion.div>
@@ -741,7 +744,7 @@ export const MembersList = ({
             </motion.li>
           ))}
           <li className="text-sm text-muted-foreground text-center hidden first-of-type:block">
-            No members found
+            {t("sections.members.no-members-found")}
           </li>
         </motion.ul>
       </div>

@@ -17,6 +17,7 @@ import { useDeleteSubTask } from "@/features/subtasks/api/use-delete-subtask";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUpdateTask } from "@/features/tasks/api/use-update-task";
 import { TaskStatus } from "@/features/tasks/types";
+import { useTranslation } from "react-i18next";
 
 interface SubTaskProps {
   task: Task;
@@ -26,6 +27,7 @@ interface LocalSubTaskState {
 }
 
 export const SubTasks = ({ task }: SubTaskProps) => {
+  const { t } = useTranslation();
   const {
     data: subTasks,
     isLoading: subTasksLoading,
@@ -192,7 +194,7 @@ export const SubTasks = ({ task }: SubTaskProps) => {
   return (
     <div className="dark:bg-neutral-900 hover:bg-neutral-100 p-4  rounded-md">
       <div className="flex items-center justify-between">
-        <p className="text-lg font-medium">Sub Tasks</p>
+        <p className="text-lg font-medium">{t("tasks.sub-tasks.title")}</p>
         <Button
           variant="ghost"
           size="sm"
@@ -343,7 +345,7 @@ export const SubTasks = ({ task }: SubTaskProps) => {
                       <input
                         type="text"
                         className="flex-1 bg-transparent text-sm border-none focus:outline-none"
-                        placeholder="Add subtask..."
+                        placeholder={t("tasks.sub-tasks.add")}
                         value={newSubTaskTitle}
                         onChange={(e) => setNewSubTaskTitle(e.target.value)}
                         autoFocus
@@ -408,7 +410,7 @@ export const SubTasks = ({ task }: SubTaskProps) => {
               <div className="text-red-500 text-center py-4">
                 {!subTasks?.documents.length && !isCreating && (
                   <div className="text-md text-muted-foreground text-center py-2">
-                    No subtasks yet or not yet set
+                    {t("tasks.sub-tasks.no-subtasks")}
                   </div>
                 )}
               </div>
