@@ -497,7 +497,7 @@ export const TaskDescription = ({ task }: TaskDescriptionProps) => {
               __html:
                 value ||
                 `<span class="text-muted-foreground">${t(
-                  "task.task-description.warning"
+                  "tasks.task-description.warning"
                 )}</span>`,
             }}
           />
