@@ -99,6 +99,10 @@ export const MemberList = () => {
     },
   };
 
+  const adminCount =
+    data?.documents.filter((member) => member.role === MemberRole.ADMIN)
+      .length || 0;
+
   return (
     <>
       <ConfirmDialog />
@@ -205,20 +209,21 @@ export const MemberList = () => {
                                 {t("options.set-admin")}
                               </DropdownMenuItem>
                             )}
-                            {member.role !== MemberRole.MEMBER && (
-                              <DropdownMenuItem
-                                className="font-medium"
-                                onClick={() =>
-                                  handleUpdateMember(
-                                    member.$id,
-                                    MemberRole.MEMBER
-                                  )
-                                }
-                                disabled={updatingMember}
-                              >
-                                {t("options.set-member")}
-                              </DropdownMenuItem>
-                            )}
+                            {adminCount > 1 &&
+                              member.role !== MemberRole.MEMBER && (
+                                <DropdownMenuItem
+                                  className="font-medium"
+                                  onClick={() =>
+                                    handleUpdateMember(
+                                      member.$id,
+                                      MemberRole.MEMBER
+                                    )
+                                  }
+                                  disabled={updatingMember}
+                                >
+                                  {t("options.set-member")}
+                                </DropdownMenuItem>
+                              )}
 
                             {data?.totalMembers !== 1 && (
                               <DropdownMenuItem
