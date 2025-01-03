@@ -136,6 +136,16 @@ const app = new Hono()
       if (allMembersInWorkspace.total === 1) {
         return c.json({ error: "Cannot downgrade the only member" }, 400);
       }
+
+      if (role !== MemberRole.ADMIN) {
+        const adminCount = allMembersInWorkspace.documents.filter(
+          (m) => m.role === MemberRole.ADMIN
+        ).length;
+
+        if (adminCount <= 1) {
+          return c.json({ error: "Cannot downgrade the only admin." }, 400);
+        }
+      }
       await databases.updateDocument(DATABASE_ID, MEMBERS_ID, memberId, {
         role,
       });
