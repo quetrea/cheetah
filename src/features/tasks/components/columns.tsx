@@ -172,7 +172,7 @@ export const columns: ColumnDef<Task>[] = [
 
       if (!dueDate) return <TableCellSkeleton />;
       return (
-        <TaskDate value={dueDate} compeleted={status === TaskStatus.DONE} />
+        <TaskDate value={dueDate} completed={status === TaskStatus.DONE} />
       );
     },
   },
@@ -202,11 +202,7 @@ export const columns: ColumnDef<Task>[] = [
         if (!status) return <BadgeCellSkeleton />;
         return (
           <Badge className="ml-2" variant={status}>
-                {snakeCaseToTitleCase(
-              `${t(
-                `modals.create.task.sections.status.statuses.${status}`
-              )}`
-            )}
+            {t(`modals.create.task.sections.status.statuses.${status}`)}
           </Badge>
         );
       };
@@ -265,11 +261,7 @@ export const columns: ColumnDef<Task>[] = [
 
         return (
           <Badge className="ml-2" variant={priority}>
-            {snakeCaseToTitleCase(
-              `${t(
-                `modals.create.task.sections.priority.priorities.${priority}`
-              )}`
-            )}
+            {t(`modals.create.task.sections.priority.priorities.${priority}`)}
           </Badge>
         );
       };
