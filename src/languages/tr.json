@@ -329,7 +329,11 @@
       "title": "Alt Görevler",
       "no-subtasks": "Henüz alt görev oluşturulmadı",
       "add": "Yeni alt görev...",
-      "enterorcancel": "{{}}"
+      "alt": {
+        "save": "kaydetmek için",
+        "cancel": "iptal etmek için",
+        "press": "Basın"
+      }
     },
     "task-switcher": {
       "tabs": {
@@ -367,6 +371,10 @@
           "placeholder": "Bitiş Zamanı"
         }
       }
+    },
+    "progress": {
+      "title": "İlerleme",
+      "alt-info": "{{totalCount}} tane görevden {{countFinished}} tanesi bitirildi."
     }
   },
   "task_actions": {
@@ -595,6 +603,12 @@
           "title": "Çalışma alanını kaldır.",
           "description": "Bu işlem geri döndürülemez."
         }
+      }
+    },
+    "popouts": {
+      "cong": {
+        "title": "🎉 Tebrikler",
+        "message": "Buradaki bütün görevleri tamamladın"
       }
     }
   },

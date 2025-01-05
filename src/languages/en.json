@@ -320,7 +320,12 @@
       "no-subtasks": "No subtasks yet or not yet set",
 
       "add": "Add subtask...",
-      "enterorcancel": "{{}}"
+
+      "alt": {
+        "save": "to save",
+        "cancel": "to cancel",
+        "press": "Press"
+      }
     },
     "task-switcher": {
       "tabs": {
@@ -358,6 +363,10 @@
           "placeholder": "Due date"
         }
       }
+    },
+    "progress": {
+      "title": "Progress",
+      "alt-info": "{{countFinished}} of {{totalCount}} subtasks completed"
     }
   },
   "task_actions": {
@@ -600,6 +609,12 @@
           "title": "Delete Workspace",
           "description": "This action cannot be undone."
         }
+      }
+    },
+    "popouts": {
+      "cong": {
+        "title": "🎉 Congratulations",
+        "message": "All subtasks are finished!"
       }
     }
   },

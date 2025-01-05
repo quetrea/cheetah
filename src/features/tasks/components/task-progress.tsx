@@ -10,6 +10,7 @@ import { TaskStatus } from "../types";
 import { motion, AnimatePresence } from "framer-motion";
 import useSound from "use-sound";
 import { useLocalStorage } from "@/hooks/use-local-storage";
+import { useTranslation } from "react-i18next";
 
 interface TaskProgressProps {
   subtasks: SubTask[];
@@ -22,6 +23,7 @@ const CompletionModal = ({
   show: boolean;
   onComplete: () => void;
 }) => {
+  const { t } = useTranslation();
   const [showCongrats, setShowCongrats] = useState(false);
   const [showProgress, setShowProgress] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -130,7 +132,7 @@ const CompletionModal = ({
                   exit={{ y: -20, opacity: 0 }}
                   transition={{ delay: 0.2, duration: 0.5 }}
                 >
-                  🎉 Congratulations
+                  {t("modals.popouts.cong.title")}
                 </motion.h2>
                 <motion.p
                   className="text-lg text-white/90 mt-4"
@@ -139,7 +141,7 @@ const CompletionModal = ({
                   exit={{ y: -20, opacity: 0 }}
                   transition={{ delay: 0.3, duration: 0.5 }}
                 >
-                  All subtasks are finished!
+                  {t("modals.popouts.cong.message")}
                 </motion.p>
               </motion.div>
             )}
@@ -147,12 +149,13 @@ const CompletionModal = ({
         </motion.div>
       </motion.div>
     );
-  }, [show, showProgress, showCongrats, isAnimating]);
+  }, [show, showProgress, showCongrats, isAnimating, t]);
 
   return modalContent;
 };
 
 export const TaskProgress = ({ subtasks }: TaskProgressProps) => {
+  const { t } = useTranslation();
   const [showConfetti, setShowConfetti] = useState(false);
   const taskId = subtasks[0]?.taskId;
   const total = subtasks.length;
@@ -200,12 +203,15 @@ export const TaskProgress = ({ subtasks }: TaskProgressProps) => {
 
       <div className="space-y-2">
         <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <span>Progress</span>
+          <span>{t("tasks.progress.title")}</span>
           <span>{progressPercentage}%</span>
         </div>
         <Progress value={progressPercentage} className="h-2" />
         <div className="text-xs text-muted-foreground">
-          {completed} of {total} subtasks completed
+          {t("tasks.progress.alt-info", {
+            countFinished: completed,
+            totalCount: total,
+          })}
         </div>
       </div>
     </>

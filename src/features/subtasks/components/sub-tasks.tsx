@@ -391,15 +391,15 @@ export const SubTasks = ({ task }: SubTaskProps) => {
                           </Button>
 
                           <span className="hidden md:inline-flex items-center text-xs text-muted-foreground whitespace-nowrap">
-                            Press{" "}
+                            {t("tasks.sub-tasks.alt.press")}
                             <kbd className="px-1 mx-1 bg-neutral-100 dark:bg-neutral-800 rounded">
                               Enter
                             </kbd>{" "}
-                            to save,{" "}
+                            {t("tasks.sub-tasks.alt.save")},
                             <kbd className="px-1 mx-1 bg-neutral-100 dark:bg-neutral-800 rounded">
                               Esc
                             </kbd>{" "}
-                            to cancel
+                            {t("tasks.sub-tasks.alt.cancel")}
                           </span>
                         </div>
                       </div>
