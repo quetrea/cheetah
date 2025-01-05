@@ -23,7 +23,7 @@ interface TaskOverviewProps {
 }
 
 export const TaskOverview = ({ task }: TaskOverviewProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { open } = useEditTaskModal();
 
   const { data, isLoading } = useGetLabels({ taskId: task.$id });
@@ -132,9 +132,10 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
               <OverviewProperty
                 label={t("tasks.overview.sections.created-at.title")}
               >
-                <div className="text-sm text-blue-500">
-                  {format(task.$createdAt, "PPP")}
-                </div>
+                <TaskDate
+                  value={task.$createdAt}
+                  className="text-sm font-medium text-blue-500"
+                />
               </OverviewProperty>
               <OverviewProperty
                 label={t("tasks.overview.sections.endDate.title")}
@@ -149,14 +150,18 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
                 label={t("tasks.overview.sections.status.title")}
               >
                 <Badge variant={task.status}>
-                  {snakeCaseToTitleCase(task.status)}
+                  {t(
+                    `tasks.task-switcher.data-filter.status.list.${task.status}`
+                  )}
                 </Badge>
               </OverviewProperty>
               <OverviewProperty
                 label={t("tasks.overview.sections.priority.title")}
               >
                 <Badge variant={task.priority}>
-                  {snakeCaseToTitleCase(task.priority)}
+                  {t(
+                    `tasks.task-switcher.data-filter.priority.list.${task.priority}`
+                  )}
                 </Badge>
               </OverviewProperty>
             </motion.div>
