@@ -194,7 +194,7 @@ export const SubTasks = ({ task }: SubTaskProps) => {
   return (
     <div className="dark:bg-neutral-900 hover:bg-neutral-100 p-4  rounded-md">
       <div className="flex items-center justify-between">
-        <p className="text-lg font-medium">{t("tasks.sub-tasks.title")}</p>
+        <p className="text-xl font-medium px-1">{t("tasks.sub-tasks.title")}</p>
         <Button
           variant="ghost"
           size="sm"
@@ -208,10 +208,23 @@ export const SubTasks = ({ task }: SubTaskProps) => {
         </Button>
       </div>
       <DottedSeparator className="my-4" />
+      {subTasks && subTasks.total > 0 && (
+        <div className="flex justify-end mt-auto">
+          <div className="w-full p-2 px-2 ">
+            <TaskProgress
+              subtasks={subTasks.documents.map((st) => ({
+                ...st,
+                completed: localCompletionState[st.$id] ?? st.completed,
+              }))}
+            />
+          </div>
+        </div>
+      )}
+      <DottedSeparator className="my-4" />
 
-      <div className="flex flex-col gap-y-2 justify-between">
+      <div className="flex flex-col gap-y-2 justify-between h-full max-h-[185px] overflow-y-auto shadow-inner">
         <div className="flex flex-col gap-y-2">
-          <div className="flex flex-col">
+          <div className="flex flex-col ">
             {subTasksLoading ? (
               <div className="space-y-3">
                 <div className="flex items-center space-x-4">
@@ -416,18 +429,6 @@ export const SubTasks = ({ task }: SubTaskProps) => {
               </div>
             </div>
           </div>
-          {subTasks && subTasks.total > 0 && (
-            <div className="flex justify-end mt-auto">
-              <div className="w-full p-4">
-                <TaskProgress
-                  subtasks={subTasks.documents.map((st) => ({
-                    ...st,
-                    completed: localCompletionState[st.$id] ?? st.completed,
-                  }))}
-                />
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>
