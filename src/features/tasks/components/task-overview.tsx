@@ -140,7 +140,7 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
                 label={t("tasks.overview.sections.endDate.title")}
               >
                 <TaskDate
-                  compeleted={task.status === TaskStatus.DONE}
+                  completed={task.status === TaskStatus.DONE}
                   value={task.dueDate}
                   className="text-sm font-medium"
                 />
