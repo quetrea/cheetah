@@ -15,6 +15,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useTranslation } from "react-i18next";
+import { tr, enUS } from "date-fns/locale";
 
 interface DatePickerProps {
   value: Date | undefined;
@@ -27,12 +28,17 @@ export const DatePicker = ({
   value,
   onChange,
   className,
-  placeholder = "months.january",
+  placeholder = "Select date",
 }: DatePickerProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const day = value ? format(value, "d") : "";
-  const monthName = value ? format(value, "MMMM") : "";
+  const monthName = value
+    ? format(value, "MMMM", { locale: i18n.language === "en" ? enUS : tr })
+    : "";
+  const year = value ? format(value, "yyyy") : "";
+
+  const locale = i18n.language === "en" ? enUS : tr;
 
   return (
     <Popover>
@@ -48,7 +54,7 @@ export const DatePicker = ({
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
           {value ? (
-            `${day} ${t(`months.${monthName.toLowerCase()}`)}`
+            `${day} ${monthName} ${year}`
           ) : (
             <span>{t(placeholder)}</span>
           )}
@@ -58,6 +64,7 @@ export const DatePicker = ({
         <Calendar
           mode="single"
           selected={value}
+          locale={locale}
           onSelect={(date) => onChange(date as Date)}
           initialFocus
         />
