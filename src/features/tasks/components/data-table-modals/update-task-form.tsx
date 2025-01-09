@@ -39,6 +39,7 @@ import { useUpdateTask } from "../../api/use-update-task";
 import { useUpdateTaskModal } from "../../hooks/use-update-task-property-modal";
 import { useCustomTaskPropertyChange } from "@/hooks/use-custom-task-property-change";
 import { useGetTask } from "../../api/use-get-task";
+import { useTranslation } from "react-i18next";
 
 interface UpdateTaskFormProps {
   onCancel?: () => void;
@@ -51,6 +52,7 @@ export const UpdateTaskForm = ({
   type,
   taskId,
 }: UpdateTaskFormProps) => {
+  const { t } = useTranslation();
   const { data, isPending } = useGetTask({ taskId });
 
   const { setValue, value, handleSave } = useCustomTaskPropertyChange({
@@ -61,7 +63,9 @@ export const UpdateTaskForm = ({
   return (
     <Card className="w-full h-full border-none shadow-none rounded-none">
       <CardHeader className="flex p-7 pb-4 ">
-        <CardTitle className="text-xl font-bold">Edit task</CardTitle>
+        <CardTitle className="text-xl font-bold">
+          {t("updateTaskForm.task.edit.title")}
+        </CardTitle>
       </CardHeader>
       <div className="px-7">
         <DottedSeparator />
@@ -87,10 +91,10 @@ export const UpdateTaskForm = ({
               onClick={onCancel}
               className={cn(!onCancel && "invisible")}
             >
-              Cancel
+              {t("updateTaskForm.task.edit.options.cancel")}
             </Button>
             <Button type="submit" disabled={false} size={"lg"}>
-              Save Changes
+              {t("updateTaskForm.task.edit.options.save")}
             </Button>
           </div>
         </form>

@@ -829,6 +829,17 @@
     "november": "November",
     "december": "December"
   },
+  "updateTaskForm": {
+    "task": {
+      "edit": {
+        "title": "Edit task",
+        "options": {
+          "cancel": "Cancel",
+          "save": "Save Changes"
+        }
+      }
+    }
+  },
   "options": {
     "set-admin": "Set as Administrator",
     "set-member": "Set as Member",

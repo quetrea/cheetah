@@ -822,6 +822,17 @@
     "november": "Kasım",
     "december": "Aralık"
   },
+  "updateTaskForm": {
+    "task": {
+      "edit": {
+        "title": "Görevi düzenle",
+        "options": {
+          "cancel": "İptal et",
+          "save": "Değişiklikleri kaydet"
+        }
+      }
+    }
+  },
   "options": {
     "set-admin": "Yönetici olarak ayarla",
     "set-member": "Üye olarak ayarla",
