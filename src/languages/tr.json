@@ -825,6 +825,9 @@
   "options": {
     "set-admin": "Yönetici olarak ayarla",
     "set-member": "Üye olarak ayarla",
-    "kick": "Çalışma alanından kov"
+    "kick": "Çalışma alanından kov",
+    "save": "Değişiklikleri kaydet",
+    "cancel": "Değişiklikleri iptal et",
+    "confirm": "Kabul et"
   }
 }

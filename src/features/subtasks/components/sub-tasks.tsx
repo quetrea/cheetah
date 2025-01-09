@@ -222,7 +222,7 @@ export const SubTasks = ({ task }: SubTaskProps) => {
       )}
       <DottedSeparator className="my-4" />
 
-      <div className="flex flex-col gap-y-2 justify-between h-full max-h-[185px] overflow-y-auto shadow-inner">
+      <div className="flex flex-col gap-y-2 justify-between h-full max-h-[150px] overflow-y-auto shadow-inner">
         <div className="flex flex-col gap-y-2">
           <div className="flex flex-col ">
             {subTasksLoading ? (

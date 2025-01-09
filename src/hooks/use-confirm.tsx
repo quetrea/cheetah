@@ -11,12 +11,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useTranslation } from "react-i18next";
 
 export const useConfirm = (
   title: string,
   message: string,
   variant: ButtonProps["variant"] = "primary"
 ): [() => JSX.Element, () => Promise<unknown>] => {
+  const { t } = useTranslation();
   const [promise, setPromise] = useState<{
     resolve: (value: boolean) => void;
   } | null>(null);
@@ -55,14 +57,14 @@ export const useConfirm = (
               variant={"outline"}
               className="w-full lg:w-auto"
             >
-              Cancel
+              {t("options.cancel")}
             </Button>
             <Button
               onClick={handleConfirm}
               variant={variant}
               className="w-full lg:w-auto"
             >
-              Confirm
+              {t("options.confirm")}
             </Button>
           </div>
         </CardContent>

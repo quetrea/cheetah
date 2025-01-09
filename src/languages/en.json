@@ -832,6 +832,9 @@
   "options": {
     "set-admin": "Set as Administrator",
     "set-member": "Set as Member",
-    "kick": "Kick from workspace"
+    "kick": "Kick from workspace",
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
   }
 }
