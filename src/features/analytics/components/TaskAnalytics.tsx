@@ -34,27 +34,48 @@ interface TaskAnalyticsProps {
   };
 }
 
-const TIME_FILTERS = [
-  { value: "today", label: "Today" },
-  { value: "last3days", label: "Last 3 Days" },
-  { value: "week", label: "This Week" },
-  { value: "month", label: "This Month" },
-  { value: "year", label: "This Year" },
-] as const;
-
 const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ analytics }) => {
   const { t } = useTranslation();
-  const [timeFilter, setTimeFilter] =
-    useState<(typeof TIME_FILTERS)[number]["value"]>("week");
+  const [timeFilter, setTimeFilter] = useState("week");
+
+  const data = {
+    labels: [
+      t("analytics.taskAnalytics.totalTask.title"),
+      t("analytics.taskAnalytics.completedTask.title"),
+      t("analytics.taskAnalytics.inCompleteTask.title"),
+      t("analytics.taskAnalytics.overDueTask.title"),
+    ],
+    datasets: [
+      {
+        label: t("analytics.taskAnalytics.title"),
+        data: [
+          analytics.TaskCount,
+          analytics.CompletedTaskCount,
+          analytics.InCompleteTaskCount,
+          analytics.OverdueTaskCount,
+        ],
+        backgroundColor: [
+          "rgba(75, 192, 192, 0.6)",
+          "rgba(255, 99, 132, 0.6)",
+          "rgba(54, 162, 235, 0.6)",
+          "rgba(255, 206, 86, 0.6)",
+        ],
+        borderColor: [
+          "rgba(75, 192, 192, 1)",
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
 
   const options = {
     responsive: true,
-    animation: {
-      duration: 2000,
-    },
     plugins: {
       legend: {
-        display: false,
+        display: true,
       },
       tooltip: {
         backgroundColor: "rgba(0, 0, 0, 0.8)",
@@ -79,181 +100,46 @@ const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ analytics }) => {
       x: {
         grid: {
           display: false,
-          color: "rgba(0, 0, 0, 0.1)",
         },
       },
     },
   };
 
-  const getFilteredData = () => {
-    const currentDate = new Date();
-    const filteredData = { ...analytics };
-
-    switch (timeFilter) {
-      case "today":
-        break;
-      case "last3days":
-        break;
-      case "week":
-        break;
-      case "month":
-        break;
-      case "year":
-        break;
-      default:
-        return analytics;
-    }
-
-    return filteredData;
-  };
-
-  const filteredAnalytics = getFilteredData();
-
-  const data = {
-    labels: [
-      `${t("analytics.taskAnalytics.totalTask.title")}`,
-      `${t("analytics.taskAnalytics.completedTask.title")}`,
-      `${t("analytics.taskAnalytics.inCompleteTask.title")}`,
-      `${t("analytics.taskAnalytics.overDueTask.title")}`,
-    ],
-    datasets: [
-      {
-        data: [
-          filteredAnalytics.TaskCount,
-          filteredAnalytics.CompletedTaskCount,
-          filteredAnalytics.InCompleteTaskCount,
-          filteredAnalytics.OverdueTaskCount,
-        ],
-        backgroundColor: [
-          "rgba(75, 192, 192, 0.6)",
-          "rgba(255, 99, 132, 0.6)",
-          "rgba(54, 162, 235, 0.6)",
-          "rgba(255, 206, 86, 0.6)",
-          "rgba(255, 159, 64, 0.6)",
-        ],
-        borderColor: [
-          "rgba(75, 192, 192, 1)",
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.4 },
-    },
-  };
-
-  const chartVariants = {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
-        duration: 0.8,
-        delay: 0.2,
-      },
-    },
-  };
-
   return (
-    <motion.div
-      className="w-full max-w-4xl mx-auto"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
+    <motion.div className="w-full max-w-4xl mx-auto p-4">
       <motion.div
-        className="w-full gap-y-6 p-6 border-2 rounded-lg border-transparent transition-all duration-300 hover:border-neutral-500  bg-card"
+        className="w-full gap-y-6 p-6 border-2 rounded-lg border-transparent transition-all duration-300 hover:border-neutral-500 bg-card"
         whileHover={{ scale: 1.0 }}
         transition={{ duration: 0.2 }}
       >
-        <div className="flex items-center justify-between mb-8">
-          <motion.h2
-            className="text-2xl md:text-2xl xs:text-lg  bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent"
-            variants={itemVariants}
-          >
-            {t("analytics.taskAnalytics.title")}
-          </motion.h2>
-
-          {/* <motion.div variants={itemVariants}>
-            <Select
-              value={timeFilter}
-              onValueChange={(value) =>
-                setTimeFilter(value as typeof timeFilter)
-              }
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select time range" />
-              </SelectTrigger>
-              <SelectContent>
-                {TIME_FILTERS.map((filter) => (
-                  <SelectItem
-                    key={filter.value}
-                    value={filter.value}
-                    className="cursor-pointer"
-                  >
-                    {filter.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </motion.div> */}
-        </div>
+        <h2 className="text-2xl font-bold mb-4">
+          {t("analytics.taskAnalytics.title")}
+        </h2>
 
         <AnimatePresence mode="wait">
           <motion.div
-            key={timeFilter}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="w-full"
+            className="hidden md:block"
           >
             <Bar data={data} options={options} />
           </motion.div>
         </AnimatePresence>
 
-        <motion.div
-          className="grid grid-cols-4 gap-4 mt-6"
-          variants={itemVariants}
-        >
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
           {data.labels.map((label, index) => (
-            <motion.div
+            <div
               key={label}
-              className="flex flex-col items-center justify-between p-2 md:p-3 rounded-lg h-20 md:h-24"
+              className="flex flex-col items-center justify-between p-2 rounded-lg h-20 md:h-24"
               style={{
                 backgroundColor: data.datasets[0].backgroundColor[
                   index
                 ].replace("0.6", "0.1"),
               }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
             >
-              <div className="text-xs md:text-sm font-medium text-center">
+              <div className="text-xs md:text-base font-medium text-center">
                 {label}
               </div>
               <div
@@ -262,9 +148,9 @@ const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ analytics }) => {
               >
                 {data.datasets[0].data[index]}
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </motion.div>
     </motion.div>
   );
