@@ -1,21 +1,20 @@
 "use client";
 import { z } from "zod";
-import { useRef } from "react";
-import Image from "next/image";
+
 import { useForm } from "react-hook-form";
 import { useCreateTask } from "../api/use-create-task";
 import { createTaskSchema } from "../schemas";
-import { useRouter } from "next/navigation";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/date-picker";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DottedSeparator } from "@/components/dotted-separator";
+
 import {
   Form,
   FormControl,
@@ -32,26 +31,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MemberAvatar } from "@/features/members/components/member-avatar";
 import { Priority, Task, TaskStatus } from "../types";
-import { Circle, HistoryIcon } from "lucide-react";
+import { Circle } from "lucide-react";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
-import { useTranslation } from "react-i18next";
-import { useGetTasks } from "../api/use-get-tasks";
-import { useGetProject } from "@/features/projects/api/use-get-project";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Hint } from "@/components/hint";
-import { useGetTask } from "../api/use-get-task";
+import { MemberAvatar } from "@/features/members/components/member-avatar";
 
-interface CreateTaskFormProps {
+import { useGetProject } from "@/features/projects/api/use-get-project";
+import { useGetTask } from "@/features/tasks/api/use-get-task";
+import { useGetTasks } from "@/features/tasks/api/use-get-tasks";
+import { useTranslation } from "react-i18next";
+
+interface DuplicateTaskFormProps {
   onCancel?: () => void;
   projectOptions: { id: string; name: string; imageUrl: string }[];
   memberOptions: { id: string; name: string }[];
@@ -60,14 +50,14 @@ interface CreateTaskFormProps {
   taskId?: string;
 }
 
-export const CreateTaskForm = ({
+export const DuplicateTaskForm = ({
   onCancel,
   projectOptions,
   memberOptions,
   onStatusUpdate,
   projectId,
   taskId,
-}: CreateTaskFormProps) => {
+}: DuplicateTaskFormProps) => {
   const { t } = useTranslation();
   const workspaceId = useWorkspaceId();
   const { mutate, isPending } = useCreateTask();
@@ -79,10 +69,22 @@ export const CreateTaskForm = ({
     projectId: projectId ?? "",
   });
 
+  const { data: duplicatedTask, isLoading: duplicatedTaskLoading } = useGetTask(
+    { taskId: taskId ?? "" }
+  );
+
   const form = useForm<z.infer<typeof createTaskSchema>>({
     resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
     defaultValues: {
       workspaceId,
+      name: duplicatedTask?.name ?? "",
+      dueDate: duplicatedTask?.dueDate
+        ? new Date(duplicatedTask.dueDate)
+        : new Date(),
+      status: duplicatedTask?.status ?? undefined,
+      priority: duplicatedTask?.priority ?? undefined,
+      assigneeId: duplicatedTask?.assigneeId ?? "", // Varsayılan değer
+      projectId: duplicatedTask?.projectId ?? "", // Varsayılan değer
     },
   });
 
@@ -115,7 +117,7 @@ export const CreateTaskForm = ({
       <Card className="w-full h-full border-none shadow-none rounded-none select-none">
         <CardHeader className="flex p-7">
           <CardTitle className="text-3xl font-bold">
-            {t("modals.create.task.title")}
+            {t("modals.duplicate.task.title")}
           </CardTitle>
         </CardHeader>
         <div className="px-7">

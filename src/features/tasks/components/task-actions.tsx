@@ -5,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ExternalLinkIcon, PencilIcon, Trash } from "lucide-react";
+import { CopyIcon, ExternalLinkIcon, PencilIcon, Trash } from "lucide-react";
 import React from "react";
 import { useDeleteTask } from "../api/use-delete-task";
 import { useConfirm } from "@/hooks/use-confirm";
@@ -14,6 +14,7 @@ import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useEditTaskModal } from "../hooks/use-edit-task-modal";
 import { useGetTask } from "../api/use-get-task";
 import { useTranslation } from "react-i18next";
+import { useDuplicateTaskModal } from "../hooks/use-duplicate-task-modal";
 
 interface TaskActionsProps {
   id: string;
@@ -27,9 +28,10 @@ export const TaskActions = ({ id, projectId, children }: TaskActionsProps) => {
   const router = useRouter();
   const { data } = useGetTask({ taskId: id });
   const { open } = useEditTaskModal();
+  const { open: duplicate } = useDuplicateTaskModal();
   const [ConfirmDialog, confirm] = useConfirm(
-    "Delete task",
-    "This action cannot be undone.",
+    `${t("modals.dialogs.delete.task.title")}`,
+    `${t("modals.dialogs.delete.task.description")}`,
     "destructive"
   );
   const { mutate: taskDelete, isPending: isDeleting } = useDeleteTask();
@@ -72,6 +74,13 @@ export const TaskActions = ({ id, projectId, children }: TaskActionsProps) => {
           >
             <ExternalLinkIcon className="size-4 mr-2 stroke-2" />
             {t("task_actions.open.title")}
+          </DropdownMenuItem>{" "}
+          <DropdownMenuItem
+            onClick={() => duplicate(id)}
+            className="font-medium p-[10px]"
+          >
+            <CopyIcon className="size-4 mr-2 stroke-2" />
+            {t("task_actions.duplicate.title")}
           </DropdownMenuItem>
           {data?.$id === id ? (
             <DropdownMenuItem

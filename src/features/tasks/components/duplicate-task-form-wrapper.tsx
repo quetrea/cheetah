@@ -3,21 +3,20 @@ import { useGetMembers } from "@/features/members/api/use-get-members";
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { Loader2 } from "lucide-react";
-import { CreateTaskForm } from "./create-task-form";
-import { TaskStatus } from "../types";
-import { useCreateProjectModal } from "@/features/projects/hooks/use-create-project-modal";
+
 import { useCreateTaskModal } from "../hooks/use-create-task-modal";
 import { useProjectId } from "@/features/projects/hooks/use-task-id";
+import { DuplicateTaskForm } from "./duplicate-task-from";
 
-interface CreateTaskFormWrapperProps {
+interface DuplicateTaskFormWrapperProps {
   onCancel: () => void;
   duplicatedTaskId?: string;
 }
 
-export const CreateTaskFormWrapper = ({
+export const DuplicateTaskFormWrapper = ({
   onCancel,
   duplicatedTaskId,
-}: CreateTaskFormWrapperProps) => {
+}: DuplicateTaskFormWrapperProps) => {
   const workspaceId = useWorkspaceId();
   const projectId = useProjectId();
   const { modalStatus } = useCreateTaskModal();
@@ -52,7 +51,7 @@ export const CreateTaskFormWrapper = ({
   }
 
   return (
-    <CreateTaskForm
+    <DuplicateTaskForm
       onCancel={onCancel}
       projectId={projectId}
       memberOptions={membersOptions ?? []}

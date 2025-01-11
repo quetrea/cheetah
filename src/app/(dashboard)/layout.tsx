@@ -7,6 +7,7 @@ import { EditTaskModal } from "@/features/tasks/components/edit-task-modal";
 import { CreateLabelModal } from "@/features/labels/components/create-label-modal";
 import { UpdateLabelModal } from "@/features/labels/components/update-label-modal";
 import { UpdateTaskModal } from "@/features/tasks/components/data-table-modals/update-task-modal";
+import { DuplicateTaskModal } from "@/features/tasks/components/duplicate-task-modal";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -22,6 +23,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <CreateLabelModal />
       <UpdateLabelModal />
       <UpdateTaskModal />
+      <DuplicateTaskModal />
       <div className="flex w-full h-full">
         <div className="fixed left-0 top-0 hidden lg:block lg:w-[246px] h-full overflow-y-auto">
           <Sidebar />

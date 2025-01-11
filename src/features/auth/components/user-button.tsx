@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { LifeBuoyIcon, Loader, LogOut, UserCog2 } from "lucide-react";
+import { LifeBuoyIcon, Loader, LogOut, UserCog2, UserPlus } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -42,7 +42,7 @@ export const UserButton = () => {
   const menuVariants = {
     hidden: {
       opacity: 0,
-      y: -10,
+      y: -5,
       height: 0,
     },
     visible: {
@@ -50,18 +50,16 @@ export const UserButton = () => {
       y: 0,
       height: "auto",
       transition: {
-        duration: 0.2,
-        ease: "easeOut",
-        staggerChildren: 0.05,
+        duration: 0.1,
+        ease: "easeInOut",
       },
     },
     exit: {
       opacity: 0,
-      y: -10,
+      y: -5,
       height: 0,
       transition: {
-        duration: 0.2,
-        ease: "easeIn",
+        duration: 0.1,
       },
     },
   };
@@ -69,13 +67,13 @@ export const UserButton = () => {
   const itemVariants = {
     hidden: {
       opacity: 0,
-      y: -10,
+      y: -5,
     },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.2,
+        duration: 0.1,
       },
     },
   };
@@ -133,7 +131,21 @@ export const UserButton = () => {
               variants={itemVariants}
               className="flex flex-col w-full"
             >
-              <motion.div whileHover={{ scale: 1.02, x: 5 }}>
+              {/* <motion.div
+                whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }}
+              >
+                <DropdownMenuItem
+                  asChild
+                  className="w-full p-2.5 flex items-center dark:hover:bg-white/10 dark:text-neutral-300 hover:bg-neutral-200 text-neutral-900 font-medium cursor-pointer"
+                >
+                  <Link href={`/create-profile`}>
+                    <UserPlus className="size-5 mr-2" />
+                    {t("userButton.tabs.createProfile")}
+                  </Link>
+                </DropdownMenuItem>
+              </motion.div> */}
+
+              <motion.div>
                 <DropdownMenuItem
                   asChild
                   className="w-full p-2.5 flex items-center dark:hover:bg-white/10 dark:text-neutral-300 hover:bg-neutral-200 text-neutral-900 font-medium cursor-pointer"
@@ -144,7 +156,7 @@ export const UserButton = () => {
                   </Link>
                 </DropdownMenuItem>
               </motion.div>
-
+              {/* 
               {data.plan.planType === PlanType.FREE && (
                 <motion.div whileHover={{ scale: 1.02, x: 5 }}>
                   <DropdownMenuItem
@@ -157,14 +169,16 @@ export const UserButton = () => {
                     </Link>
                   </DropdownMenuItem>
                 </motion.div>
-              )}
+              )} */}
 
-              <motion.div whileHover={{ scale: 1.02, x: 5 }}>
+              {/* 
+              <motion.div whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }}>
                 <DropdownMenuItem className="w-full p-2.5 hover:bg-neutral-200 dark:hover:bg-white/10 dark:text-neutral-300 text-neutral-900 font-medium cursor-pointer">
                   <LifeBuoyIcon className="size-5 mr-2" />
                   {t("userButton.tabs.help-center")}
                 </DropdownMenuItem>
               </motion.div>
+              */}
             </motion.div>
             <DottedSeparator className="py-1" />
             <motion.div whileHover={{ scale: 1.02 }} variants={itemVariants}>

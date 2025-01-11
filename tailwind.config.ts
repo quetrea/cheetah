@@ -113,7 +113,7 @@ const config: Config = {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("@tailwindcss/typography"),
     require("tailwindcss-animate"),
-    require("tailwind-scrollbar")({ nocompatible: true }),
+    require("tailwind-scrollbar"),
   ],
 };
 

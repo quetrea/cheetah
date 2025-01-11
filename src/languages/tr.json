@@ -387,6 +387,9 @@
     "edit": {
       "title": "Görevi düzenle"
     },
+    "duplicate": {
+      "title": "Kopyasını oluştur"
+    },
     "delete": {
       "title": "Görevi sil"
     }
@@ -602,6 +605,10 @@
         "workspace": {
           "title": "Çalışma alanını kaldır.",
           "description": "Bu işlem geri döndürülemez."
+        },
+        "task": {
+          "title": "Görevi kaldır",
+          "description": "Bu işlem geri alınamayabilir!"
         }
       }
     },
@@ -609,6 +616,54 @@
       "cong": {
         "title": "🎉 Tebrikler",
         "message": "Buradaki bütün görevleri tamamladın"
+      }
+    },
+    "duplicate": {
+      "task": {
+        "title": "Görevin kopyasını oluştur",
+        "sections": {
+          "name": {
+            "title": "Görev adı",
+            "placeholder": "Görev adını girin"
+          },
+          "duedate": {
+            "title": "Bitiş zamanı",
+            "placeholder": "Tarih seçin"
+          },
+          "assignee": {
+            "title": "Göreve Atanan Kişi",
+            "placeholder": "Atanacak kişi seçin"
+          },
+          "status": {
+            "title": "Durum",
+            "placeholder": "Durum seçin",
+
+            "statuses": {
+              "BACKLOG": "Hazırlanıyor",
+              "TODO": "Yapılacaklar",
+              "IN_PROGRESS": "Yapılıyor",
+              "IN_REVIEW": "İncelemede",
+              "DONE": "Tamamlandı"
+            }
+          },
+          "priority": {
+            "title": "Öncelik",
+            "placeholder": "Görevin önceliğini seçin",
+            "priorities": {
+              "high": "Yüksek",
+              "medium": "Orta",
+              "low": "Düşük"
+            }
+          },
+          "project": {
+            "title": "Proje",
+            "placeholder": "Görevinizin projesini seçin"
+          }
+        },
+        "options": {
+          "cancel": "İptal",
+          "create": "Görevi oluştur"
+        }
       }
     }
   },
@@ -645,6 +700,7 @@
     "user": "Kullanıcı",
     "tabs": {
       "account": "Hesap Ayarları",
+      "createProfile": "Profil oluştur",
       "upgrade": "Hesabı yükselt",
       "help-center": "Yardım Merkezi",
       "log-out": "Çıkış yap"

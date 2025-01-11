@@ -379,6 +379,9 @@
     "edit": {
       "title": "Edit Task"
     },
+    "duplicate": {
+      "title": "Duplicate"
+    },
     "delete": {
       "title": "Delete Task"
     }
@@ -608,6 +611,10 @@
         "workspace": {
           "title": "Delete Workspace",
           "description": "This action cannot be undone."
+        },
+        "task": {
+          "title": "Delete Task",
+          "description": "This action cannot be undone."
         }
       }
     },
@@ -615,6 +622,53 @@
       "cong": {
         "title": "🎉 Congratulations",
         "message": "All subtasks are finished!"
+      }
+    },
+    "duplicate": {
+      "task": {
+        "title": "Duplicate the task",
+        "sections": {
+          "name": {
+            "title": "Task name",
+            "placeholder": "Enter task name"
+          },
+          "duedate": {
+            "title": "Duedate",
+            "placeholder": "Select date"
+          },
+          "assignee": {
+            "title": "Assignee",
+            "placeholder": "Select assignee"
+          },
+          "status": {
+            "title": "Status",
+            "placeholder": "Select status",
+            "statuses": {
+              "BACKLOG": "Backlog",
+              "TODO": "Todo",
+              "IN_PROGRESS": "In Progress",
+              "IN_REVIEW": "In Review",
+              "DONE": "Done"
+            }
+          },
+          "priority": {
+            "title": "Priority",
+            "placeholder": "Select priority",
+            "priorities": {
+              "high": "High",
+              "medium": "Medium",
+              "low": "Low"
+            }
+          },
+          "project": {
+            "title": "Project",
+            "placeholder": "Select project"
+          }
+        },
+        "options": {
+          "cancel": "Cancel",
+          "create": "Create Task"
+        }
       }
     }
   },
@@ -650,6 +704,7 @@
     "user": "User",
     "tabs": {
       "account": "Account Settings",
+      "createProfile": "Create Profile",
       "upgrade": "Upgrade to Plus",
       "help-center": "Help Center",
       "log-out": "Log out"
