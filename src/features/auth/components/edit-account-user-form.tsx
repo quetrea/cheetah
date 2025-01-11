@@ -177,7 +177,7 @@ export const EditAccountSettings = ({
     <>
       <UpdateDialog />
       <motion.div
-        className="flex flex-col gap-y-4 select-none"
+        className="flex flex-col gap-y-4 max-w-xs md:max-w-md xs:max-w-sm select-none w-full"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -232,7 +232,7 @@ export const EditAccountSettings = ({
                       />
                     </div>
                     <DottedSeparator className="py-7" />
-                    <div className="flex items-center justify-between">
+                    <div className="flex  justify-between flex-col w-full md:flex-row md:items-center">
                       <Button
                         type="button"
                         size={"lg"}
@@ -278,7 +278,7 @@ export const EditAccountSettings = ({
                   onSubmit={formUpdateEmail.handleSubmit(onEmailChangeSubmit)}
                 >
                   <div className=" flex flex-col gap-y-4 items-center">
-                    <div className="flex gap-4">
+                    <div className="flex gap-4  flex-col w-full xs:flex-col sm:flex-row ">
                       <FormField
                         control={formUpdateEmail.control}
                         name="email"
@@ -352,7 +352,7 @@ export const EditAccountSettings = ({
                     </div>
                   </div>
                   <DottedSeparator className="my-4" />
-                  <div className="flex items-center justify-between">
+                  <div className="flex  justify-between flex-col w-full md:flex-row md:items-center">
                     <Button
                       type="button"
                       size={"lg"}
@@ -369,7 +369,7 @@ export const EditAccountSettings = ({
                       variant={"primary"}
                       type="submit"
                       disabled={isPending}
-                      className="px-3.5 py-2"
+                      className="px-3.5 py-2 flex-col flex"
                     >
                       {t(
                         "settingsSections.account.sections.change-email.formFields.options.save"
@@ -400,7 +400,7 @@ export const EditAccountSettings = ({
                   )}
                 >
                   <div className=" flex flex-col gap-y-4 items-center">
-                    <div className="flex gap-4">
+                    <div className="flex gap-4  flex-col w-full xs:flex-col sm:flex-row ">
                       <FormField
                         control={formUpdatePassword.control}
                         name="oldPassword"
@@ -473,7 +473,7 @@ export const EditAccountSettings = ({
                     </div>
                   </div>
                   <DottedSeparator className="my-4" />
-                  <div className="flex items-center justify-between">
+                  <div className="flex  justify-between flex-col w-full md:flex-row md:items-center">
                     <Button
                       type="button"
                       size={"lg"}

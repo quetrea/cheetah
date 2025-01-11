@@ -18,6 +18,7 @@ import Link from "next/link";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { PlanType } from "@/features/plans/types";
 import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 export const UserButton = () => {
   const { t } = useTranslation();
@@ -154,6 +155,9 @@ export const UserButton = () => {
                     <UserCog2 className="size-5 mr-2" />
                     {t("userButton.tabs.account")}
                   </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <LanguageSwitcher />
                 </DropdownMenuItem>
               </motion.div>
               {/* 

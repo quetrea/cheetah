@@ -163,9 +163,6 @@ export const Navbar = () => {
       </div>
 
       <motion.div className="flex items-center gap-x-2" variants={itemVariants}>
-        <motion.div>
-          <LanguageSwitcher />
-        </motion.div>
         <motion.div
           className="hover:bg-accent hover:text-accent-foreground rounded-md p-2 transition-colors"
           whileHover={{ scale: 1.05, rotate: 5 }}
