@@ -76,10 +76,7 @@ const MembersPieChart: React.FC<MembersPieChartProps> = ({
       initial="hidden"
       animate="visible"
     >
-      <motion.h2
-        className="text-2xl p-6  font-medium  "
-        variants={itemVariants}
-      >
+      <motion.h2 className="text-2xl p-6  font-bold  " variants={itemVariants}>
         {t("analytics.membersAnalytics.title")}
       </motion.h2>
 
