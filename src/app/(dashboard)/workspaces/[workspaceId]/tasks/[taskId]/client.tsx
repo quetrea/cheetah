@@ -63,9 +63,7 @@ export const TaskIdClient = () => {
           <motion.div variants={itemVariants} className="w-full">
             <TaskOverview task={data} />
           </motion.div>
-          <motion.div variants={itemVariants}>
-            <NodeGraphTasks task={data} taskId={taskId} />
-          </motion.div>
+
           <motion.div variants={itemVariants}>
             <TaskDescription task={data} />
           </motion.div>

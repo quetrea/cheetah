@@ -209,20 +209,22 @@ export const SubTasks = ({ task }: SubTaskProps) => {
       </div>
       <DottedSeparator className="my-4" />
       {subTasks && subTasks.total > 0 && (
-        <div className="flex justify-end mt-auto">
-          <div className="w-full p-2 px-2 ">
-            <TaskProgress
-              subtasks={subTasks.documents.map((st) => ({
-                ...st,
-                completed: localCompletionState[st.$id] ?? st.completed,
-              }))}
-            />
+        <>
+          <div className="flex justify-end mt-auto">
+            <div className="w-full p-2 px-2 ">
+              <TaskProgress
+                subtasks={subTasks.documents.map((st) => ({
+                  ...st,
+                  completed: localCompletionState[st.$id] ?? st.completed,
+                }))}
+              />
+            </div>
           </div>
-        </div>
+          <DottedSeparator className="my-4" />
+        </>
       )}
-      <DottedSeparator className="my-4" />
 
-      <div className="flex flex-col gap-y-2 justify-between h-full max-h-[150px] overflow-y-auto shadow-inner">
+      <div className="flex flex-col gap-y-2 justify-between h-full max-h-[120px] scrollbar-thin overflow-y-auto shadow-inner scrollbar-thumb-rounded-full scrollbar-thumb-gray-400  scrollbar-track-transparent">
         <div className="flex flex-col gap-y-2">
           <div className="flex flex-col ">
             {subTasksLoading ? (

@@ -319,57 +319,9 @@ export const TaskDescription = ({ task }: TaskDescriptionProps) => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <h2 className="text-xl font-semibold bg-gradient-to-r from-violet-500 to-fuchsia-500 bg-clip-text text-transparent">
+            <h2 className="text-xl font-semibold ">
               {t("tasks.task-description.title")}
             </h2>
-            <HoverCard>
-              <HoverCardTrigger>
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 400,
-                    damping: 25,
-                  }}
-                >
-                  <div className="px-2 py-1 text-[10px] font-medium rounded-full bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 border border-purple-500/30 text-purple-700 dark:text-purple-300 cursor-pointer">
-                    <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                      {t("tasks.new")}
-                    </span>
-                  </div>
-                </motion.div>
-              </HoverCardTrigger>
-              <HoverCardContent className="w-80" align="start">
-                <div className="flex flex-col space-y-2">
-                  <h4 className="text-sm font-semibold">✨ New Features</h4>
-                  <div className="text-sm text-muted-foreground space-y-1.5">
-                    <div className="flex items-start gap-2">
-                      <span className="text-primary">📝</span>
-                      <p>
-                        Enhanced rich text editor with improved formatting
-                        options
-                      </p>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <span className="text-primary">🎨</span>
-                      <p>Optimized dark mode support with better contrast</p>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <span className="text-primary">🔄</span>
-                      <p>
-                        Reliable undo/redo functionality with history
-                        preservation
-                      </p>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <span className="text-primary">⚡</span>
-                      <p>Performance improvements and smoother animations</p>
-                    </div>
-                  </div>
-                </div>
-              </HoverCardContent>
-            </HoverCard>
           </div>
           {!isEditing && !value && (
             <span className="text-xs font-medium text-muted-foreground bg-accent/20 px-3 py-1.5 rounded-full">

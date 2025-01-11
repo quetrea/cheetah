@@ -78,9 +78,22 @@ export const DuplicateTaskForm = ({
     defaultValues: {
       workspaceId,
       name: duplicatedTask?.name ?? "",
-      dueDate: duplicatedTask?.dueDate
-        ? new Date(duplicatedTask.dueDate)
-        : new Date(),
+      dueDate: (() => {
+        const createdAt = duplicatedTask?.$createdAt
+          ? new Date(duplicatedTask.$createdAt)
+          : new Date();
+        const dueDate = duplicatedTask?.dueDate
+          ? new Date(duplicatedTask.dueDate)
+          : new Date();
+
+        const timeDiff = dueDate.getTime() - createdAt.getTime();
+        const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+        const newDueDate = new Date();
+        newDueDate.setDate(newDueDate.getDate() + daysDiff);
+
+        return newDueDate;
+      })(),
       status: duplicatedTask?.status ?? undefined,
       priority: duplicatedTask?.priority ?? undefined,
       assigneeId: duplicatedTask?.assigneeId ?? "", // Varsayılan değer
@@ -95,6 +108,7 @@ export const DuplicateTaskForm = ({
         onSuccess: ({ data }) => {
           form.reset();
           window.location.href = `/workspaces/${workspaceId}/tasks/${data.$id}`;
+          onCancel?.();
         },
       }
     );

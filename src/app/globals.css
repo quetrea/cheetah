@@ -15,7 +15,29 @@ body {
     text-wrap: balance;
   }
 }
+/* Klasik kaydırma çubuğunu gizlemek için */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px; /* Kaydırma çubuğunun genişliği */
+}
 
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent; /* Kaydırma çubuğu arka plan rengi */
+  
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1; /* Kaydırma çubuğu parmağının rengi */
+  border-radius: 10px; /* Kaydırma çubuğu parmağının köşelerini yuvarlar */
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: #a0aec0; /* Hover durumunda kaydırma çubuğu parmağının rengi */
+}
+
+/* Ok butonlarını gizlemek için */
+.scrollbar-thin::-webkit-scrollbar-button {
+  display: none; /* Ok butonlarını gizler */
+}
 
 @layer base {
   :root {
