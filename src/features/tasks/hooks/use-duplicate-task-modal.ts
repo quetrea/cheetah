@@ -4,7 +4,6 @@ export const useDuplicateTaskModal = () => {
   const [taskId, setTaskId] = useQueryState("duplicated-task", parseAsString);
 
   const open = (id: string) => {
-    console.log(`Duplicated id: ${taskId}`);
     setTaskId(id);
   };
 

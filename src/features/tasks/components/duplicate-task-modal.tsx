@@ -9,11 +9,10 @@ import { DuplicateTaskFormWrapper } from "./duplicate-task-form-wrapper";
 export const DuplicateTaskModal = () => {
   const { taskId, close } = useDuplicateTaskModal();
 
-  console.log("Current taskId:", taskId); // taskId'yi kontrol edin
 
   if (!taskId) {
-    console.log("No task ID provided");
-    return null; // Eğer taskId yoksa modalı render etmeyin
+    
+    return null; 
   }
 
   return (

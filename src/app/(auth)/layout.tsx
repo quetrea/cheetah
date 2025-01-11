@@ -25,9 +25,9 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
   const currentPath = pathname.split("/").filter(Boolean).pop() || "default";
   const logoVariant = currentPath as LogoVariant;
 
-  console.log(logoVariant);
+ 
 
-  const { data, isPending } = useCurrent();
+  const { data } = useCurrent();
 
   return (
     <motion.main

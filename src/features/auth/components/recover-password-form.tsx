@@ -84,7 +84,7 @@ export const EditRecoveryPassword = ({
   });
 
   const onSubmit = (values: z.infer<typeof updatePasswordRecovery>) => {
-    console.log({ values, initialValues, secret });
+
     updatePassword({
       json: {
         userId: initialValues.id,

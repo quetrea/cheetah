@@ -195,7 +195,7 @@ export const EditWorkspaceForm = ({
         {data?.currentMember.role === MemberRole.ADMIN && (
           <motion.div variants={itemVariants}>
             <Card className="w-full h-full shadow-none border select-none border-sky-500">
-              <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
+              <CardHeader className="flex flex-row items-center justify-between gap-x-4 p-7 space-y-0">
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -213,7 +213,7 @@ export const EditWorkspaceForm = ({
                     {t("modals.edit.back")}
                   </Button>
                 </motion.div>
-                <CardTitle className="text-xl flex-1 font-bold">
+                <CardTitle className="text-xl flex-1 font-bold hidden md:inline-block">
                   <motion.span
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -392,7 +392,7 @@ export const EditWorkspaceForm = ({
                     </motion.div>
 
                     <motion.div
-                      className="flex items-center justify-between"
+                      className="flex  justify-between flex-col w-full md:flex-row md:items-center"
                       variants={itemVariants}
                     >
                       <motion.div
@@ -415,7 +415,12 @@ export const EditWorkspaceForm = ({
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
-                        <Button type="submit" disabled={isPending} size={"lg"}>
+                        <Button
+                          className="w-full"
+                          type="submit"
+                          disabled={isPending}
+                          size={"lg"}
+                        >
                           {isPending
                             ? "Saving..."
                             : ` ${t(
