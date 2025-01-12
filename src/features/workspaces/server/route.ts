@@ -97,6 +97,7 @@ const app = new Hono()
       const { name, image } = c.req.valid("form");
 
       let uploadedImageUrl: string | undefined;
+      let imageId: string | undefined;
 
       if (image instanceof File) {
         const file = await storage.createFile(
@@ -104,7 +105,7 @@ const app = new Hono()
           ID.unique(),
           image
         );
-
+        imageId = file.$id;
         const arrayBuffer = await storage.getFilePreview(
           IMAGES_BUCKET_ID,
           file.$id
@@ -124,6 +125,7 @@ const app = new Hono()
           name,
           userId: user.$id,
           imageUrl: uploadedImageUrl,
+          imageId: imageId,
           inviteCode: generatedCode,
         }
       );
@@ -155,29 +157,42 @@ const app = new Hono()
         userId: user.$id,
       });
 
+      const currentWorkspace = await databases.getDocument<Workspace>(
+        DATABASE_ID,
+        WORKSPACES_ID,
+        workspaceId
+      );
+
       if (!member || member.role !== MemberRole.ADMIN) {
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      let uploadedImageUrl: string | undefined;
+      let uploadedImageUrl: string | null = currentWorkspace.imageUrl;
+      let imageId: string | null = currentWorkspace.imageId;
 
-      if (image instanceof File) {
+      if (image === "undefined") {
+        if (currentWorkspace.imageId) {
+          await storage.deleteFile(IMAGES_BUCKET_ID, currentWorkspace.imageId);
+        }
+        uploadedImageUrl = null;
+        imageId = null;
+      } else if (image instanceof File) {
+        if (currentWorkspace.imageId) {
+          await storage.deleteFile(IMAGES_BUCKET_ID, currentWorkspace.imageId);
+        }
         const file = await storage.createFile(
           IMAGES_BUCKET_ID,
           ID.unique(),
           image
         );
-
+        imageId = file.$id;
         const arrayBuffer = await storage.getFilePreview(
           IMAGES_BUCKET_ID,
           file.$id
         );
-
         uploadedImageUrl = `data:image/png;base64,${Buffer.from(
           arrayBuffer
         ).toString("base64")}`;
-      } else {
-        uploadedImageUrl = image;
       }
 
       const workspace = await databases.updateDocument(
@@ -187,6 +202,7 @@ const app = new Hono()
         {
           name,
           imageUrl: uploadedImageUrl,
+          imageId: imageId,
         }
       );
 

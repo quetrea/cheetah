@@ -297,7 +297,7 @@ export const WorkspaceIdClient = () => {
   return (
     <>
       <LeaveDialog />
-      <div className="h-full flex flex-col space-y-4 scroll-smooth">
+      <div className="h-full flex flex-col space-y-4 scroll-smooth select-none">
         {/* <Analytics data={analytics} /> */}
         <div className="rounded-lg  w-full flex items-center   transition  justify-center">
           <div className="grid grid-cols-1 lg:grid-cols-2 max-h-xl w-full gap-4  ">
@@ -364,7 +364,7 @@ export const TaskList = ({ data, total, currentMember }: TaskListProps) => {
   const { t } = useTranslation();
   const router = useRouter();
   const { open: createTask } = useCreateTaskModal();
-  const { open: editTask } = useEditTaskModal();
+
   const { mutate: deleteTask } = useDeleteTask();
   const workspaceId = useWorkspaceId();
   const [slice, setSlice] = useState(3);

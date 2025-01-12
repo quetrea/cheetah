@@ -142,7 +142,7 @@ export const EditWorkspaceForm = ({
   const onSubmit = (values: z.infer<typeof updateWorkspaceSchema>) => {
     const finalValues = {
       ...values,
-      image: values.image instanceof File ? values.image : "",
+      image: values.image instanceof File ? values.image : "undefined",
     };
     mutate({ form: finalValues, param: { workspaceId: initialValues.$id } });
   };
@@ -357,7 +357,7 @@ export const EditWorkspaceForm = ({
                                     variant={"destructive"}
                                     className="w-fit mt-2"
                                     onClick={() => {
-                                      field.onChange("");
+                                      form.setValue("image", "");
                                       if (inputRef.current) {
                                         inputRef.current.value = "";
                                       }
