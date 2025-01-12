@@ -33,7 +33,7 @@ export const AnalyticsCard = ({
     });
 
     return animation.stop;
-  }, [increaseValue]);
+  }, [increaseValue, count]);
 
   return (
     <Card className="shadow-none border-none w-full">

@@ -18,7 +18,7 @@ export const CreateProfileForm = () => {
     return <LoadingPage />;
   }
   return (
-    <Card className="h-full w-full border-none select-none shadow-none ">
+    <Card className="h-full w-full border-none  shadow-none ">
       <CardHeader className=" flex p-8 flex-col gap-y-4">
         <CardTitle className="text-3xl font-bold">
           Hey 👋 <p> {data?.user.name ?? "User"}</p>

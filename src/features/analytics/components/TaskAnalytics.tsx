@@ -271,7 +271,7 @@ const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ analytics }) => {
   };
 
   return (
-    <motion.div className="w-full max-w-4xl mx-auto p-4">
+    <motion.div className="w-full max-w-4xl mx-auto p-4 ">
       <motion.div className="w-full gap-y-6 p-6 border-2 rounded-lg border-transparent transition-all duration-300 hover:border-neutral-500 bg-card">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">

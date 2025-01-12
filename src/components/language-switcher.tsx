@@ -10,8 +10,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Globe } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-export const LanguageSwitcher = () => {
+interface LanguageSwitcherProps {
+  className?: string;
+  children?: React.ReactNode;
+}
+
+export const LanguageSwitcher = ({
+  className,
+  children,
+}: LanguageSwitcherProps) => {
   const { i18n } = useTranslation();
   const [mounted, setMounted] = useState(false);
 
@@ -28,10 +37,13 @@ export const LanguageSwitcher = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center gap-x-2.5 p-1">
+      <DropdownMenuTrigger
+        className={cn("flex items-center gap-x-2.5 p-1 ", className)}
+      >
         <Globe className="size-4" />
         <span>
           {languages.find((lang) => lang.value === i18n.language)?.label}
+          {children}
         </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

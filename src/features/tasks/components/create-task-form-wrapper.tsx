@@ -43,7 +43,7 @@ export const CreateTaskFormWrapper = ({
 
   if (isLoading) {
     return (
-      <Card className="w-full h-[714px] border-none shadow-none">
+      <Card className="w-full h-full border-none shadow-none">
         <CardContent className="flex items-center justify-center h-full">
           <Loader2 className="size-5 animate-spin text-muted-foreground" />
         </CardContent>
@@ -58,7 +58,6 @@ export const CreateTaskFormWrapper = ({
       memberOptions={membersOptions ?? []}
       projectOptions={projectOptions ?? []}
       onStatusUpdate={modalStatus ?? ""}
-      taskId={duplicatedTaskId ?? ""}
     />
   );
 };

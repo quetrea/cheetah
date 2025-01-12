@@ -77,12 +77,6 @@ export const DuplicateTaskForm = ({
     resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
     defaultValues: {
       workspaceId,
-      name: duplicatedTask?.name ?? "",
-
-      status: duplicatedTask?.status ?? undefined,
-      priority: duplicatedTask?.priority ?? undefined,
-      assigneeId: duplicatedTask?.assigneeId ?? "", // Varsayılan değer
-      projectId: duplicatedTask?.projectId ?? "", // Varsayılan değer
     },
   });
 
@@ -163,14 +157,7 @@ export const DuplicateTaskForm = ({
                           {t("modals.create.task.sections.duedate.title")}
                         </FormLabel>
                         <FormControl>
-                          <DatePicker
-                            {...field}
-                            value={field.value}
-                            onChange={(date) => field.onChange(date)}
-                            placeholder={t(
-                              "modals.create.task.sections.duedate.placeholder"
-                            )}
-                          />
+                          <DatePicker {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

@@ -19,8 +19,8 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <CreateWorkspaceModal />
       <CreateProjectModal />
       <CreateTaskModal />
-      <EditTaskModal />
       <DuplicateTaskModal />
+      <EditTaskModal />
       <CreateLabelModal />
       <UpdateLabelModal />
       <UpdateTaskModal />
