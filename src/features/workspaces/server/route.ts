@@ -538,19 +538,68 @@ const app = new Hono()
     const OverdueTaskDifference =
       CompletedTaskCount - lastMonthOverdueTasks.total;
 
-    return c.json({
-      data: {
-        TaskCount,
-        TaskDifferent,
-        AssignedTaskCount,
-        AssignedTaskDifference,
-        CompletedTaskCount,
-        CompletedTaskDifference,
-        InCompleteTaskCount,
-        InCompleteTaskDifference,
-        OverdueTaskCount,
-        OverdueTaskDifference,
-      },
-    });
+      const allTasks = await databases.listDocuments<Task>(
+        DATABASE_ID,
+        TASKS_ID,
+        [Query.equal("workspaceId", workspaceId)]
+      );
+
+      // Görevleri günlere göre grupla
+      const tasksByDate = new Map<
+        string,
+        {
+          date: string;
+          tasks: Array<{
+            id: string;
+            name: string;
+            status: TaskStatus;
+            priority: string;
+            createdAt: string;
+            dueDate: string | null;
+          }>;
+        }
+      >();
+
+      allTasks.documents.forEach((task) => {
+        const date = new Date(task.$createdAt).toISOString().split("T")[0];
+
+        if (!tasksByDate.has(date)) {
+          tasksByDate.set(date, {
+            date,
+            tasks: [],
+          });
+        }
+
+        const dateData = tasksByDate.get(date)!;
+        dateData.tasks.push({
+          id: task.$id,
+          name: task.name,
+          status: task.status,
+          priority: task.priority,
+          createdAt: task.$createdAt,
+          dueDate: task.dueDate,
+        });
+      });
+
+      // Tarihe göre sırala
+      const sortedData = Array.from(tasksByDate.values()).sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      );
+
+      return c.json({
+        data: {
+          TaskCount,
+          TaskDifferent,
+          AssignedTaskCount,
+          AssignedTaskDifference,
+          CompletedTaskCount,
+          CompletedTaskDifference,
+          InCompleteTaskCount,
+          InCompleteTaskDifference,
+          OverdueTaskCount,
+          OverdueTaskDifference,
+          dailyTasks: sortedData,
+        },
+      });
   });
 export default app;

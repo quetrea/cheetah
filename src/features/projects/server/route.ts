@@ -196,25 +196,32 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      let uploadedImageUrl: string | undefined;
+      let uploadedImageUrl: string | null = existingProject.imageUrl;
+      let imageId: string | null = existingProject.imageId;
 
-      if (image instanceof File) {
+      if (image === "undefined") {
+        if (existingProject.imageId) {
+          await storage.deleteFile(IMAGES_BUCKET_ID, existingProject.imageId);
+        }
+        uploadedImageUrl = null;
+        imageId = null;
+      } else if (image instanceof File) {
+        if (existingProject.imageId) {
+          await storage.deleteFile(IMAGES_BUCKET_ID, existingProject.imageId);
+        }
         const file = await storage.createFile(
           IMAGES_BUCKET_ID,
           ID.unique(),
           image
         );
-
+        imageId = file.$id;
         const arrayBuffer = await storage.getFilePreview(
           IMAGES_BUCKET_ID,
           file.$id
         );
-
-        uploadedImageUrl = `data:image/png;base64,${
-          Buffer.from(arrayBuffer).toString("base64")
-        }`;
-      } else {
-        uploadedImageUrl = image;
+        uploadedImageUrl = `data:image/png;base64,${Buffer.from(
+          arrayBuffer
+        ).toString("base64")}`;
       }
 
       const project = await databases.updateDocument(
@@ -224,6 +231,7 @@ const app = new Hono()
         {
           name,
           imageUrl: uploadedImageUrl,
+          imageId: imageId,
         }
       );
 
@@ -493,6 +501,74 @@ const app = new Hono()
     const OverdueTaskDifference =
       CompletedTaskCount - lastMonthOverdueTasks.total;
 
+    // Tüm görevleri al
+    const allTasks = await databases.listDocuments<Task>(
+      DATABASE_ID,
+      TASKS_ID,
+      [Query.equal("projectId", projectId)]
+    );
+
+    // Görevlerin oluşturulma tarihlerine göre gruplandırma
+    const tasksByCreationDate: { 
+      date: string; 
+      tasks: Array<{
+        id: string;
+        name: string;
+        status: TaskStatus;
+        createdAt: string;
+      }>;
+    }[] = [];
+    
+    // Tamamlanan görevlerin tarihlerine göre gruplandırma
+    const tasksByCompletionDate: { 
+      date: string; 
+      tasks: Array<{
+        id: string;
+        name: string;
+        completedAt: string;
+      }>;
+    }[] = [];
+
+    const creationDateMap = new Map<string, typeof tasksByCreationDate[0]['tasks']>();
+    const completionDateMap = new Map<string, typeof tasksByCompletionDate[0]['tasks']>();
+
+    allTasks.documents.forEach(task => {
+      // Oluşturulma tarihi için
+      const creationDate = new Date(task.$createdAt).toISOString().split('T')[0];
+      const creationTasks = creationDateMap.get(creationDate) || [];
+      creationTasks.push({
+        id: task.$id,
+        name: task.name,
+        status: task.status,
+        createdAt: task.$createdAt,
+      });
+      creationDateMap.set(creationDate, creationTasks);
+
+      // Tamamlanma tarihi için (eğer görev tamamlanmışsa)
+      if (task.status === TaskStatus.DONE && task.completedAt) {
+        const completionDate = new Date(task.completedAt).toISOString().split('T')[0];
+        const completionTasks = completionDateMap.get(completionDate) || [];
+        completionTasks.push({
+          id: task.$id,
+          name: task.name,
+          completedAt: task.completedAt,
+        });
+        completionDateMap.set(completionDate, completionTasks);
+      }
+    });
+
+    // Map'leri dizilere dönüştür
+    creationDateMap.forEach((tasks, date) => {
+      tasksByCreationDate.push({ date, tasks });
+    });
+    completionDateMap.forEach((tasks, date) => {
+      tasksByCompletionDate.push({ date, tasks });
+    });
+
+    // Tarihe göre sırala
+    tasksByCreationDate.sort((a, b) => a.date.localeCompare(b.date));
+    tasksByCompletionDate.sort((a, b) => a.date.localeCompare(b.date));
+
     return c.json({
       data: {
         TaskCount,
@@ -505,6 +581,8 @@ const app = new Hono()
         InCompleteTaskDifference,
         OverdueTaskCount,
         OverdueTaskDifference,
+        taskCreationHistory: tasksByCreationDate,
+        taskCompletionHistory: tasksByCompletionDate,
       },
     });
   });

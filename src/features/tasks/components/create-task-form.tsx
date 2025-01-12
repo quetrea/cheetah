@@ -57,7 +57,6 @@ interface CreateTaskFormProps {
   memberOptions: { id: string; name: string }[];
   onStatusUpdate?: TaskStatus | string;
   projectId?: string;
-  taskId?: string;
 }
 
 export const CreateTaskForm = ({
@@ -66,15 +65,11 @@ export const CreateTaskForm = ({
   memberOptions,
   onStatusUpdate,
   projectId,
-  taskId,
 }: CreateTaskFormProps) => {
   const { t } = useTranslation();
   const workspaceId = useWorkspaceId();
   const { mutate, isPending } = useCreateTask();
-  const { data: tasks, isLoading: tasksLoading } = useGetTasks({
-    workspaceId,
-    projectId,
-  });
+
   const { data: project, isLoading: projectLoading } = useGetProject({
     projectId: projectId ?? "",
   });
@@ -98,13 +93,6 @@ export const CreateTaskForm = ({
     );
   };
 
-  const handleTaskSelect = (task: Task) => {
-    form.setValue("name", task.name);
-    form.setValue("dueDate", new Date(task.dueDate));
-    form.setValue("assigneeId", task.assigneeId);
-    form.setValue("projectId", task.projectId);
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
@@ -112,7 +100,7 @@ export const CreateTaskForm = ({
       exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="w-full h-full border-none shadow-none rounded-none select-none">
+      <Card className="w-full h-full border-none shadow-none rounded-none ">
         <CardHeader className="flex p-7">
           <CardTitle className="text-3xl font-bold">
             {t("modals.create.task.title")}

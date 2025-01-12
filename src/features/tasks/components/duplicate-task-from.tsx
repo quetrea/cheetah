@@ -78,22 +78,7 @@ export const DuplicateTaskForm = ({
     defaultValues: {
       workspaceId,
       name: duplicatedTask?.name ?? "",
-      dueDate: (() => {
-        const createdAt = duplicatedTask?.$createdAt
-          ? new Date(duplicatedTask.$createdAt)
-          : new Date();
-        const dueDate = duplicatedTask?.dueDate
-          ? new Date(duplicatedTask.dueDate)
-          : new Date();
 
-        const timeDiff = dueDate.getTime() - createdAt.getTime();
-        const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-        const newDueDate = new Date();
-        newDueDate.setDate(newDueDate.getDate() + daysDiff);
-
-        return newDueDate;
-      })(),
       status: duplicatedTask?.status ?? undefined,
       priority: duplicatedTask?.priority ?? undefined,
       assigneeId: duplicatedTask?.assigneeId ?? "", // Varsayılan değer
@@ -114,13 +99,6 @@ export const DuplicateTaskForm = ({
     );
   };
 
-  const handleTaskSelect = (task: Task) => {
-    form.setValue("name", task.name);
-    form.setValue("dueDate", new Date(task.dueDate));
-    form.setValue("assigneeId", task.assigneeId);
-    form.setValue("projectId", task.projectId);
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
@@ -128,7 +106,7 @@ export const DuplicateTaskForm = ({
       exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="w-full h-full border-none shadow-none rounded-none select-none">
+      <Card className="w-full h-full border-none shadow-none rounded-none ">
         <CardHeader className="flex p-7">
           <CardTitle className="text-3xl font-bold">
             {t("modals.duplicate.task.title")}
@@ -172,7 +150,7 @@ export const DuplicateTaskForm = ({
                 </motion.div>
 
                 <motion.div
-                  initial={{ opacity: 0, y: -10 }}
+                  initial={{ opacity: 0 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.2 }}
                 >
@@ -187,6 +165,8 @@ export const DuplicateTaskForm = ({
                         <FormControl>
                           <DatePicker
                             {...field}
+                            value={field.value}
+                            onChange={(date) => field.onChange(date)}
                             placeholder={t(
                               "modals.create.task.sections.duedate.placeholder"
                             )}

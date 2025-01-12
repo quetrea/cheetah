@@ -113,6 +113,16 @@
       },
       "overDueTask": {
         "title": "Geçmiş Görevler"
+      },
+      "timeRange": {
+        "select": "Aralık seç",
+        "1-week": "1 Hafta",
+        "2-weeks": "2 Hafta",
+        "1-month": "1 Ay",
+        "3-months": "3 Ay",
+        "1-year": "1 Yıl",
+        "3-years": "3 Yıl",
+        "5-years": "5 Yıl"
       }
     },
     "membersAnalytics": {

@@ -56,6 +56,16 @@
       },
       "overDueTask": {
         "title": "Overdue Tasks"
+      },
+      "timeRange": {
+        "select": "Select range",
+        "1-week": "1 Week",
+        "2-weeks": "2 Weeks",
+        "1-month": "1 Month",
+        "3-months": "3 Months",
+        "1-year": "1 Year",
+        "3-years": "3 Years",
+        "5-years": "5 Years"
       }
     },
     "membersAnalytics": {

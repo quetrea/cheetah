@@ -60,7 +60,7 @@ export const DatePicker = ({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
+      <PopoverContent className="w-auto p-0 pointer-events-all">
         <Calendar
           mode="single"
           selected={value}

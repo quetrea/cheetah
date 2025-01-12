@@ -20,10 +20,10 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <CreateProjectModal />
       <CreateTaskModal />
       <EditTaskModal />
+      <DuplicateTaskModal />
       <CreateLabelModal />
       <UpdateLabelModal />
       <UpdateTaskModal />
-      <DuplicateTaskModal />
       <div className="flex w-full h-full">
         <div className="fixed left-0 top-0 hidden lg:block lg:w-[246px] h-full overflow-y-auto">
           <Sidebar />

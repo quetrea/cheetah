@@ -12,7 +12,7 @@ import {
   ExternalLinkIcon,
 } from "lucide-react";
 
-import { Task } from "@/features/tasks/types";
+import { Priority, Task, TaskStatus } from "@/features/tasks/types";
 import { useGetMembers } from "@/features/members/api/use-get-members";
 import { useGetTasks } from "@/features/tasks/api/use-get-tasks";
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
@@ -278,6 +278,17 @@ export const WorkspaceIdClient = () => {
     InCompleteTaskDifference: 0,
     OverdueTaskCount: 0,
     OverdueTaskDifference: 0,
+    dailyTasks: [] as Array<{
+      date: string;
+      tasks: Array<{
+        id: string;
+        name: string;
+        status: TaskStatus;
+        priority: Priority;
+        createdAt: number;
+        dueDate: number | null;
+      }>;
+    }>,
   };
 
   if (isLoading) {
@@ -297,12 +308,27 @@ export const WorkspaceIdClient = () => {
   return (
     <>
       <LeaveDialog />
-      <div className="h-full flex flex-col space-y-4 scroll-smooth select-none">
+      <div className="h-full flex flex-col space-y-4 ">
         {/* <Analytics data={analytics} /> */}
         <div className="rounded-lg  w-full flex items-center   transition  justify-center">
           <div className="grid grid-cols-1 lg:grid-cols-2 max-h-xl w-full gap-4  ">
             <div className="flex flex-col h-full lg:flex-row">
-              <TaskAnalytics analytics={analytics} />
+              <TaskAnalytics
+                analytics={{
+                  ...analytics,
+                  dailyTasks: analytics.dailyTasks.map((day) => ({
+                    ...day,
+                    tasks: day.tasks.map((task) => ({
+                      ...task,
+                      priority: task.priority as Priority,
+                      createdAt: new Date(task.createdAt).getTime(),
+                      dueDate: task.dueDate
+                        ? new Date(task.dueDate).getTime()
+                        : null,
+                    })),
+                  })),
+                }}
+              />
             </div>
 
             <div className="rounded-md  border-transparent transition duration-300 border-2 hover:border-neutral-500 cursor-pointer  w-full  flex  ">
