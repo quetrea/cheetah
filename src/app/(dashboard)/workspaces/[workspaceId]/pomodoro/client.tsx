@@ -63,22 +63,24 @@ export const PomodoroSettingsDialog = ({
   onSave,
 }: PomodoroSettingsDialogProps) => {
   const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
   const [localSettings, setLocalSettings] =
     useState<PomodoroSettings>(settings);
 
   const handleSave = () => {
     onSave(localSettings);
+    setOpen(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant="outline"
           size="icon"
           className="bg-gray-100 hover:bg-gray-200 dark:bg-white/10 dark:hover:bg-white/20 border-gray-200 dark:border-white/20"
         >
-          <Settings className="h-4 w-4" />
+          <Settings className="size-4" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
@@ -476,6 +478,16 @@ export const PomodoroClient = () => {
 
                 <div className="flex items-center gap-2 sm:gap-3">
                   <Button
+                    title={t("pomodoro.settings.title")}
+                    variant={"outline"}
+                    size={"icon"}
+                  >
+                    <PomodoroSettingsDialog
+                      settings={settings}
+                      onSave={handleSettingsSave}
+                    />
+                  </Button>
+                  <Button
                     variant="outline"
                     size="icon"
                     onClick={() => setIsMuted(!isMuted)}
@@ -531,7 +543,7 @@ export const PomodoroClient = () => {
                 </div>
 
                 <div className="bg-gray-50 dark:bg-neutral-800 rounded-lg p-4 w-full max-w-md">
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-between items-center  border-white">
                     <div>
                       <h3 className="font-bold text-gray-900 dark:text-white">
                         {t("pomodoro.tasks.current")}
@@ -546,7 +558,7 @@ export const PomodoroClient = () => {
                         </p>
                       )}
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-neutral-400">
+                    <div className="text-sm text-gray-500 border dark:text-neutral-400">
                       {getTimerTypeLabel(timerType)}
                     </div>
                   </div>

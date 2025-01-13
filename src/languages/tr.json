@@ -973,6 +973,10 @@
         "title": "Ses Efektleri",
         "description": "Kaset çalar ses efektlerini aç/kapat"
       },
+      "pomodoroTime": "Pomodoro Süresi",
+      "shortBreakTime": "Kısa Mola Süresi",
+      "longBreakTime": "Uzun Mola Süresi",
+      "cyclesBeforeLongBreak": "Pomodoro Sayısı",
       "cancel": "İptal",
       "save": "Değişiklikleri kaydet"
     },

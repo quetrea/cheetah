@@ -979,6 +979,10 @@
         "title": "Sound Effects",
         "description": "Enable/disable cassette player sound effects"
       },
+      "pomodoroTime": "Pomodoro Time",
+      "shortBreakTime": "Short Break Time",
+      "longBreakTime": "Long Break Time",
+      "cyclesBeforeLongBreak": "Cycles Before Long Break",
       "cancel": "Cancel",
       "save": "Save Changes"
     },
