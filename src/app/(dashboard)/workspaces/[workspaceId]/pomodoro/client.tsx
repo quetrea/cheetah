@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Play,
   Pause,
@@ -30,6 +30,8 @@ import {
   PomodoroSettings,
   PomodoroSettingsModal,
 } from "@/features/pomodoro/components/PomodoroSettings";
+import { ProjectAvatar } from "@/features/projects/components/project-avatar";
+import { MemberAvatar } from "@/features/members/components/member-avatar";
 
 type TimerType = "pomodoro" | "shortBreak" | "longBreak";
 
@@ -122,8 +124,6 @@ export const PomodoroClient = () => {
         } else {
           setTimerType("shortBreak");
         }
-
-     
       } else if (timerType === "shortBreak") {
         setTimerType("pomodoro");
       } else if (timerType === "longBreak") {
@@ -286,7 +286,7 @@ export const PomodoroClient = () => {
   return (
     <div className="max-w-7xl mx-auto flex  items-center justify-center p-4 sm:p-4 mt-2 md:mt-8">
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6 ">
-        <Card className="bg-white dark:bg-neutral-900 lg:min-w-[300px]">
+        <Card className="bg-white  dark:bg-neutral-900 lg:min-w-[300px]">
           <div className="p-4 sm:p-6">
             <div className="bg-gray-50 dark:bg-neutral-800 rounded-lg p-3 sm:p-4">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">
@@ -423,27 +423,68 @@ export const PomodoroClient = () => {
                   </Button>
                 </div>
 
-                <div className="bg-gray-50 dark:bg-neutral-800 rounded-lg p-4 w-full max-w-md">
-                  <div className="flex justify-between items-center  border-white">
+                <Card className="bg-gray-50 flex flex-col gap-y-4 dark:bg-neutral-800 rounded-lg p-4 w-full max-w-md">
+                  <CardHeader className="flex  p-0 border-white">
                     <div>
-                      <h3 className="font-bold text-gray-900 dark:text-white">
+                      <CardTitle className=" text-xl flex items-center justify-between text-neutral-900 font-bold dark:text-white">
                         {t("pomodoro.tasks.current")}
-                      </h3>
-                      {activeTask ? (
-                        <p className="text-sm text-gray-600 dark:text-neutral-300">
-                          {activeTask.name}
-                        </p>
-                      ) : (
-                        <p className="text-sm text-gray-500 dark:text-neutral-400">
-                          {t("pomodoro.tasks.noTaskSelected")}
-                        </p>
-                      )}
+                        <div className="text-sm text-gray-500  dark:text-neutral-400">
+                          {getTimerTypeLabel(timerType)}
+                        </div>
+                      </CardTitle>{" "}
                     </div>
-                    <div className="text-sm text-gray-500 border dark:text-neutral-400">
-                      {getTimerTypeLabel(timerType)}
-                    </div>
-                  </div>
-                </div>
+                  </CardHeader>
+                  <CardContent className=" dark:bg-neutral-900 font-medium rounded-md p-4">
+                    {activeTask ? (
+                      <div className="flex flex-row gap-y-2">
+                        <div className="flex flex-col gap-y-2 w-full">
+                          <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-200">
+                            {t("tasks.overview.info")}
+                          </h3>
+                          <DottedSeparator className="my-3" />
+                          <div className="flex flex-row text-sm justify-between text-neutral-700 dark:text-neutral-200">
+                            <p className="text-neutral-700 dark:text-neutral-200 text-sm ">
+                              {t("table.task-name")}
+                            </p>
+                            <div className="text-neutral-600 truncate dark:text-neutral-400 text-sm ">
+                              {activeTask.name}
+                            </div>
+                          </div>
+                          <div className="flex flex-row justify-between text-sm text-neutral-700 dark:text-neutral-700   gap-x-2 items-center">
+                            <div className="text-neutral-700 dark:text-neutral-200 text-sm ">
+                              {t("table.project")}
+                            </div>{" "}
+                            <div className="flex flex-row gap-x-2 items-center">
+                              <ProjectAvatar
+                                className="text-sm"
+                                image={activeTask.project.imageUrl}
+                                name={activeTask.project.name}
+                              />
+                              <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                                {activeTask.project.name}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex flex-row justify-between text-sm text-neutral-200   gap-x-2 items-center">
+                            <div className="text-neutral-700 dark:text-neutral-200 text-sm ">
+                              {t("table.assignee")}
+                            </div>{" "}
+                            <div className="flex flex-row gap-x-2 items-center">
+                              <MemberAvatar name={activeTask.assignee.name} />
+                              <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                                {activeTask.assignee.name}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-center text-gray-500 dark:text-neutral-400">
+                        {t("pomodoro.tasks.noTaskSelected")}
+                      </p>
+                    )}
+                  </CardContent>
+                </Card>
               </div>
             </Tabs>
           </div>
