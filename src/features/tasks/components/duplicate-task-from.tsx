@@ -169,7 +169,12 @@ export const DuplicateTaskForm = ({
                           {t("modals.create.task.sections.duedate.title")}
                         </FormLabel>
                         <FormControl>
-                          <DatePicker {...field} />
+                          <DatePicker
+                            {...field}
+                            placeholder={t(
+                              "modals.create.task.sections.duedate.placeholder"
+                            )}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
