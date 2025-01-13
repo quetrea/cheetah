@@ -321,6 +321,9 @@ export const PomodoroClient = () => {
   const handleReset = () => {
     setIsResetting(true);
     setProgress(0);
+    if (!isMuted) {
+      new Audio("/sounds/timer-reset.mp3").play();
+    }
 
     setTimeout(() => {
       setTimeLeft(durations[timerType]);
