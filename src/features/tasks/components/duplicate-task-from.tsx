@@ -40,6 +40,7 @@ import { useGetProject } from "@/features/projects/api/use-get-project";
 import { useGetTask } from "@/features/tasks/api/use-get-task";
 import { useGetTasks } from "@/features/tasks/api/use-get-tasks";
 import { useTranslation } from "react-i18next";
+import { differenceInDays, addDays, eachDayOfInterval } from "date-fns";
 
 interface DuplicateTaskFormProps {
   onCancel?: () => void;
@@ -77,6 +78,17 @@ export const DuplicateTaskForm = ({
     resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
     defaultValues: {
       workspaceId,
+      ...duplicatedTask,
+      dueDate:
+        duplicatedTask?.$createdAt && duplicatedTask?.dueDate
+          ? addDays(
+              new Date(),
+              eachDayOfInterval({
+                start: new Date(duplicatedTask.$createdAt),
+                end: new Date(duplicatedTask.dueDate),
+              }).length - 1
+            )
+          : new Date(),
     },
   });
 
@@ -109,7 +121,7 @@ export const DuplicateTaskForm = ({
         <div className="px-7">
           <DottedSeparator />
         </div>
-        <CardContent className="p-7 w-full">
+        <CardContent className="p-7">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="flex flex-col gap-y-4">
