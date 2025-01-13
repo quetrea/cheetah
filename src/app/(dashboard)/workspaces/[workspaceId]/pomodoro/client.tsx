@@ -1,20 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import {
   Play,
   Pause,
   RotateCcw,
   Volume2,
   VolumeX,
-  Disc,
   SkipForward,
   MoreHorizontalIcon,
-  Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -26,136 +23,15 @@ import { Task, TaskStatus } from "@/features/tasks/types";
 import { useUpdateTask } from "@/features/tasks/api/use-update-task";
 import { DottedSeparator } from "@/components/dotted-separator";
 import { TaskActions } from "@/features/tasks/components/task-actions";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { SubTasks } from "@/features/subtasks/components/sub-tasks";
+
 import {
-  Dialog,
-  DialogTitle,
-  DialogHeader,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  defaultSettings,
+  PomodoroSettings,
+  PomodoroSettingsModal,
+} from "@/features/pomodoro/components/PomodoroSettings";
 
 type TimerType = "pomodoro" | "shortBreak" | "longBreak";
-
-export interface PomodoroSettings {
-  pomodoroTime: number;
-  shortBreakTime: number;
-  longBreakTime: number;
-  cyclesBeforeLongBreak: number;
-}
-
-export const defaultSettings: PomodoroSettings = {
-  pomodoroTime: 25,
-  shortBreakTime: 5,
-  longBreakTime: 15,
-  cyclesBeforeLongBreak: 4,
-};
-
-interface PomodoroSettingsDialogProps {
-  settings: PomodoroSettings;
-  onSave: (settings: PomodoroSettings) => void;
-}
-
-export const PomodoroSettingsDialog = ({
-  settings,
-  onSave,
-}: PomodoroSettingsDialogProps) => {
-  const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
-  const [localSettings, setLocalSettings] =
-    useState<PomodoroSettings>(settings);
-
-  const handleSave = () => {
-    onSave(localSettings);
-    setOpen(false);
-  };
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className="bg-gray-100 hover:bg-gray-200 dark:bg-white/10 dark:hover:bg-white/20 border-gray-200 dark:border-white/20"
-        >
-          <Settings className="size-4" />
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>{t("pomodoro.settings.title")}</DialogTitle>
-        </DialogHeader>
-        <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label>{t("pomodoro.settings.pomodoroTime")}</Label>
-            <Input
-              type="number"
-              value={localSettings.pomodoroTime}
-              onChange={(e) =>
-                setLocalSettings((prev) => ({
-                  ...prev,
-                  pomodoroTime: Number(e.target.value),
-                }))
-              }
-              min="1"
-              max="60"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label>{t("pomodoro.settings.shortBreakTime")}</Label>
-            <Input
-              type="number"
-              value={localSettings.shortBreakTime}
-              onChange={(e) =>
-                setLocalSettings((prev) => ({
-                  ...prev,
-                  shortBreakTime: Number(e.target.value),
-                }))
-              }
-              min="1"
-              max="30"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label>{t("pomodoro.settings.longBreakTime")}</Label>
-            <Input
-              type="number"
-              value={localSettings.longBreakTime}
-              onChange={(e) =>
-                setLocalSettings((prev) => ({
-                  ...prev,
-                  longBreakTime: Number(e.target.value),
-                }))
-              }
-              min="1"
-              max="60"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label>{t("pomodoro.settings.cyclesBeforeLongBreak")}</Label>
-            <Input
-              type="number"
-              value={localSettings.cyclesBeforeLongBreak}
-              onChange={(e) =>
-                setLocalSettings((prev) => ({
-                  ...prev,
-                  cyclesBeforeLongBreak: Number(e.target.value),
-                }))
-              }
-              min="1"
-              max="10"
-            />
-          </div>
-        </div>
-        <div className="flex justify-end">
-          <Button onClick={handleSave}>{t("common.save")}</Button>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-};
 
 export const PomodoroClient = () => {
   const { t } = useTranslation();
@@ -172,7 +48,6 @@ export const PomodoroClient = () => {
     return defaultSettings;
   });
 
-  const [showSettings, setShowSettings] = useState(false);
   const [timerType, setTimerType] = useState<TimerType>("pomodoro");
   const [timeLeft, setTimeLeft] = useState(settings.pomodoroTime * 60);
   const [isRunning, setIsRunning] = useState(false);
@@ -487,7 +362,7 @@ export const PomodoroClient = () => {
                     variant={"outline"}
                     size={"icon"}
                   >
-                    <PomodoroSettingsDialog
+                    <PomodoroSettingsModal
                       settings={settings}
                       onSave={handleSettingsSave}
                     />
