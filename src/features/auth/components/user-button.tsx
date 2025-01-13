@@ -156,7 +156,7 @@ export const UserButton = () => {
                     {t("userButton.tabs.account")}
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem className="p-0">
                   <LanguageSwitcher />
                 </DropdownMenuItem>
               </motion.div>

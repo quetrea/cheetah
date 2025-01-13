@@ -111,6 +111,10 @@
       },
       "Members": {
         "title": "Members"
+      },
+      "Pomodoro": {
+        "title": "Pomodoro",
+        "description": "Pomodoro timer with task management"
       }
     },
     "projects": {
@@ -148,6 +152,10 @@
       "projectId": {
         "title": "Project Overview",
         "description": "Manage your project details, tasks, and team members"
+      },
+      "pomodoro": {
+        "title": "Pomodoro Timer",
+        "description": "Manage your tasks with cassette player using pomodoro technique"
       }
     }
   },
@@ -912,5 +920,80 @@
     "save": "Save Changes",
     "cancel": "Cancel",
     "confirm": "Confirm"
+  },
+  "pomodoro": {
+    "timer": {
+      "title": "Pomodoro Timer",
+      "description": "Manage your tasks with cassette player",
+      "tabs": {
+        "pomodoro": "Pomodoro",
+        "shortBreak": "Short Break",
+        "longBreak": "Long Break"
+      }
+    },
+    "cassette": {
+      "player": {
+        "title": "Cassette Player",
+        "dropHint": "Drop task here",
+        "noTask": "No task selected yet",
+        "controls": {
+          "play": "Play",
+          "pause": "Pause",
+          "stop": "Stop",
+          "eject": "Eject"
+        }
+      },
+      "task": {
+        "duration": "{{minutes}} minutes",
+        "status": {
+          "ready": "Ready",
+          "playing": "Playing",
+          "paused": "Paused",
+          "completed": "Completed"
+        }
+      }
+    },
+    "tasks": {
+      "title": "Tasks",
+      "current": "Current Task",
+      "noTaskSelected": "No task selected",
+      "noTasks": "No tasks found"
+    },
+    "settings": {
+      "title": "Pomodoro Settings",
+      "duration": {
+        "title": "Set Duration",
+        "label": "Duration (minutes):"
+      }
+    },
+    "notifications": {
+      "timeUp": "Time's up!",
+      "breakTime": "Break time!",
+      "taskCompleted": "Task completed!",
+      "started": "Pomodoro started: {{taskName}}",
+      "skipped": "Pomodoro skipped"
+    },
+    "info": {
+      "title": "What is Pomodoro Technique?",
+      "description": "A time management technique consisting of 25-minute work periods followed by 5-minute breaks.",
+      "tips": {
+        "title": "Tips",
+        "1": "Choose a task and focus",
+        "2": "Don't break focus for 25 minutes",
+        "3": "Take a rest during break time",
+        "4": "Take a long break after 4 pomodoros"
+      },
+      "phases": {
+        "pomodoro": "25 minutes work",
+        "shortBreak": "5 minutes short break",
+        "longBreak": "15 minutes long break"
+      }
+    },
+    "controls": {
+      "start": "Start",
+      "pause": "Pause",
+      "reset": "Reset",
+      "skip": "Skip"
+    }
   }
 }

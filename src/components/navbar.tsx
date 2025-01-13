@@ -32,6 +32,10 @@ export const Navbar = () => {
       title: `${t("navbar.navigations.projectId.title")}`,
       description: `${t("navbar.navigations.projectId.description")}`,
     },
+    pomodoro: {
+      title: `${t("navbar.navigations.pomodoro.title")}`,
+      description: `${t("navbar.navigations.pomodoro.description")}`,
+    },
   };
 
   const defaultMap = {

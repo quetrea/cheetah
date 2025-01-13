@@ -192,7 +192,7 @@ export const SubTasks = ({ task }: SubTaskProps) => {
   );
 
   return (
-    <div className="dark:bg-neutral-900 hover:bg-neutral-100 p-4  rounded-md">
+    <div className="dark:bg-neutral-900 hover:bg-neutral-100 p-4 h-full  rounded-md">
       <div className="flex items-center justify-between">
         <p className="text-xl font-medium px-1">{t("tasks.sub-tasks.title")}</p>
         <Button

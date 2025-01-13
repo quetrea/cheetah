@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SettingsIcon, UsersIcon } from "lucide-react";
+import { SettingsIcon, UsersIcon, Timer, TimerOff } from "lucide-react";
 import {
   GoCheckCircle,
   GoCheckCircleFill,
@@ -31,6 +31,12 @@ export const Navigation = () => {
       href: "/tasks",
       icon: GoCheckCircle,
       activeIcon: GoCheckCircleFill,
+    },
+    {
+      label: `${t("sidebar.navigations.Pomodoro.title")}`,
+      href: "/pomodoro",
+      icon: Timer,
+      activeIcon: TimerOff,
     },
     {
       label: `${t("sidebar.navigations.Settings.title")}`,
