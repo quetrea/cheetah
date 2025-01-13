@@ -208,6 +208,7 @@ export const PomodoroClient = () => {
   useEffect(() => {
     setTimeLeft(durations[timerType]);
     setProgress(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timerType, settings]);
 
   useEffect(() => {
@@ -265,6 +266,7 @@ export const PomodoroClient = () => {
     }
 
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     isRunning,
     timeLeft,
