@@ -109,20 +109,21 @@ export const PomodoroClient = () => {
         if (newCycle >= settings.cyclesBeforeLongBreak) {
           setTimerType("longBreak");
           setCurrentCycle(0);
+          if (activeTask) {
+            updateTask({
+              json: {
+                status: TaskStatus.DONE,
+              },
+              param: {
+                taskId: activeTask.$id,
+              },
+            });
+          }
         } else {
           setTimerType("shortBreak");
         }
 
-        if (activeTask) {
-          updateTask({
-            json: {
-              status: TaskStatus.DONE,
-            },
-            param: {
-              taskId: activeTask.$id,
-            },
-          });
-        }
+     
       } else if (timerType === "shortBreak") {
         setTimerType("pomodoro");
       } else if (timerType === "longBreak") {
