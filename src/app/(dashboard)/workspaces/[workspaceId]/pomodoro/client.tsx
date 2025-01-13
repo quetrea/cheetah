@@ -643,7 +643,7 @@ export const PomodoroClient = () => {
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.2 }}
               >
-                <SubTasks task={activeTask} />
+                <SubTasks task={activeTask} isPomodoro={true} />
               </motion.div>
             )}
           </AnimatePresence>

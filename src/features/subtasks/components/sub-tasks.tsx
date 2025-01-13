@@ -21,12 +21,13 @@ import { useTranslation } from "react-i18next";
 
 interface SubTaskProps {
   task: Task;
+  isPomodoro?: boolean;
 }
 interface LocalSubTaskState {
   [key: string]: boolean;
 }
 
-export const SubTasks = ({ task }: SubTaskProps) => {
+export const SubTasks = ({ task, isPomodoro }: SubTaskProps) => {
   const { t } = useTranslation();
   const {
     data: subTasks,
@@ -224,7 +225,12 @@ export const SubTasks = ({ task }: SubTaskProps) => {
         </>
       )}
 
-      <div className="flex flex-col gap-y-2 justify-between h-full max-h-[120px] scrollbar-thin overflow-y-auto shadow-inner scrollbar-thumb-rounded-full scrollbar-thumb-gray-400  scrollbar-track-transparent">
+      <div
+        className={cn(
+          "flex flex-col gap-y-2 justify-between h-full  scrollbar-thin overflow-y-auto shadow-inner scrollbar-thumb-rounded-full scrollbar-thumb-gray-400  scrollbar-track-transparent overflow-x-hidden",
+          isPomodoro ? "max-h-[400px]" : "max-h-[120px]"
+        )}
+      >
         <div className="flex flex-col gap-y-2">
           <div className="flex flex-col ">
             {subTasksLoading ? (
