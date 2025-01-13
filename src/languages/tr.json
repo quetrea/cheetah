@@ -89,7 +89,7 @@
       },
       "pomodoro": {
         "title": "Pomodoro Zamanlayıcı",
-        "description": "Görevlerinizi kaset çalar ile pomodoro tekniği kullanarak yönetin"
+        "description": "Görevlerinizi süre ile pomodoro tekniği kullanarak yönetin"
       }
     }
   },
@@ -918,7 +918,7 @@
   "pomodoro": {
     "timer": {
       "title": "Pomodoro Zamanlayıcı",
-      "description": "Görevlerinizi kaset çalar ile yönetin",
+      "description": "Görevlerinizi süre ile yönetin",
       "tabs": {
         "pomodoro": "Pomodoro",
         "shortBreak": "Kısa Mola",
@@ -990,7 +990,7 @@
     },
     "info": {
       "title": "Pomodoro Tekniği Nedir?",
-      "description": "25 dakikalık çalışma ve 5 dakikalık molalardan oluşan zaman yönetimi tekniğidir.",
+      "description": "25 dakikalık çalışma ve 5 dakikalık molalardan oluşan zaman yönetimi tekniğidir. İsteğinize göre süreleri ayarlardan değiştirebilirsiniz.",
       "tips": {
         "title": "İpuçları",
         "1": "Bir görev seçin ve odaklanın",
