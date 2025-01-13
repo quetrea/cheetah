@@ -322,9 +322,15 @@ const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ analytics }) => {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-6">
           {Object.entries(statusColors).map(([status, color]) => {
             const isHidden = hiddenStatuses.includes(status as TaskStatus);
-            const statusTasks = analytics.dailyTasks.flatMap((day) =>
-              day.tasks.filter((task) => task.status === status)
-            );
+            // Seçili zaman aralığına göre görevleri filtrele
+            const filteredTasks = analytics.dailyTasks
+              .filter((day) => {
+                const dayDate = new Date(day.date);
+                return dayDate >= startDate && dayDate <= endDate;
+              })
+              .flatMap((day) =>
+                day.tasks.filter((task) => task.status === status)
+              );
 
             return (
               <button
@@ -346,7 +352,7 @@ const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ analytics }) => {
                   className="text-lg font-bold"
                   style={{ color: color.replace("0.7", "1") }}
                 >
-                  {statusTasks.length}
+                  {filteredTasks.length}
                 </span>
               </button>
             );
