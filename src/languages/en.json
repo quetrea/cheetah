@@ -984,6 +984,7 @@
     },
     "notifications": {
       "timeUp": "Time's up!",
+      "timerEnded": "{{type}} time's up!",
       "breakTime": "Break time!",
       "taskCompleted": "Task completed!",
       "started": "Pomodoro started: {{taskName}}",
