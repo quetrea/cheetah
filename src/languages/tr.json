@@ -1002,7 +1002,8 @@
     "controls": {
       "start": "Başlat",
       "pause": "Duraklat",
-      "reset": "Sıfırla"
+      "reset": "Sıfırla",
+      "skip": "Atla"
     }
   }
 }
