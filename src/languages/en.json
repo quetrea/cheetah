@@ -940,7 +940,8 @@
           "play": "Play",
           "pause": "Pause",
           "stop": "Stop",
-          "eject": "Eject"
+          "eject": "Eject",
+          "skip": "Skip"
         }
       },
       "task": {
