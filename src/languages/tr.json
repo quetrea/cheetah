@@ -955,6 +955,10 @@
     },
     "settings": {
       "title": "Pomodoro Ayarları",
+      "duration": {
+        "title": "Süre Ayarla",
+        "label": "Süre (dakika):"
+      },
       "durations": {
         "pomodoro": "Pomodoro Süresi",
         "shortBreak": "Kısa Mola Süresi",
@@ -967,7 +971,9 @@
       "sound": {
         "title": "Ses Efektleri",
         "description": "Kaset çalar ses efektlerini aç/kapat"
-      }
+      },
+      "cancel": "İptal",
+      "save": "Değişiklikleri kaydet"
     },
     "notifications": {
       "timeUp": "Süre doldu!",

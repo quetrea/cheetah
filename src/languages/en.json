@@ -964,7 +964,22 @@
       "duration": {
         "title": "Set Duration",
         "label": "Duration (minutes):"
-      }
+      },
+      "durations": {
+        "pomodoro": "Pomodoro Duration",
+        "shortBreak": "Short Break Duration",
+        "longBreak": "Long Break Duration"
+      },
+      "autoStart": {
+        "title": "Auto Start",
+        "description": "Start after breaks"
+      },
+      "sound": {
+        "title": "Sound Effects",
+        "description": "Enable/disable cassette player sound effects"
+      },
+      "cancel": "Cancel",
+      "save": "Save Changes"
     },
     "notifications": {
       "timeUp": "Time's up!",

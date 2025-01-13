@@ -14,6 +14,7 @@ import {
   Disc,
   SkipForward,
   MoreHorizontalIcon,
+  Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -25,23 +26,159 @@ import { Task, TaskStatus } from "@/features/tasks/types";
 import { useUpdateTask } from "@/features/tasks/api/use-update-task";
 import { DottedSeparator } from "@/components/dotted-separator";
 import { TaskActions } from "@/features/tasks/components/task-actions";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { SubTasks } from "@/features/subtasks/components/sub-tasks";
+import {
+  Dialog,
+  DialogTitle,
+  DialogHeader,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 type TimerType = "pomodoro" | "shortBreak" | "longBreak";
 
+export interface PomodoroSettings {
+  pomodoroTime: number;
+  shortBreakTime: number;
+  longBreakTime: number;
+  cyclesBeforeLongBreak: number;
+}
+
+export const defaultSettings: PomodoroSettings = {
+  pomodoroTime: 25,
+  shortBreakTime: 5,
+  longBreakTime: 15,
+  cyclesBeforeLongBreak: 4,
+};
+
+interface PomodoroSettingsDialogProps {
+  settings: PomodoroSettings;
+  onSave: (settings: PomodoroSettings) => void;
+}
+
+export const PomodoroSettingsDialog = ({
+  settings,
+  onSave,
+}: PomodoroSettingsDialogProps) => {
+  const { t } = useTranslation();
+  const [localSettings, setLocalSettings] =
+    useState<PomodoroSettings>(settings);
+
+  const handleSave = () => {
+    onSave(localSettings);
+  };
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          size="icon"
+          className="bg-gray-100 hover:bg-gray-200 dark:bg-white/10 dark:hover:bg-white/20 border-gray-200 dark:border-white/20"
+        >
+          <Settings className="h-4 w-4" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>{t("pomodoro.settings.title")}</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label>{t("pomodoro.settings.pomodoroTime")}</Label>
+            <Input
+              type="number"
+              value={localSettings.pomodoroTime}
+              onChange={(e) =>
+                setLocalSettings((prev) => ({
+                  ...prev,
+                  pomodoroTime: Number(e.target.value),
+                }))
+              }
+              min="1"
+              max="60"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>{t("pomodoro.settings.shortBreakTime")}</Label>
+            <Input
+              type="number"
+              value={localSettings.shortBreakTime}
+              onChange={(e) =>
+                setLocalSettings((prev) => ({
+                  ...prev,
+                  shortBreakTime: Number(e.target.value),
+                }))
+              }
+              min="1"
+              max="30"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>{t("pomodoro.settings.longBreakTime")}</Label>
+            <Input
+              type="number"
+              value={localSettings.longBreakTime}
+              onChange={(e) =>
+                setLocalSettings((prev) => ({
+                  ...prev,
+                  longBreakTime: Number(e.target.value),
+                }))
+              }
+              min="1"
+              max="60"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>{t("pomodoro.settings.cyclesBeforeLongBreak")}</Label>
+            <Input
+              type="number"
+              value={localSettings.cyclesBeforeLongBreak}
+              onChange={(e) =>
+                setLocalSettings((prev) => ({
+                  ...prev,
+                  cyclesBeforeLongBreak: Number(e.target.value),
+                }))
+              }
+              min="1"
+              max="10"
+            />
+          </div>
+        </div>
+        <div className="flex justify-end">
+          <Button onClick={handleSave}>{t("common.save")}</Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 export const PomodoroClient = () => {
   const { t } = useTranslation();
+
   const workspaceId = useWorkspaceId();
   const { data: tasks } = useGetTasks({ workspaceId });
   const { mutate: updateTask } = useUpdateTask();
 
+  const [settings, setSettings] = useState<PomodoroSettings>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("pomodoroSettings");
+      return saved ? JSON.parse(saved) : defaultSettings;
+    }
+    return defaultSettings;
+  });
+
+  const [showSettings, setShowSettings] = useState(false);
   const [timerType, setTimerType] = useState<TimerType>("pomodoro");
-  const [timeLeft, setTimeLeft] = useState(25 * 60);
+  const [timeLeft, setTimeLeft] = useState(settings.pomodoroTime * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [progress, setProgress] = useState(100);
+  const [progress, setProgress] = useState(0);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentCycle, setCurrentCycle] = useState(0);
   const tasksPerPage = 8;
   const [notificationPermission, setNotificationPermission] =
     useState<NotificationPermission>("default");
@@ -57,19 +194,19 @@ export const PomodoroClient = () => {
     : 0;
 
   const durations = {
-    pomodoro: 25 * 60,
-    shortBreak: 5 * 60,
-    longBreak: 15 * 60,
+    pomodoro: settings.pomodoroTime * 60,
+    shortBreak: settings.shortBreakTime * 60,
+    longBreak: settings.longBreakTime * 60,
   };
 
-  const calculateProgress = (timeLeft: number) => {
-    return ((durations[timerType] - timeLeft) / durations[timerType]) * 100;
+  const calculateProgress = (timeLeft: number, duration: number) => {
+    return ((duration - timeLeft) / duration) * 100;
   };
 
   useEffect(() => {
     setTimeLeft(durations[timerType]);
-    setProgress(100);
-  }, [timerType]);
+    setProgress(0);
+  }, [timerType, settings]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -78,29 +215,51 @@ export const PomodoroClient = () => {
       interval = setInterval(() => {
         setTimeLeft((prev) => {
           const newTime = prev - 1;
-          setProgress(calculateProgress(newTime));
+          setProgress(calculateProgress(newTime, durations[timerType]));
           return newTime;
         });
       }, 1000);
-    } else if (timeLeft === 0 && activeTask) {
+    } else if (timeLeft === 0) {
       if (!isMuted) {
         new Audio("/sounds/timer-end.mp3").play();
       }
-      if (Notification.permission === "granted") {
-        new Notification(t("pomodoro.notifications.timeUp"));
+
+      if (timerType === "pomodoro") {
+        const newCycle = currentCycle + 1;
+        setCurrentCycle(newCycle);
+
+        if (newCycle >= settings.cyclesBeforeLongBreak) {
+          setTimerType("longBreak");
+          setCurrentCycle(0);
+        } else {
+          setTimerType("shortBreak");
+        }
+
+        if (activeTask) {
+          updateTask({
+            json: {
+              status: TaskStatus.DONE,
+            },
+            param: {
+              taskId: activeTask.$id,
+            },
+          });
+        }
+      } else if (timerType === "shortBreak") {
+        setTimerType("pomodoro");
+      } else if (timerType === "longBreak") {
+        setTimerType("pomodoro");
+        setIsRunning(false);
       }
 
-      updateTask({
-        json: {
-          status: TaskStatus.DONE,
-        },
-        param: {
-          taskId: activeTask.$id,
-        },
-      });
+      setTimeLeft(durations[timerType]);
+      setProgress(0);
 
-      setIsRunning(false);
-      setActiveTask(null);
+      sendNotification(
+        t("pomodoro.notifications.timerEnded", {
+          type: getTimerTypeLabel(timerType),
+        })
+      );
     }
 
     return () => clearInterval(interval);
@@ -109,10 +268,10 @@ export const PomodoroClient = () => {
     timeLeft,
     timerType,
     isMuted,
-    t,
     activeTask,
     updateTask,
-    calculateProgress,
+    currentCycle,
+    settings,
   ]);
 
   useEffect(() => {
@@ -166,6 +325,14 @@ export const PomodoroClient = () => {
     }, 300);
   };
 
+  const handleSettingsSave = (newSettings: PomodoroSettings) => {
+    setSettings(newSettings);
+    localStorage.setItem("pomodoroSettings", JSON.stringify(newSettings));
+    setTimeLeft(newSettings.pomodoroTime * 60);
+    setProgress(0);
+    setIsRunning(false);
+  };
+
   const getTimerTypeLabel = (type: TimerType) => {
     switch (type) {
       case "pomodoro":
@@ -191,7 +358,6 @@ export const PomodoroClient = () => {
 
   const handleStart = async () => {
     setIsRunning(true);
-    setProgress(0);
     if (!isMuted) {
       new Audio("/sounds/timer-start.mp3").play();
     }
@@ -207,6 +373,26 @@ export const PomodoroClient = () => {
     setTimeLeft(0);
     setProgress(0);
     setIsRunning(false);
+
+    if (timerType === "pomodoro") {
+      const newCycle = currentCycle + 1;
+      setCurrentCycle(newCycle);
+
+      if (newCycle >= settings.cyclesBeforeLongBreak) {
+        setTimerType("longBreak");
+        setCurrentCycle(0);
+      } else {
+        setTimerType("shortBreak");
+      }
+    } else if (timerType === "shortBreak") {
+      setTimerType("pomodoro");
+    } else if (timerType === "longBreak") {
+      setTimerType("pomodoro");
+      setIsRunning(false);
+    }
+
+    setTimeLeft(durations[timerType]);
+
     if (!isMuted) {
       new Audio("/sounds/timer-skip.mp3").play();
     }
@@ -236,18 +422,21 @@ export const PomodoroClient = () => {
             >
               <TabsList className="grid w-full grid-cols-3 bg-gray-100 dark:bg-neutral-800">
                 <TabsTrigger
+                  onClick={() => setIsRunning(false)}
                   value="pomodoro"
                   className="text-xs sm:text-sm data-[state=active]:bg-white dark:data-[state=active]:bg-neutral-700"
                 >
                   {t("pomodoro.timer.tabs.pomodoro")}
                 </TabsTrigger>
                 <TabsTrigger
+                  onClick={() => setIsRunning(false)}
                   value="shortBreak"
                   className="text-xs sm:text-sm data-[state=active]:bg-white dark:data-[state=active]:bg-neutral-700"
                 >
                   {t("pomodoro.timer.tabs.shortBreak")}
                 </TabsTrigger>
                 <TabsTrigger
+                  onClick={() => setIsRunning(false)}
                   value="longBreak"
                   className="text-xs sm:text-sm data-[state=active]:bg-white dark:data-[state=active]:bg-neutral-700"
                 >
