@@ -308,7 +308,7 @@ export const PomodoroClient = () => {
     <div className="max-w-7xl mx-auto flex  items-center justify-center p-4 sm:p-4 mt-2 md:mt-8">
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6 ">
         <Card className="bg-white  dark:bg-neutral-900 lg:min-w-[300px]">
-          <div className="p-4 sm:p-6">
+          <div className="p-4 sm:p-6 space-y-4">
             <div className="bg-gray-50 dark:bg-neutral-800 rounded-lg p-3 sm:p-4">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">
                 {t("pomodoro.info.title")}
