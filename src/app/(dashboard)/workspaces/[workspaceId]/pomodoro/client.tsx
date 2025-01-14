@@ -296,8 +296,13 @@ export const PomodoroClient = () => {
   };
 
   const formatTotalEndTime = () => {
-    const totalDuration = (currentCycle + 1) * settings.pomodoroTime * 60; // toplam süre (saniye cinsinden)
-    const endTime = new Date(Date.now() + totalDuration * 1000);
+    const totalDuration =
+      (currentCycle + 1) *
+      ((settings.pomodoroTime + settings.shortBreakTime) * 60) *
+      settings.cyclesBeforeLongBreak; // toplam süre (saniye cinsinden)
+    const endTime = new Date(
+      Date.now() + (totalDuration + settings.longBreakTime) * 1000
+    );
     return endTime.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
