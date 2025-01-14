@@ -1015,6 +1015,10 @@
       "pause": "Pause",
       "reset": "Reset",
       "skip": "Skip"
-    }
+    },
+    "cycles": {
+      "completed": "Cycles completed: {{count}}/{{total}}"
+    },
+    "endTime": "End time: {{endTime}}"
   }
 }

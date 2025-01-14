@@ -1009,6 +1009,11 @@
       "pause": "Duraklat",
       "reset": "Sıfırla",
       "skip": "Atla"
-    }
+    },
+    "cycles": {
+      "completed": "Döngü sayısı: {{count}}/{{total}}"
+    },
+    "endTime": "Bitiş zamanı: {{endTime}}"
   }
 }
+

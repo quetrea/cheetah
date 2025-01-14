@@ -283,6 +283,18 @@ export const PomodoroClient = () => {
     sendNotification(t("pomodoro.notifications.skipped"));
   };
 
+  useEffect(() => {
+    document.title = `${getTimerTypeLabel(timerType)} - ${formatTime(
+      timeLeft
+    )}`;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timerType, timeLeft]);
+
+  const formatEndTime = () => {
+    const endTime = new Date(Date.now() + timeLeft * 1000);
+    return endTime.toLocaleTimeString();
+  };
+
   return (
     <div className="max-w-7xl mx-auto flex  items-center justify-center p-4 sm:p-4 mt-2 md:mt-8">
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6 ">
@@ -294,6 +306,17 @@ export const PomodoroClient = () => {
               </h2>
               <p className="text-sm text-gray-600 dark:text-neutral-300">
                 {t("pomodoro.info.description")}
+              </p>
+            </div>
+            <div className="bg-gray-50 dark:bg-neutral-800 rounded-lg p-3 sm:p-4">
+              <p className="text-sm text-gray-600 dark:text-neutral-300">
+                {t("pomodoro.cycles.completed", {
+                  count: currentCycle,
+                  total: settings.cyclesBeforeLongBreak,
+                })}
+              </p>
+              <p className="text-sm text-gray-600 dark:text-neutral-300">
+                {t("pomodoro.endTime", { endTime: formatEndTime() })}
               </p>
             </div>
 
