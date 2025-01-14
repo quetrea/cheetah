@@ -295,6 +295,15 @@ export const PomodoroClient = () => {
     return endTime.toLocaleTimeString();
   };
 
+  const formatTotalEndTime = () => {
+    const totalDuration = (currentCycle + 1) * settings.pomodoroTime * 60; // toplam süre (saniye cinsinden)
+    const endTime = new Date(Date.now() + totalDuration * 1000);
+    return endTime.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
   return (
     <div className="max-w-7xl mx-auto flex  items-center justify-center p-4 sm:p-4 mt-2 md:mt-8">
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6 ">
@@ -316,7 +325,7 @@ export const PomodoroClient = () => {
                 })}
               </p>
               <p className="text-sm text-gray-600 dark:text-neutral-300">
-                {t("pomodoro.endTime", { endTime: formatEndTime() })}
+                {t("pomodoro.endTime", { endTime: formatTotalEndTime() })}
               </p>
             </div>
 
