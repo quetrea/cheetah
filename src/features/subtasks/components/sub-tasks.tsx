@@ -91,7 +91,9 @@ export const SubTasks = ({ task, isPomodoro }: SubTaskProps) => {
         });
 
         if (checked) {
-          new Audio("/sounds/sub-task-completed.mp3").play();
+          const audio = new Audio("/sounds/sub-task-completed.mp3");
+          audio.volume = 0.5;
+          audio.play();
         }
         const updatedCompletionState = {
           ...localCompletionState,
