@@ -271,16 +271,9 @@ export const SubTasks = ({ task, isPomodoro }: SubTaskProps) => {
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.2 }}
-                      className={cn(
-                        "flex items-center gap-x-2 p-2 border-2 cursor-pointer rounded-lg group relative",
-                        localCompletionState[subtask.$id]
-                          ? "dark:bg-neutral-400 bg-neutral-700 line-through"
-                          : "bg-white"
-                      )}
+                      className="flex items-center gap-x-2 p-2 border-2 hover:opacity-75 cursor-pointer rounded-lg group relative"
                     >
                       <Checkbox
-                        className="data-[state=checked]:bg-neutral-700 data-[state=checked]:border-neutral-500
-                        dark:data-[state=checked]:bg-neutral-700 dark:data-[state=checked]:border-neutral-500 dark:text-neutral-500 text-neutral-800"
                         checked={
                           localCompletionState[subtask.$id] ?? subtask.completed
                         }
