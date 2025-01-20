@@ -2,6 +2,11 @@ import { differenceInDays, format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import { tr, enUS } from "date-fns/locale";
+import {
+  HoverCard,
+  HoverCardTrigger,
+  HoverCardContent,
+} from "@/components/ui/hover-card";
 
 interface TaskDateProps {
   value: string;
@@ -31,11 +36,27 @@ export const TaskDate = ({ value, className, completed }: TaskDateProps) => {
 
   const locale = i18n.language === "en" ? enUS : tr;
 
+  const getHoverText = () => {
+    if (diffInDays === 0) {
+      return "Bugün bitiyor";
+    } else if (diffInDays === -1) {
+      return "Dün bitiyor";
+    } else if (diffInDays > 0) {
+      return `${diffInDays} gün kaldı`;
+    }
+    return "";
+  };
+
   return (
-    <div className={`${textColor} pl-2`}>
-      <span className={cn("truncate", className)}>
-        {format(value, "PPP", { locale })}
-      </span>
-    </div>
+    <HoverCard>
+      <HoverCardTrigger>
+        <div className={`${textColor} pl-2`}>
+          <span className={cn("truncate", className)}>
+            {format(value, "PPP", { locale })}
+          </span>
+        </div>
+      </HoverCardTrigger>
+      <HoverCardContent>{getHoverText()}</HoverCardContent>
+    </HoverCard>
   );
 };
