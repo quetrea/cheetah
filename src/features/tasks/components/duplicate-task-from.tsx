@@ -41,6 +41,7 @@ import { useGetTask } from "@/features/tasks/api/use-get-task";
 import { useGetTasks } from "@/features/tasks/api/use-get-tasks";
 import { useTranslation } from "react-i18next";
 import { differenceInDays, addDays, eachDayOfInterval } from "date-fns";
+import { toast } from "sonner";
 
 interface DuplicateTaskFormProps {
   onCancel?: () => void;
@@ -62,10 +63,7 @@ export const DuplicateTaskForm = ({
   const { t } = useTranslation();
   const workspaceId = useWorkspaceId();
   const { mutate, isPending } = useCreateTask();
-  const { data: tasks, isLoading: tasksLoading } = useGetTasks({
-    workspaceId,
-    projectId,
-  });
+
   const { data: project, isLoading: projectLoading } = useGetProject({
     projectId: projectId ?? "",
   });
@@ -78,7 +76,13 @@ export const DuplicateTaskForm = ({
     resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
     defaultValues: {
       workspaceId,
-      ...duplicatedTask,
+      name: duplicatedTask?.name ?? "",
+      description: duplicatedTask?.description ?? "",
+      assigneeId: duplicatedTask?.assigneeId ?? "",
+      status: duplicatedTask?.status ?? TaskStatus.BACKLOG,
+      priority: duplicatedTask?.priority ?? Priority.LOW,
+      projectId: duplicatedTask?.projectId ?? "",
+
       dueDate:
         duplicatedTask?.$createdAt && duplicatedTask?.dueDate
           ? addDays(
@@ -100,6 +104,10 @@ export const DuplicateTaskForm = ({
           form.reset();
           window.location.href = `/workspaces/${workspaceId}/tasks/${data.$id}`;
           onCancel?.();
+        },
+        onError: (error) => {
+          console.error("Görev oluşturulurken hata:", error);
+          toast.error("Görev oluşturulamadı");
         },
       }
     );
