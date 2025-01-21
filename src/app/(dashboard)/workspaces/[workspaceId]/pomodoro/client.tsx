@@ -321,23 +321,27 @@ export const PomodoroClient = () => {
           <div className="p-4 sm:p-6 space-y-4">
             <div className="bg-gray-50 dark:bg-neutral-800 rounded-lg p-3 sm:p-4">
               <div className="flex justify-between items-center">
-                <p className="text-sm text-gray-600 dark:text-neutral-300">
-                  {t("pomodoro.cycles.completed", {
-                    count: currentCycle,
-                    total: settings.cyclesBeforeLongBreak,
-                  })}
-                </p>
-                <p className="text-sm text-gray-600 dark:text-neutral-300">
-                  {t("pomodoro.endTime", { endTime: formatTotalEndTime() })}
-                </p>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={handleReset}
-                  className="ml-2"
+                <div className="flex flex-col gap-y-2">
+                  <p className="text-sm text-gray-600 dark:text-neutral-300">
+                    {t("pomodoro.cycles.completed", {
+                      count: currentCycle,
+                      total: settings.cyclesBeforeLongBreak,
+                    })}
+                  </p>
+                  <p className="text-sm text-gray-600 dark:text-neutral-300">
+                    {t("pomodoro.endTime", { endTime: formatTotalEndTime() })}
+                  </p>
+                </div>
+                <div className="flex items-center gap-x-2">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={handleReset}
+                    className="ml-2"
                 >
-                  <RotateCcw className="size-4" />
-                </Button>
+                    <RotateCcw className="size-4" />
+                  </Button>
+                </div>
               </div>
             </div>
 
