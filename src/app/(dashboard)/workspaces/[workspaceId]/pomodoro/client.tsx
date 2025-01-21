@@ -18,6 +18,7 @@ import {
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { useGetTasks } from "@/features/tasks/api/use-get-tasks";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
@@ -41,7 +42,9 @@ export const PomodoroClient = () => {
   const { t } = useTranslation();
 
   const workspaceId = useWorkspaceId();
-  const { data: tasks } = useGetTasks({ workspaceId });
+  const { data: tasks, isLoading: isTasksLoading } = useGetTasks({
+    workspaceId,
+  });
   const { mutate: updateTask } = useUpdateTask();
 
   const [settings, setSettings] = useState<PomodoroSettings>(() => {
@@ -529,75 +532,79 @@ export const PomodoroClient = () => {
           </div>
         </Card>
 
-        <Card className="bg-white dark:bg-neutral-900 lg:min-w-[300px]">
-          <div className="p-4 flex flex-col h-[400px] sm:h-[500px]">
-            <div className="flex justify-between items-center pb-3">
-              <h3 className="text-xl font-medium">
-                {t("pomodoro.tasks.title")}
-              </h3>
-              <div className="flex items-center gap-1.5">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  disabled={currentPage === 1}
-                  className="h-6 w-6 p-0 border-gray-200 dark:border-white/20"
-                >
-                  <ChevronLeft className="size-4" />
-                </Button>
-                <span className="text-xs text-gray-500 dark:text-neutral-400">
-                  {currentPage} / {totalPages}
-                </span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() =>
-                    setCurrentPage((p) => Math.min(totalPages, p + 1))
-                  }
-                  disabled={currentPage === totalPages}
-                  className="h-6 w-6 p-0 border-gray-200 dark:border-white/20"
-                >
-                  <ChevronRight className="size-4" />
-                </Button>
+        {isTasksLoading ? (
+          <Skeleton className="h-[400px] sm:h-[500px] lg:min-w-[300px]" />
+        ) : (
+          <Card className="bg-white dark:bg-neutral-900 lg:min-w-[300px]">
+            <div className="p-4 flex flex-col h-[400px] sm:h-[500px]">
+              <div className="flex justify-between items-center pb-3">
+                <h3 className="text-xl font-medium">
+                  {t("pomodoro.tasks.title")}
+                </h3>
+                <div className="flex items-center gap-1.5">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                    className="h-6 w-6 p-0 border-gray-200 dark:border-white/20"
+                  >
+                    <ChevronLeft className="size-4" />
+                  </Button>
+                  <span className="text-xs text-gray-500 dark:text-neutral-400">
+                    {currentPage} / {totalPages}
+                  </span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      setCurrentPage((p) => Math.min(totalPages, p + 1))
+                    }
+                    disabled={currentPage === totalPages}
+                    className="h-6 w-6 p-0 border-gray-200 dark:border-white/20"
+                  >
+                    <ChevronRight className="size-4" />
+                  </Button>
+                </div>
+              </div>
+
+              <DottedSeparator className="mb-3" />
+
+              <div className="space-y-2 overflow-y-auto flex-1">
+                {paginatedTasks?.map((task) => (
+                  <div
+                    key={task.$id}
+                    className={cn(
+                      "group flex items-center justify-between",
+                      "rounded-lg transition-colors",
+                      "hover:bg-gray-100 dark:hover:bg-neutral-600",
+                      activeTask?.$id === task.$id
+                        ? "bg-gray-100 dark:bg-neutral-600"
+                        : "bg-gray-50 dark:bg-neutral-700",
+                      task.status === TaskStatus.DONE ? "opacity-75" : ""
+                    )}
+                  >
+                    <button
+                      onClick={() => handleTaskSelect(task)}
+                      className={`flex-1 px-3 py-2.5 text-left text-sm ${
+                        task.status === TaskStatus.DONE
+                          ? "text-gray-500 dark:text-neutral-400"
+                          : "text-gray-900 dark:text-white"
+                      }`}
+                    >
+                      {task.name}
+                    </button>
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity px-2">
+                      <TaskActions id={task.$id} projectId={task.projectId}>
+                        <MoreHorizontalIcon className="h-4 w-4" />
+                      </TaskActions>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-
-            <DottedSeparator className="mb-3" />
-
-            <div className="space-y-2 overflow-y-auto flex-1">
-              {paginatedTasks?.map((task) => (
-                <div
-                  key={task.$id}
-                  className={cn(
-                    "group flex items-center justify-between",
-                    "rounded-lg transition-colors",
-                    "hover:bg-gray-100 dark:hover:bg-neutral-600",
-                    activeTask?.$id === task.$id
-                      ? "bg-gray-100 dark:bg-neutral-600"
-                      : "bg-gray-50 dark:bg-neutral-700",
-                    task.status === TaskStatus.DONE ? "opacity-75" : ""
-                  )}
-                >
-                  <button
-                    onClick={() => handleTaskSelect(task)}
-                    className={`flex-1 px-3 py-2.5 text-left text-sm ${
-                      task.status === TaskStatus.DONE
-                        ? "text-gray-500 dark:text-neutral-400"
-                        : "text-gray-900 dark:text-white"
-                    }`}
-                  >
-                    {task.name}
-                  </button>
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity px-2">
-                    <TaskActions id={task.$id} projectId={task.projectId}>
-                      <MoreHorizontalIcon className="h-4 w-4" />
-                    </TaskActions>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Card>
+          </Card>
+        )}
 
         <Card className="bg-white dark:bg-neutral-900 lg:min-w-[300px] h-full">
           <AnimatePresence>
