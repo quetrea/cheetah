@@ -320,23 +320,25 @@ export const PomodoroClient = () => {
         <Card className="bg-white  dark:bg-neutral-900 lg:min-w-[300px]">
           <div className="p-4 sm:p-6 space-y-4">
             <div className="bg-gray-50 dark:bg-neutral-800 rounded-lg p-3 sm:p-4">
-              <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                {t("pomodoro.info.title")}
-              </h2>
-              <p className="text-sm text-gray-600 dark:text-neutral-300">
-                {t("pomodoro.info.description")}
-              </p>
-            </div>
-            <div className="bg-gray-50 dark:bg-neutral-800 rounded-lg p-3 sm:p-4">
-              <p className="text-sm text-gray-600 dark:text-neutral-300">
-                {t("pomodoro.cycles.completed", {
-                  count: currentCycle,
-                  total: settings.cyclesBeforeLongBreak,
-                })}
-              </p>
-              <p className="text-sm text-gray-600 dark:text-neutral-300">
-                {t("pomodoro.endTime", { endTime: formatTotalEndTime() })}
-              </p>
+              <div className="flex justify-between items-center">
+                <p className="text-sm text-gray-600 dark:text-neutral-300">
+                  {t("pomodoro.cycles.completed", {
+                    count: currentCycle,
+                    total: settings.cyclesBeforeLongBreak,
+                  })}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-neutral-300">
+                  {t("pomodoro.endTime", { endTime: formatTotalEndTime() })}
+                </p>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={handleReset}
+                  className="ml-2"
+                >
+                  <RotateCcw className="size-4" />
+                </Button>
+              </div>
             </div>
 
             <Tabs
@@ -465,7 +467,7 @@ export const PomodoroClient = () => {
                   </Button>
                 </div>
 
-                <Card className="bg-gray-50 flex flex-col gap-y-4 dark:bg-neutral-800 rounded-lg p-4 w-full max-w-md">
+                <Card className="bg-gray-50 flex flex-col gap-y-4 select-none dark:bg-neutral-800 rounded-lg p-4 w-full max-w-md">
                   <CardHeader className="flex  p-0 border-white">
                     <div>
                       <CardTitle className=" text-xl flex items-center justify-between text-neutral-900 font-bold dark:text-white">
