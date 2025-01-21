@@ -12,6 +12,8 @@ import {
   VolumeX,
   SkipForward,
   MoreHorizontalIcon,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -541,7 +543,7 @@ export const PomodoroClient = () => {
                   disabled={currentPage === 1}
                   className="h-6 w-6 p-0 border-gray-200 dark:border-white/20"
                 >
-                  ←
+                  <ChevronLeft className="size-4" />
                 </Button>
                 <span className="text-xs text-gray-500 dark:text-neutral-400">
                   {currentPage} / {totalPages}
@@ -555,7 +557,7 @@ export const PomodoroClient = () => {
                   disabled={currentPage === totalPages}
                   className="h-6 w-6 p-0 border-gray-200 dark:border-white/20"
                 >
-                  →
+                  <ChevronRight className="size-4" />
                 </Button>
               </div>
             </div>
@@ -572,12 +574,17 @@ export const PomodoroClient = () => {
                     "hover:bg-gray-100 dark:hover:bg-neutral-600",
                     activeTask?.$id === task.$id
                       ? "bg-gray-100 dark:bg-neutral-600"
-                      : "bg-gray-50 dark:bg-neutral-700"
+                      : "bg-gray-50 dark:bg-neutral-700",
+                    task.status === TaskStatus.DONE ? "opacity-75" : ""
                   )}
                 >
                   <button
                     onClick={() => handleTaskSelect(task)}
-                    className="flex-1 px-3 py-2.5 text-left text-sm text-gray-900 dark:text-white"
+                    className={`flex-1 px-3 py-2.5 text-left text-sm ${
+                      task.status === TaskStatus.DONE
+                        ? "text-gray-500 dark:text-neutral-400"
+                        : "text-gray-900 dark:text-white"
+                    }`}
                   >
                     {task.name}
                   </button>
