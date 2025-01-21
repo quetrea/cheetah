@@ -336,9 +336,9 @@ export const PomodoroClient = () => {
                   <Button
                     variant="outline"
                     size="icon"
-                    onClick={handleReset}
+                    onClick={() => setCurrentCycle(0)}
                     className="ml-2"
-                >
+                  >
                     <RotateCcw className="size-4" />
                   </Button>
                 </div>
